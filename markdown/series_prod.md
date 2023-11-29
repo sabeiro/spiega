@@ -35,14 +35,14 @@ All the scripts consider the variable $LAV_DIR which can be set as the current d
 ![jupyter](../f/f_mot/jupyter.png "jupyter")
 _jupyter notebook on Hungarian cluster_
 
-* check data availability for tripEx-act and adjust dates in the [qsm job](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/job/activity/tank/qsm.activity_report.tank_cilac_y19_p11_d40_noChi.json) for activities
-* check data availability for analyzer and adjust dates in the [qsm job](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/job/odm_via/qsm.odm_extraction.odm_via_tank_19_04.json) for odm_via
+* check data availability for tripEx-act and adjust dates in the [qsm job](/geomadi/blob/master/job/activity/tank/qsm.activity_report.tank_cilac_y19_p11_d40_noChi.json) for activities
+* check data availability for analyzer and adjust dates in the [qsm job](/geomadi/blob/master/job/odm_via/qsm.odm_extraction.odm_via_tank_19_04.json) for odm_via
 * get permission from QA about submitting the jobs and set priority
 * schedule the jobs
-* check if the job run without any error [on the server](http://cro-out-lp-master1.motionlogic.lan:50070/explorer.html#/tdg/results/20190515_1442_odm_via_tank_19_03)
-* use the [following notebook](172.25.100.55:8888/notebooks/gio/etl_tank.ipynb) to postprocess the data - activity
-* use the [following notebook](172.25.100.55:8888/notebooks/gio/etl_via.ipynb) to postprocess the data - odm_via
-* download the two files from the [jupyter cluster](172.25.100.55:/home/gmarelli/lav/motion/out/)
+* check if the job run without any error [on the server](/tdg/results/20190515_1442_odm_via_tank_19_03)
+* use the [following notebook](/notebooks/gio/etl_tank.ipynb) to postprocess the data - activity
+* use the [following notebook](/notebooks/gio/etl_via.ipynb) to postprocess the data - odm_via
+* download the two files from the [jupyter cluster](/motion/out/)
 
 ## local production
 

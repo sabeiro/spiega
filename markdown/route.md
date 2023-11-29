@@ -78,7 +78,7 @@ else:
 ```
 
 ## precomputing distances
-We took a random node for each zip code and we calculate the shortest route between each other zip code [zip2zip](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/route_zip2zip.json).
+We took a random node for each zip code and we calculate the shortest route between each other zip code [zip2zip](/geomadi/blob/master/py/route_zip2zip.json).
 
 ![distances](../f/f_route/distances.png "distances")
 _zip 2 zip distances_
@@ -123,7 +123,7 @@ We associate this points to a location and we group entrances and exits together
       {"location_id":"entry_32",
         "node_list":[227910516, 25418734]},
 ```
-and created the appropriate [qsm job](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/job/odm_via/qsm.odm_extraction.odm_via_via.json) where all nodes are grouped into via locations.
+and created the appropriate [qsm job](/geomadi/blob/master/job/odm_via/qsm.odm_extraction.odm_via_via.json) where all nodes are grouped into via locations.
 
 ## Analyzer 
 These chains are passed thought the analyzer and we analyze [a few trajectories](http://172.25.100.40:8888/notebooks/Maurice/TestData_Nissan.ipynb#).
@@ -156,7 +156,7 @@ We [visualize some relationships](http://172.25.100.40:8888/notebooks/Maurice/Ni
 _visulization of pair relationships_
 
 ## Postprocessing
-We consider the first entrance and the last exit removing all internal loops [etl_nissanVia](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/etl/etl_nissanVia.py)
+We consider the first entrance and the last exit removing all internal loops [etl_nissanVia](/geomadi/blob/master/etl/etl_nissanVia.py)
 
 ```
 exit_36;entry_36;exit_41b;entry_42 -> entry_36;exit_41b
@@ -185,7 +185,7 @@ We pivot the table and obtain a square matrix showing all the enter and exit rel
 _correlation between junctions, neighboring junctions show good correlation, we must investigate the boundaries of the correlation blocks_
 
 ## Junctions distance
-To obtain the routed distance between junctions we request an [openstreetmap api](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/api_route.py).
+To obtain the routed distance between junctions we request an [openstreetmap api](/geomadi/blob/master/py/api_route.py).
 ```python 
     baseUrl = "https://api.openrouteservice.org/directions?"
     nodeD = []
@@ -331,8 +331,8 @@ We still can see few problems to solve:
 ## Junction labelling automation
 To automize the labelling of the nodes of the junctions we write two functions.
 
-* [enrichNissan](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/custom/geo_enrichNissan.py) where we project all nodes on the motorway, calculate the perpendicular distance from the motorway and side of the motorway (via chirality)
-* [junctionNodes](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/geo_junctionNodes.py) we iterate over `id_jun`, `chi`, `id_zone`, and `dir` to calculate the local center of mass and the orientation depending on the cross product
+* [enrichNissan](/geomadi/blob/master/custom/geo_enrichNissan.py) where we project all nodes on the motorway, calculate the perpendicular distance from the motorway and side of the motorway (via chirality)
+* [junctionNodes](/geomadi/blob/master/py/geo_junctionNodes.py) we iterate over `id_jun`, `chi`, `id_zone`, and `dir` to calculate the local center of mass and the orientation depending on the cross product
 
 ![junction_labeller](../f/f_route/junction_labeller.png "junction labeller")
 _graphical explanation on the selection and identification of nodes works_
@@ -344,7 +344,7 @@ _not all topologies can be covered by the algorithm_
 
 ## any via after junction labelling
 
-After have labelled all junction nodes to be included in the [infrastructure](celery_t_tdg_infra_18b09@172.25.219.207:31024) we run an [odm any via](http://172.25.186.11:8000/gmarelli/geomadi/raw/master/job/odm_via/qsm.odm_extraction.odm_via_via_thuering.json) for [1M3 chains dataset](http://172.25.100.33:50070/explorer.html#/tdg/2017/09/12/trips/odm) to obtain the number of trajectory crossing the [via points in Thüringen](http://172.25.100.33:50070/explorer.html#/tdg/qsm/20181119_1436_odm_via_via_thuering/2018/custom_aggregations/odm_result/custom_odm_result_application_1538385106982_0705).
+After have labelled all junction nodes to be included in the [infrastructure](celery_t_tdg_infra_18b09@172.25.219.207:31024) we run an [odm any via](/geomadi/raw/master/job/odm_via/qsm.odm_extraction.odm_via_via_thuering.json) for [1M3 chains dataset](/tdg/2017/09/12/trips/odm) to obtain the number of trajectory crossing the [via points in Thüringen](/tdg/qsm/20181119_1436_odm_via_via_thuering/2018/custom_aggregations/odm_result/custom_odm_result_application_1538385106982_0705).
 
 We run the kpi calculation based on the results of the data
 

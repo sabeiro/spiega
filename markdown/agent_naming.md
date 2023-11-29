@@ -52,7 +52,13 @@ The attention map tells a lot about the key challanges of this exercise
 * **reward**: what is a benefit for me
 * **info**: what is the outside of the environment just providing information
 
-Compared to other games breakout has a lot of interesting challanges in the understanding of causality.
+Compared to other games breakout has a lot of interesting challanges in the understanding of causalit
+y.
+
+![attention_calss](../f/f_gen/class_map.png "attivation classes")
+_attivation classes _
+
+We do the same for the different types of moves
 
 ### causality
 
@@ -66,3 +72,6 @@ In the eyes of the agent I first see a clear **correlation**:
 
 ![attention_init](../f/f_gen/attention_evolution.png "attention map") 
 _evolution of attention over time, the focus on digits drops over time, the agent is then learning to avoid losing life focusing on the bottom._
+
+We insert additional scores as output which will depend directly from an action and study the activation for that specific action:
+

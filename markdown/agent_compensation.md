@@ -11,8 +11,6 @@ style: |
   }
 ---
 
-# **dynamic targets**
-
 # dynamic target
 
 Agents compensation is a crucial stimulus for improving individual and company objectives. 

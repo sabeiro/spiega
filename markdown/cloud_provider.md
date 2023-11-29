@@ -1,9 +1,11 @@
 # cloud providers
 
+The main cloud providers for the '20 decade are aws, gcp and azure but digitalocean, linode and others are used too. 
+Here is a good [overview on aws](https://www.youtube.com/watch?v=Z3SYDTMP3ME).
 
 # filesystem
 
-Filesystems are a great option for backups, cheap cold storage. Files are usually stored in parquet 
+Filesystems are a great option for backups, cheap cold storage. Big files are usually stored in parquet 
 
 * _aws_ s3
 * _gcp_ filestore
@@ -13,6 +15,7 @@ Filesystems are a great option for backups, cheap cold storage. Files are usuall
 # query engine 
 
 * _gcp_ big query
+* hive
 
 # orchestration
 
@@ -27,7 +30,7 @@ Filesystems are a great option for backups, cheap cold storage. Files are usuall
 * _azure_ deltashare
 * databricks
 
-# storag/e 
+# storage 
 
 ## relational
 
@@ -60,6 +63,7 @@ Filesystems are a great option for backups, cheap cold storage. Files are usuall
 * _aws_ athena: a serverless Analytics service to perform interactive queries over AWS S3
 * _aws_ redshift: fully managed, petabyte data warehouse service over the cloud
 * _gcp_ big query
+* _snowflake_
 * _hadoop_ hive
 
 # load balancing

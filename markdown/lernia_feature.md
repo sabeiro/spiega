@@ -260,7 +260,3 @@ Encoder options
 ### time
 
 Weekdays are categorical but they are intercorrelated, it is convinient to group workdays and weekend and stretch the time: {weekday:1,weekend:2} -> {weekday:1,weekend:0.5}
-
-### text
-
-Stemming 

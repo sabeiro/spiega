@@ -190,7 +190,4 @@ Compared to mobile data we have a completely different ranking of locations
 ![retail_ranking](../f/f_mov/retail_ranking.png "retail ranking")
 _re shuffling of ranking of retail areas_
 
-![](../f/f_mov/ "")
-__
-
 

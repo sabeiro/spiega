@@ -8,10 +8,10 @@ _where $x_{act}$ is the number of activities, $m_{share}$ is the market share, $
 ## reference vs reference
 To check the capability of the prediction we take as reference the customer data and as activities the customer data multiplied by a random noise
 
-![re../f/f_vs_ref](f_mot/ref_vs_ref.png "reference vs reference")
+![reference](../f/f_mot/ref_vs_ref.png "reference vs reference")
 _reference vs reference + gaussian noise, a single location might have low correlation_
 
-![re../f/f_vs_ref](f_mot/ref_vs_ref_sum.png "reference vs reference sum")
+![reference](../f/f_mot/ref_vs_ref_sum.png "reference vs reference sum")
 _reference vs reference + gaussian noise, overall sum neutralizes the gaussian noise_
 
 ![scor1](../f/f_mot/score1.png "score gauss noise 0.5")
@@ -30,11 +30,11 @@ _score gauss noise 30%, final score on june_
 _score gauss noise 20%, final score on june_
 
 ## day correlation mapping
-We take the first [20 cilacs](172.25.100.50/home/gmarelli/lav/motion/raw/tank/act_cilac.csv.gz) close to a [poi](172.25.100.50/home/gmarelli/lav/motion/raw/tank/poi.csv) and we [calculate activites](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/job/activity/qsm.activity_report.tank_cilac_t1.json) on daily basis.
+We take the first [20 cilacs](/tank/act_cilac.csv.gz) close to a [poi](/tank/poi.csv) and we [calculate activites](/activity/qsm.activity_report.tank_cilac_t1.json) on daily basis.
 
-Activities are processed with a 20km previous distance filter and we [match activity chirality with the poi chirality](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/etl/proc_tank.py).
+Activities are processed with a 20km previous distance filter and we [match activity chirality with the poi chirality](/etl/proc_tank.py).
 
-6% of the total cilacs correlates over 0.6 with [reference data](172.25.100.50/home/gmarelli/lav/motion/raw/tank/re../f/f_year.csv.gz).
+6% of the total cilacs correlates over 0.6 with [reference data](/f/f_year.csv.gz).
 
 The sum of the activities over all country is
 

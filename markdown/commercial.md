@@ -38,12 +38,12 @@ We define where an activity took place by calculating the intersection of a zone
 ![geometries](../f/f_comm/zone_mapping.png "zone mappings")
 _geometries used to calculated activities_
 
-All the mentioned geometries are available to [download](sftp://172.25.100.50/home/gmarelli/lav/motion/gis/geo)
+All the mentioned geometries are available to [download](/motion/gis/geo)
 
-* [ags5](sftp://172.25.100.50/home/gmarelli/lav/motion/gis/geo/ags5.shp)
-* [ags8](sftp://172.25.100.50/home/gmarelli/lav/motion/gis/geo/ags8.shp)
-* [mtc](sftp://172.25.100.50/home/gmarelli/lav/motion/gis/geo/mtc.shp)
-* [zip](sftp://172.25.100.50/home/gmarelli/lav/motion/gis/geo/zip5.shp)
+* [ags5](/motion/gis/geo/ags5.shp)
+* [ags8](/motion/gis/geo/ags8.shp)
+* [mtc](/motion/gis/geo/mtc.shp)
+* [zip](/motion/gis/geo/zip5.shp)
 
 
 ## time mappings
@@ -105,10 +105,10 @@ The most important quantities to consider are:
 
 Building an [overpass query](http://overpass-turbo.eu/) returns all the nodes and ways returning the same label
 
-![overpass query](../f/f_prod/overpass_query.png "overpass query")
+![overpass query](../f/f_act/overpass_query.png "overpass query")
 _overpass query_
 
-We build a network for routing all trips into trajectories.
+We build a network for routing all trips into trajectories. 
 
 ![routing highweight](../f/f_route/routing_highweight.png "routing highweight")
 _routing, improve in weighting_

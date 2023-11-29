@@ -163,7 +163,7 @@ We use the enriched data to train a regressor to adjust the counts.
 
 ## Skew X - commuter vs touristic
 Each street has a different pattern concerning the week day. We can simplify the cataloge classifying street segments with the label commuter or touristic. 
-We use the [kears library](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/train_keras.py) to [load and parse](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/custom/train_convTimeSeries.py) [bast data](sftp://172.25.100.50/home/gmarelli/lav/motion/raw/bast).
+We use the [kears library](/geomadi/blob/master/geomadi/train_keras.py) to [load and parse](/geomadi/blob/master/custom/train_convTimeSeries.py) [bast data](/motion/raw/bast).
 
 ![bast raw](../f/f_mot/bast_weeks.png "bast raw data")
 _BaSt raw data, some locations have a daily double peak, some locations have more traffic on the weekend_
@@ -285,7 +285,7 @@ We have scraped from internet other reference data to evaluate the accuracy of o
 ![google_popularity](../f/f_mot/google_popularity.png "popularity from google")
 _popularity of a gas station and the css attributes we scrape from internet_
 
-Screaping the page we can extract the information about the curves [etl_google.js](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/nodejs/console.js). 
+Screaping the page we can extract the information about the curves [etl_google.js](/geomadi/blob/master/nodejs/console.js). 
 ```javascript
 var occTime = []
 $.each( $('.section-popular-times-graph'), function(i,curveL) {
@@ -295,7 +295,7 @@ $.each( $('.section-popular-times-graph'), function(i,curveL) {
 });
 copy(occTime);
 ```
-A more sofisticated project uses selenium [selenium.js](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/nodejs/selenium.js) to create a bot which searches for a location with the same name of the POI. It selects the more plausible result using [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance), waits the page to be loaded and reads the css attributes for the popularity curves and saves them.
+A more sofisticated project uses selenium [selenium.js](/geomadi/blob/master/nodejs/selenium.js) to create a bot which searches for a location with the same name of the POI. It selects the more plausible result using [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance), waits the page to be loaded and reads the css attributes for the popularity curves and saves them.
 
 We can then overlap the curves and calculate the mutal agreement between sources
 ![vis_act_pop](../f/f_mot/vis_act_pop_curve.png "visits, activities, popularity")

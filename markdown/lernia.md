@@ -216,7 +216,7 @@ We want to recognize the type of user clustering different patterns:
 ![user patterns](../f/f_mot/shapeCluster.svg "different patterns for kind of user")
 _different patterns for kind of user_
 
-We calculate characteristic features by interpolating the time series. We distinguish between a *continous time series* where we can calculate the overall trends via the class [train_shapeLib.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_shapeLib.py)
+We calculate characteristic features by interpolating the time series. We distinguish between a *continous time series* where we can calculate the overall trends via the class [train_shapeLib.py](/geomadi/blob/master/py/train_shapeLib.py)
 
 ![time series](../f/f_mot/time_series.png "example of a time series")
 _time series of a location_
@@ -260,14 +260,14 @@ We select five features which have larger variance to increase training cases.
 _final selection of features_
 
 ## Scoring
-We use the class [train_shapeLib.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_shapeLib.py) to calculate the score between users data and customer data. 
+We use the class [train_shapeLib.py](/geomadi/blob/master/py/train_shapeLib.py) to calculate the score between users data and customer data. 
 We calculate the first score, ~cor~, as the Pearson's r *correlation*:
 $$ r = \frac{cov(X,Y)}{\sigma_x \sigma_y} $$
 This parameter helps us to select the curves which will sum up closely to the reference curve. 
 
 ![scoring explanation](../f/f_mot/scoring.png "scoring graphical visualization")
 _the superposition of many curves with similar correlation or many curves with heigh regression weights leads to a good agreeement with the reference curve_
-The second parameter, the *regression* ~reg~, is the weight, $w$, given by a [ridge regression](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_shapeLib.py#L317) 
+The second parameter, the *regression* ~reg~, is the weight, $w$, given by a [ridge regression](/geomadi/blob/master/py/train_shapeLib.py#L317) 
 $$ \underset{w}{min\,} {{|| X w - y||_2}^2 + \alpha {||w||_2}^2} $$
 where $\alpha$ is the complexity parameter.
 

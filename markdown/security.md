@@ -8,6 +8,18 @@ An infrastructure should be designed to be secure without sacrifice performance 
 
 ## docker
 
+## web server
+
+Example managed by nginx
+
+```
+	location /kafka-ui {
+		auth_basic "Administrator s Area";
+		auth_basic_user_file /etc/apache2/.htpasswd; 
+        proxy_pass http://kafka-ui:8080;
+	}
+```
+
 ## middleware 
 
 ## api token

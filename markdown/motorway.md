@@ -1,7 +1,7 @@
 # Motorway Stoppers
 ## Use case description
 _______________
-On the motorway there are isolated [gas stations](172.25.100.50/home/gmarelli/lav/motion/raw/tank/poi.csv). Few activities but few cells too.
+On the motorway there are isolated [gas stations](/motion/raw/tank/poi.csv). Few activities but few cells too.
 
 ![gas stations on the motorway](../f/f_mot/motorway_01.png "Gas stations")
 _Blue arrows show the gas stations and the direction of the traffic and the green dots the position of the centroids of the cell_
@@ -75,7 +75,7 @@ We can than observe that chirality wihtin a day is conserved:
 _$\chi$=0 and $\chi$=1 are equally distributed, chirality 1 and 2 are two alternative definitions_
 
 ## ETL
-We preprocess customer data with [etl_tank.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/etl/etl_tank.py) where we load customer bills counts and locations:
+We preprocess customer data with [etl_tank.py](/geomadi/blob/master/etl/etl_tank.py) where we load customer bills counts and locations:
 ```python
 vist = pd.read_csv(baseDir + "raw/tank/poi_tank_visit.csv")
 bist = pd.read_csv(baseDir + "raw/tank/poi_tank_visit_bon.csv").fillna(method='ffill')
@@ -98,7 +98,7 @@ We prepare then the data to be structure on a matrix, cells on the rows, time al
 _matrix representation of the input data_
 
 ## Filtering
-We apply a distance filter to select only the motorway stoppers among all the activities captures by the cell in the area [etl_tankAct.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/etl/etl_tankAct.py).
+We apply a distance filter to select only the motorway stoppers among all the activities captures by the cell in the area [etl_tankAct.py](/geomadi/blob/master/etl/etl_tankAct.py).
 
 We apply different trip distance filters on the input data:
 * prev: on the previous trip
@@ -143,7 +143,7 @@ We want to recognize the type of user clustering different patterns:
 ![user patterns](../f/f_mot/shapeCluster.svg "different patterns for kind of user")
 _different patterns for kind of user_
 
-We calculate characteristic features by interpolating the time series. We distinguish between a *continous time series* where we can calculate the overall trends via the class [train_shapeLib.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_shapeLib.py)
+We calculate characteristic features by interpolating the time series. We distinguish between a *continous time series* where we can calculate the overall trends via the class [train_shapeLib.py](/geomadi/blob/master/py/train_shapeLib.py)
 
 ![time series](../f/f_mot/time_series.png "example of a time series")
 _time series of a location_
@@ -187,14 +187,14 @@ We select five features which have larger variance to increase training cases.
 _final selection of features_
 
 ## Scoring
-We use the class [train_shapeLib.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_shapeLib.py) to calculate the score between users data and customer data. 
+We use the class [train_shapeLib.py](/geomadi/blob/master/py/train_shapeLib.py) to calculate the score between users data and customer data. 
 We calculate the first score, ~cor~, as the Pearson's r *correlation*:
 $$ r = \frac{cov(X,Y)}{\sigma_x \sigma_y} $$
 This parameter helps us to select the curves which will sum up closely to the reference curve. 
 
 ![scoring explanation](../f/f_mot/scoring.png "scoring graphical visualization")
 _the superposition of many curves with similar correlation or many curves with heigh regression weights leads to a good agreeement with the reference curve_
-The second parameter, the *regression* ~reg~, is the weight, $w$, given by a [ridge regression](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_shapeLib.py#L317) 
+The second parameter, the *regression* ~reg~, is the weight, $w$, given by a [ridge regression](/geomadi/blob/master/py/train_shapeLib.py#L317) 
 $$ \underset{w}{min\,} {{|| X w - y||_2}^2 + \alpha {||w||_2}^2} $$
 where $\alpha$ is the complexity parameter.
 
@@ -203,9 +203,9 @@ $$ \frac{|\Sigma_c - \Sigma_r|}{\Sigma_r} $$
 per location
 
 ## Training
-We loop over different model using the class [train_lib.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_lib.py) on the script: [train_tank.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_tank.py)
+We loop over different model using the class [train_lib.py](/geomadi/blob/master/py/train_lib.py) on the script: [train_tank.py](/geomadi/blob/master/py/train_tank.py)
 
-First of all we have to bin the scores into classes using the function [binOutlier](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_filter.py#L14) which clamps the outliers into boundary bins. For each score we choose the propriate threshold for the outliers.
+First of all we have to bin the scores into classes using the function [binOutlier](/geomadi/blob/master/py/train_filter.py#L14) which clamps the outliers into boundary bins. For each score we choose the propriate threshold for the outliers.
 ```python
 n = nBin
 ybin = [threshold] + [x*100./float(n-1) for x in range(1,n-1)] + [100.-threshold]
@@ -226,8 +226,8 @@ We compare the different models and select the best perfroming for the purpose.
 
 ![model score](../f/f_mot/model_score.png "result and score of the models")
 
-We further [tune](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_lib.py#L178) the best performing model.
-Alternatively we use keras for high performace model tuning: [train_neural.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_neural.py)
+We further [tune](/geomadi/blob/master/py/train_lib.py#L178) the best performing model.
+Alternatively we use keras for high performace model tuning: [train_neural.py](/geomadi/blob/master/py/train_neural.py)
 
 We observe different performances between models, we use the model with best train score and area under curve. 
 
@@ -238,7 +238,7 @@ _for each variable score we see how the predicted bins (b prefix) classify the i
 
 ## Training results
 
-The steps are mainly performed in this script [train_tank.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_tankTest.py). 
+The steps are mainly performed in this script [train_tank.py](/geomadi/blob/master/py/train_tankTest.py). 
 
 The first score we want to optimize is the correlation. We can indeed see how the model filtered the cells leaving the ones with higher correlation.
 
@@ -307,7 +307,7 @@ We need to further adjust our results depending on the external parameters, firs
 ![regression tree](../f/f_mot/regression_tree.png "regression tree location dependent")
 _example of a regression tree on prediction results_
 
-We analyzed the influence of some features on the counts mismatch [train_decisionTree.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/py/train_decisionTree.py) and spot the most important features for the *predictor*.
+We analyzed the influence of some features on the counts mismatch [train_decisionTree.py](/geomadi/blob/master/py/train_decisionTree.py) and spot the most important features for the *predictor*.
 
 ## Counts correction
 We analyze the variables dependance on counts mismatch and we calculate a correction factor for all locations

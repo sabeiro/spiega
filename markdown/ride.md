@@ -145,7 +145,7 @@ joins on the pivoted tables will be faster, even periodic reports
 	
 We look at the distribution of revenues:
 
-![rev_revboxplot][../f/f_ride/rev_boxplot.png "revenue boxplot"]
+![rev_revboxplot](../f/f_ride/rev_boxplot.png "revenue boxplot")
 _revenue boxplot_
 
 

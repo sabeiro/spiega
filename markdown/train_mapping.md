@@ -60,7 +60,7 @@ _example of bad forecastable model_
 
 ## Data preparation
 
-We use the following [job file](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/job/activity/qsm.activity_report.tank_cilac_t1.json) to produce the activity with the filters:
+We use the following [job file](/geomadi/blob/master/job/activity/qsm.activity_report.tank_cilac_t1.json) to produce the activity with the filters:
 
 ![act_filter](../f/f_mot/act_filter.svg "filter on activities")
 _filter on activities_
@@ -92,7 +92,7 @@ _counts changed by filtering_
 
 We calculate daily values on cilac basis.
 
-The tarball is downloaded and processed with an [etl script](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/etl/proc_tank.py) which uses the a [function](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/proc_lib.py) to unpack the tar and process the output with spark.
+The tarball is downloaded and processed with an [etl script](/geomadi/blob/master/etl/proc_tank.py) which uses the a [function](/geomadi/blob/master/geomadi/proc_lib.py) to unpack the tar and process the output with spark.
 
 ## Mapping weighting
 We filter the cells using only the first 20 ones whose centroid is close to the poi. 
@@ -105,7 +105,7 @@ At first sight the sum of activities doesn't mirror the reference data, neither 
 ![mapping_raw](../f/f_mot/mapping_raw.png "raw data")
 _sum of overall activities and visits_
 
-We use [linLeastSq](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/custom/train_shapeLib.py#L808) to find the best linear weights for each cell contributing to measure the activities at the location.
+We use [linLeastSq](/geomadi/blob/master/custom/train_shapeLib.py#L808) to find the best linear weights for each cell contributing to measure the activities at the location.
 
 ```python
    def ser_sin(x,t,param): #weights times activities
@@ -119,7 +119,7 @@ We use [linLeastSq](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/custo
 ```
 _function that optimizes cells weights minimizing the total sum difference wrt reference data_
 
-We [iterate over all locations](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/custom/mapping_cilacDay.py) to find the best weight set using a minimum number of cells (i.e. 5)
+We [iterate over all locations](/geomadi/blob/master/custom/mapping_cilacDay.py) to find the best weight set using a minimum number of cells (i.e. 5)
 
 <!-- We can calibrate the weights to optimize counts -->
 <!-- ![mapping_leastSq](../f/f_mot/mapping_leastSq.png "mapping optimizing counts") -->
@@ -161,9 +161,9 @@ _correlation monitorin after any process step_
 
 
 ## direction counts
-We use [etl_dirCount](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/etl_dirCount.py) to download with beautifulSoup all the processd day from the analyzer output and create a query to the postgres database.
+We use [etl_dirCount](/geomadi/blob/master/geomadi/etl_dirCount.py) to download with beautifulSoup all the processd day from the analyzer output and create a query to the postgres database.
 
-A [spark function](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/proc_lib.py) loads into all the database outputs into a pandas dataframe, take the maximum of the incoming flow and correct the timezone. 
+A [spark function](/geomadi/blob/master/geomadi/proc_lib.py) loads into all the database outputs into a pandas dataframe, take the maximum of the incoming flow and correct the timezone. 
 
 ![dir_count](../f/f_mot/dir_count.png "direction count")
 _direction counts_
@@ -185,29 +185,29 @@ Over the time different models were tested to select the one with the best perfo
 
 The suite basically consists in:
 
-* [api_temperature.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/api_temperature.py) enrich location with weather information
-* [geo_octree.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/geo_octree.py) flexible spatial grid and geometric algebric operations
-* [kpi_vis.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/kpi_vis.py) visualization of KPIs
-* [train_keras.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/train_keras.py) training with keras (tensorflow backend)
-* [learn_play.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/learn_play.py) regressor on a learn/play set split with cross validation
-* [bot_selenium.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/bot_selenium.py) bot to enrich location information with maps popularity lines
-* [series_lib.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/series_lib.py) signal processing libraries
-* [train_lib.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/train_lib.py) collections of predictors and dataset utilities
-* [train_modelList.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/train_modelList.py) collection of models
-* [train_execute.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/train_execute.py) routines for data preparation and iterative learning
-* [geo_enrich.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/geo_enrich.py) enrich locations with geographical information
-* [kernel_lib.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/kernel_lib.py) collections of kernels for image processing and convolutions
-* [proc_text.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/proc_text.py) text parsing utilities to sort out research results
-* [train_shapeLib.py](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/train_shapeLib.py) summarizes curve shapes into their most relevant statistical properties
+* [api_temperature.py](/geomadi/blob/master/geomadi/api_temperature.py) enrich location with weather information
+* [geo_octree.py](/geomadi/blob/master/geomadi/geo_octree.py) flexible spatial grid and geometric algebric operations
+* [kpi_vis.py](/geomadi/blob/master/geomadi/kpi_vis.py) visualization of KPIs
+* [train_keras.py](/geomadi/blob/master/geomadi/train_keras.py) training with keras (tensorflow backend)
+* [learn_play.py](/geomadi/blob/master/geomadi/learn_play.py) regressor on a learn/play set split with cross validation
+* [bot_selenium.py](/geomadi/blob/master/geomadi/bot_selenium.py) bot to enrich location information with maps popularity lines
+* [series_lib.py](/geomadi/blob/master/geomadi/series_lib.py) signal processing libraries
+* [train_lib.py](/geomadi/blob/master/geomadi/train_lib.py) collections of predictors and dataset utilities
+* [train_modelList.py](/geomadi/blob/master/geomadi/train_modelList.py) collection of models
+* [train_execute.py](/geomadi/blob/master/geomadi/train_execute.py) routines for data preparation and iterative learning
+* [geo_enrich.py](/geomadi/blob/master/geomadi/geo_enrich.py) enrich locations with geographical information
+* [kernel_lib.py](/geomadi/blob/master/geomadi/kernel_lib.py) collections of kernels for image processing and convolutions
+* [proc_text.py](/geomadi/blob/master/geomadi/proc_text.py) text parsing utilities to sort out research results
+* [train_shapeLib.py](/geomadi/blob/master/geomadi/train_shapeLib.py) summarizes curve shapes into their most relevant statistical properties
 
 
 ## learn play
-We use [learn_play](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/learn_play.py) to run a series of regressor on the time series.
+We use [learn_play](/geomadi/blob/master/geomadi/learn_play.py) to run a series of regressor on the time series.
 
 Depending on the temporal resolution we use a different series of 
-[train_execute](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/train_execute.py)
+[train_execute](/geomadi/blob/master/geomadi/train_execute.py)
 
-We use [kpi_viz](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/kpi_viz.py) to visualize the performances
+We use [kpi_viz](/geomadi/blob/master/geomadi/kpi_viz.py) to visualize the performances
 
 ![kpi_boost](../f/f_mot/kpi_boost.png "kpi of boosting")
 _kpi boost_
@@ -231,7 +231,7 @@ We can see that not only all data sources are presents
 ![longShort_prep](../f/f_mot/longShort_prep.png "preparation")
 _input data_
 
-We than iterate over all locations and run a forecast over 30 days using a long short term memory algorithm [train_longShort](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/geomadi/train_longShort.py) 
+We than iterate over all locations and run a forecast over 30 days using a long short term memory algorithm [train_longShort](/geomadi/blob/master/geomadi/train_longShort.py) 
 
 ![longShort_hist](../f/f_mot/longShort_hist.png "performance history")
 _performance history_
@@ -254,7 +254,7 @@ We summarized the most important metrics in this graph
 ![score_range](../f/f_mot/score_range.png "range of scores")
 _range of scores, relative values, 0 as minimum, areas represent confidence interval_
 
-and summarized in this [table](sftp://172.25.100.50:/home/gmarelli/lav/motion/raw/tank/poi_shortlist.csv). 
+and summarized in this [table](/motion/raw/tank/poi_shortlist.csv). 
 
 Performances depend on the regularity of input data over time.
 

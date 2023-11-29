@@ -213,7 +213,7 @@ Now we have to iterate the knowledge over unknown locations.
 
 We use a long short term memory with [keras](https://machinelearningmastery.com/time-series-forecasting-long-short-term-memory-network-python/) to create a supervised version of the time series and forecast the time series of another location.
 
-We use [train_longShort](http://172.25.186.11:8000/gmarelli/geomadi/blob/master/custom/train_longShort.py) to load and process all the sources.
+We use [train_longShort](/geomadi/blob/master/custom/train_longShort.py) to load and process all the sources.
 
 For each location we take the following time series shifting each series by two steps for the preparing the supervised data set.
 
