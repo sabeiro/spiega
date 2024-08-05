@@ -12,6 +12,21 @@ output:
 
 A collection of docker images, middlewares, schedulers, jobs, UIs to set up a self managed analytical cluster.
 
+# principles
+
+Industry standards following some modern principles:
+
+* **scalable architecture**: cloud and microservice based
+* **secure**: access restricted by purpose and aggregation level (ex. job access to granular data, finance reports to executive, monitoring data to operations...)
+* **compliant**: anonymization of sensitive data, maximum retention period allowed, auditing compliant
+* **innovative**: benchmark solutions should be evaluated and implemented if the migration time shows future benefits
+* **stable**: release only after testing, monitoring and alerting put in place
+* **safe**: data should be redundant and versioned
+* **talent catchy**: tech stalk and challenges should be attractive to hire new resources
+* **shared knowledge**: an easy to use and accessible document manager should contain all relevant company information 
+* **agile**: goals should be defined considering urgency and complexity, cost and benefits. Epics define the overall strategic goals, sprints the detailed operational tasks. Planning and retrospective should occur periodically
+* **collaborative**: simple selection of admin tools, browser based, device agnostic
+
 ![data_platform](../f/f_sawmill/data_pipe.svg "data pipe")
 _example of a data pipeline_
 

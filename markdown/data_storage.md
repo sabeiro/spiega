@@ -253,11 +253,3 @@ Help to deploy language model applications
 
 Vector embeddings are the distilled representations of the training data produced as an output from the training stage of the machine learning process
 
-# transformer attention projection
-
-# random forest depth
-
-# L1/l2 regularization
-
-# boosting
-

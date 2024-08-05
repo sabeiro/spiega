@@ -82,6 +82,12 @@
 * 17-19] [capture rate for restaurants](restaurant.html)
 * 17-20] [activation potential](activation.html)
 * 17-20] [spatial utils](geo.html)
+* 20-21] [quality on telemetry](data_quality.html)
+* 20-21] [data types for telemetry](data_sets.html)
+* 20-21] [feature in telemetry](feature_relevance.html)
+* 20-21] [forecast anomalies](forecast.html)
+* 20-21] [prediction on telemetry](prediction_telemetry.html)
+* 20-21] [spatial](spatial.html)
 
 <div class="post_box padding_bottom1"><h4 class="flot_left1"></h4></div>
 </div></div></div></div></div></div>

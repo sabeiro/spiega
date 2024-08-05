@@ -266,4 +266,6 @@ During training batches can be normalized in case a sampling of the dataset can 
 
 A [separated article](generative.html) on GANs showing how the adversarial architecture helps creating realistic fakes and some [keras](https://github.com/eriklindernoren/Keras-GAN) implementations.
 
+# transformers
 
+Transformes use an encode-decode architecture to reduce the input parameter space. The most significant change compared to previous architectures are the attention layers and the enhanced emmbeddings. 
