@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+   "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_your_token_here"
+      }
+    }
+  },
+      "mcpServers": {
+        "blender": {
+            "command": "uvx",
+            "args": [
+                "blender-mcp"
+            ]
+        }
+    },
+      "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/dir"]
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "your_brave_api_key"
+      }
+    },
+    "llm": {
+    "model": "qwen3:7b",
+    "baseUrl": "http://localhost:11434",
+    "temperature": 0.1,
+    "maxTokens": 4096
+  }
+}

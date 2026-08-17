@@ -1,3 +1,19 @@
+---
+title: neural network theory
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: neural_network_theory
+category: #tech
+roam_refs: neural_network_theory
+roam_aliases: ["neural network theory"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
+
 # Deep learning concepts
 
 A neural network are layers of neurons connected by activation functions that transform an input into an output. In between there are different hidden layers which build the logic between input and outputs. The prediction is evaluated via a score function whose result is used to build an optimizer that backpropagates along the network to update neurons weights and minimize the consecutive error. 
@@ -57,7 +73,7 @@ Activation functions are used to connect neurons between networks. Usually the a
 
 A key feature for the activation function is derivability since backpropagation requires at least the first derivate of the function.
 
-![activation function](../f/f_theo/activation_function.png "activation functions")
+![activation function](../../f/f_theo/activation_function.png "activation functions")
 _list of activation functions_
 
 **Sigmoid / Logistic**
@@ -240,15 +256,15 @@ Binary classification
 
 Not performant, dropout 20:
 
-![dropout_20](../f/f_lernia/dropout_20.png "dropout_20")
+![dropout_20](../../f/f_lernia/dropout_20.png "dropout_20")
 
 Just about right, dropout 30:
 
-![dropout_30](../f/f_lernia/dropout_30.png "dropout_30")
+![dropout_30](../../f/f_lernia/dropout_30.png "dropout_30")
 
 Overfitting, dropout 50:
 
-![dropout_50](../f/f_lernia/dropout_50.png "dropout_50")
+![dropout_50](../../f/f_lernia/dropout_50.png "dropout_50")
 
 
 # data augmentation

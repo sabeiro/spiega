@@ -1,3 +1,19 @@
+---
+title: testing practices
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: testing_practices
+category: #tech
+roam_refs: testing practices
+roam_aliases: ["testing practices"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
+
 # tests and checks
 
 For each service there is a folder called testing with different tests to add to the CI/CD pipe.

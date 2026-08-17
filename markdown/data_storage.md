@@ -1,9 +1,13 @@
 ---
-title: "data storage"
+title: data storage
 author: Giovanni Marelli
-date: 2019-07-02
+date: 2019-09-12
 rights:  Creative Commons Non-Commercial Share Alike 3.0
 language: en-US
+id: data_storage
+category: #tech
+roam_refs: data_storage
+roam_aliases: ["data storage"]
 output: 
 	md_document:
 		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
@@ -197,7 +201,7 @@ cellL = pd.DataFrame(cellL)
 
 Neo4j is the most known graph database with an handy graphical interface
 
-![noe4j](../f/f_intertino/Neo4j.png)
+![noe4j](../../f/f_intertino/Neo4j.png)
 _Neo4j UI_
 
 

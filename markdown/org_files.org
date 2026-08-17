@@ -1,0 +1,918 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: org_files
+:END:
+#+title: org files features
+#+DATE: <2026-06-22>
+# Local IspellDict: en
+#+STARTUP: showall latexpreview
+#+OPTIONS: tex:t
+#+TODO: active done crit milestone todo review knwoledge task
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+property: header-args:bash :result output replace :export none
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+BIBLIOGRAPHY: bibliography.bib
+
+* org-mode
+
+org-mode from being a note taking tool has become a full featured project tool and turns text files into dynamic workflow systems.
+Org is so reach that we can run project management, create knowledge and presentations, compute, write technical documentation, reports and dashboards.
+
+- portability :: ascii text files are lightweight and portable
+- rich text :: much more expressive than markdown
+- customizable :: you can define the execution and export of every single element
+- sections :: are tasks, nodes, agenda points, work streams...
+- data :: you can define variable for every component of the file and pipe it to other blocks
+  #+attr_reveal: :frag t :frag_idx 2
+- connected :: you can move sections between files, rename files and your nodes and agendas will stay connected
+- schedule :: specify time (`SCHEDULED:`) and due dates (`DEADLINE:`)
+- status and tags :: each section can have a current status and a tag for search
+- code :: you can execute code with org-babel specifying output and permissions for any language
+- links :: to files, nodes, tags, footnotes, commands
+- export :: to blob posts, slides, images, animations  
+- minimal :: Can replace multiple tools (Note-taking, Calendar, Kanban board, Code editor, LaTeX writer, Blog).
+
+#+attr_html: :class quote_class
+#+begin_quote
+It is the "Swiss Army Knife" of Emacs, but like any Swiss Army Knife, you must be willing to read the manual (often hundreds of pages of documentation) to unlock its potential. For a developer or researcher who wants a clean, text-based, code-integrated, and portable knowledge base, it is arguably the best tool available.
+#+end_quote
+
+*** org files features
+:PROPERTIES:
+:ID:       org_files-features
+:END:
+
+Org files are reach in metadata and can integrate with any tool making it's function looks like more an operating system than anything else.
+Org files are reach in functions [[https://orgmode.org/worg/orgcard.html][cheatsheet]].
+
+Few of the functions we can use for our projects:
+
+org files allow a really expressive integration of information:
+- agenda :: to schedule a task or to set an alert [C-c a] [C-c .] 
+- logbook :: the time spent on tasks 
+- tags :: to specify meta information for that section [C-c C-q]
+- status :: whether an action is done or pending [Space - left/right arrow]
+- trees :: explain hierarchical structures [::]
+- nodes :: tag every element to create interconnections
+- code :: define code to execute `#+begin_src bash` `#+end_src`
+- graph :: interconnect elements 
+- plots :: plot data with gnuplot
+- link :: link to anything: files, websites, buffers, images...
+- webpage content :: show the text of a web page [eww]
+- [[shell:ls *org][local org files]] :: open new buffers from shell
+- [[https://www.orgroam.com/][roam]] :: organizes the org node information into graphs
+- [[id:org_files-spreadsheet][spreadsheet]] :: formulas on tables
+  
+And pipe all together as you like. 
+
+*** tags and status
+:PROPERTIES:
+:reveal_background: ./img/whale.jpg
+:reveal_background_trans: slide
+:END:
+
+For each section we can set tags and status, data and logbook.
+We can define at file level the tags we want to use in that file 
+
+#+begin_export html
+#+TODO: active done crit milestone todo review knwoledge task
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+end_export
+
+We can as well set some behavior for that specific file like how we want to visualize it, what variables should we run, what do we want to export
+
+#+begin_export html
+#+STARTUP: showall
+#+OPTIONS: tex:t
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+end_export
+
+*** code to graph
+
+We run an example, we benchmark the speed of different local models. We run a model comparison script and use [[https://gnuplot.sourceforge.net/demo/][gnuplot]] to show the results.
+
+We first call ollama endpoint to get the list of available models and extract the name of the model using commands like ~jq~, ~grep~ and ~awk~. [[https://orgmode.org/manual/Using-Header-Arguments.html][code arguments]]
+
+#+name: llm_list
+#+begin_src bash :output results replace
+curl localhost:11434/api/tags | jq | grep \"model\" | awk -F " " '{print $2}' 
+#+end_src
+
+#+name: llm_loaded
+#+RESULTS: llm_list
+| qwen3.6:latest         |   |
+| dolphin-mistral:latest |   |
+| gemma4:latest          |   |
+| deepseek-coder:6.7b    |   |
+| llama3.2:latest        |   |
+| qwen2.5-coder:3b       |   |
+| qwen3.5:9b             |   |
+| qwen2.5-coder:7b       |   |
+
+We then run a script to test the speed of each model and extract the ~token/s~.
+
+#+name: llm_bench
+#+begin_src bash :output results replace :rownames yes  :var model_list=llm_list
+#echo $model_list
+cd ~/lav/src/blender_twin/deploy/ollama/
+#bash benchmark_models.sh
+python3 benchmark_stats.py
+#+end_src
+
+*** plotting
+
+Given the following table write a gnuplot function to be integrated in emacs org
+
+#+TBLFM: $5=vmean($2..$3);%.1f
+#+TBLFM: $5=vmean($2..$3);%.1f
+#+TBLFM: $6='(orgtbl-ascii-draw $2 0.0 257.72 12)
+#+name: llm_benchmark
+#+PLOT: title:"token/s" ind:1 deps:(2) type:2d with:histograms file:"../../f/f_twin/llm_benchmark.svg"
+#+PLOT: set:"xtics rotate by 15 offset -1.1,-1.2" set:"tickslevel 0"
+#+PLOT: set:"boxwidth 0.9" set:"style solid border 10" set:"style data histograms cluster gap 2"
+#+RESULTS: llm_bench
+| qwen3.6:latest         | model                  | tokens_per_second | token_rate | time_rate |
+| dolphin-mistral:latest | qwen3.5:9b             |         20.711123 |  37.218987 | 18.767091 |
+| gemma4:latest          | qwen2.5-coder:3b       |         86.646493 |   6.607947 |  0.975372 |
+| deepseek-coder:6.7b    | qwen3.6:latest         |          9.434619 |  32.298511 | 37.218987 |
+| llama3.2:latest        | gemma4:latest          |         31.166858 |  18.467557 | 11.391252 |
+| qwen2.5-coder:3b       | qwen2.5-coder:7b       |         42.268118 |   9.068185 |  2.231556 |
+| qwen3.5:9b             | deepseek-coder:6.7b    |         15.847756 |    8.54775 |   5.17094 |
+| qwen2.5-coder:7b       | dolphin-mistral:latest |         54.457944 |  10.850281 |  2.096758 |
+
+#+CAPTION: gnuplot graph of model benchmark
+#+NAME:   fig:gnuplot
+#+ATTR_HTML: :align center
+[[../../f/f_twin/llm_benchmark.svg]]
+
+I can subset a part of that table and sort it:
+
+*** code piping
+
+#+name: histo_col
+#+BEGIN_SRC emacs-lisp :var data=llm_bench[1:-1,0:1]
+;;(setf sortedList (sort data #'< :key #'cadr))
+;;(print sortedList)
+(sort data)
+#+END_SRC
+
+#+RESULTS: histo_col
+| deepseek-coder:6.7b    | 15.847756 |
+| dolphin-mistral:latest | 54.457944 |
+| gemma4:latest          | 31.166858 |
+| qwen2.5-coder:3b       | 86.646493 |
+| qwen2.5-coder:7b       | 42.268118 |
+| qwen3.5:9b             | 20.711123 |
+| qwen3.6:latest         |  9.434619 |
+
+
+#+name: gnuplot_histo
+#+begin_src gnuplot :var data=histo_col
+reset
+set boxwidth 0.9 relative
+set xtics rotate by 15 offset -1.6,-1.2
+plot data using 2:xtic(1) with boxes title 'token/s'
+#+end_src 
+
+#+RESULTS: gnuplot_histo
+
+#+name: gnuplot_histo
+#+begin_src gnuplot :var data=llm_bench[1:-1]
+reset
+set boxwidth 0.9 relative
+set style data histograms
+#set style histogram cluster
+set style solid 2.0 border lt -1
+set xtics rotate by 15 offset -1.6,-1.2
+set tickslevel 0
+plot data using 2:xtic(1) title 'token/s'
+#+end_src 
+
+Or call the lisp version
+
+#+BEGIN_SRC emacs-lisp :var data=llm_bench[1:-1,2:3]
+(org-plot/gnuplot)
+#+END_SRC
+
+#+RESULTS:
+
+
+*** further graphs
+
+#+name: violin_plot
+#+begin_src gnuplot file:../../f/f_twin/violin.svg
+reset session
+$Data <<EOD
+# viol0   viol1   viol2   viol3   viol4   viol5
+0.24    -0.24   0.0     0.333   1.299   2.866
+0.48    -0.16   1.0     0.599   0.849   0.600
+0.28    -0.44   0.583   0.599   0.975   1.066
+0.56    -0.28   0.500   0.666   0.799   0.933
+0.52    -0.28   0.749   0.699   0.849   0.866
+0.32    -0.56   0.083   0.566   0.774   0.733
+EOD
+set table $kdensity
+    plot for [i=0:5] $Data u i+1:(1) smooth kdensity bandwidth 0.15
+unset table
+set title 'violin plots'
+set output "../../f/f_twin/violin.svg"
+set border 3
+unset key
+set linetype  9 lc "#800072b2" ps 0.5 pt 5
+set style boxplot nooutliers
+set style fill solid border -1
+set boxwidth 0.075
+set errorbars lt black lw 1
+set xrange [-0.5 :(6-0.5)]
+set xtics nomirror
+set yrange [-1:2]
+set ytics nomirror
+W = 0.025  
+plot for [i=0:5] $kdensity index i u (i + $2*W):1 w filledcurves x=i lt 9,\
+     for [i=0:5]        '' index i u (i - $2*W):1 w filledcurves x=i lt 9,\
+     for [i=0:5]     $Data         u (i):i+1 w boxplot fc "white" lw 2
+#+end_src 
+
+#+CAPTION: gnuplot graph of model benchmark
+#+NAME:   fig:gnuplot
+#+ATTR_HTML: :align center
+[[../../f/f_twin/violin.svg]]
+#+RESULTS: violin_plot
+
+
+  
+* task tool integration                                                :math:
+CLOSED: [2026-06-21 Sun 00:21]
+:PROPERTIES:
+:ID:       org_files-tools
+:ROAM_ALIASES: org files tools
+:END:
+:LOGBOOK:
+CLOCK: [2026-06-21 Sun 00:21]--[2026-06-21 Sun 00:25] =>  0:04
+:END:
+
+Org files can integrate with many external programs and directly bind to their [[https://emacsdocs.org/docs/org/Results-of-Evaluation][results]].
+
+*** gnuplot
+:PROPERTIES:
+:ID:       org_files-plot
+:ROAM_ALIASES: org files plot
+:END:
+
+We can use gnuplot to display functions
+
+#+begin_src gnuplot :file ../../f/f_twin/gnuplot.png
+set title "Simple Plots" font "
+set key left box
+set samples 50
+set style data points
+plot [-10:10] sin(x),atan(x),cos(atan(x))
+#+end_src
+
+#+CAPTION: gnuplot graph
+#+NAME:   fig:gnuplot
+#+ATTR_HTML: :align center
+#+RESULTS:
+[[file:../../f/f_twin/gnuplot.png]]
+
+
+
+#+BEGIN_SRC asymptote :results value file :file circle.pdf :output-dir img/
+  size(2cm);
+  draw(unitcircle);
+#+END_SRC
+
+*** music
+
+We can create sheet music with lilypond 
+
+#+begin_src lilypond :file ../../f/f_twin/lilypond.png
+\version "2.24.4"
+\relative c' {
+  g a b c
+  d e f g
+  g1
+}
+#+end_src
+
+#+CAPTION: lilypond sheet music 
+#+NAME:   fig:lilypond
+#+ATTR_HTML: :align center
+#+RESULTS:
+[[file:../../f/f_twin/lilypond.png]]
+
+
+
+* links and nodes
+
+We can define many types of links 
+
+- clickable command :: ‘elisp:‘  [[elisp:(local-set-key "\M-\C-g" 'org-plot/gnuplot)][set key for gnuplot]] 
+- node :: ‘id:‘
+- file :: ‘file:‘ access with [C-c C-o]
+- picture :: ‘file:‘
+- node :: ‘id:‘
+- search string within file :: [[file:~/lav/src/spiega/markdown/org_files.org::diagram]]
+- code line :: [[file:~/lav/src/kotoba/example/graph_rag.py::63]]
+- store links :: [C-c l]
+- default open :: [[elisp:(open-with)]] to decide what program should open that file type
+  
+*** diagrams
+
+Here we create a diagram using mermaid
+
+
+#+name: mermaid_package
+#+begin_src elisp
+(use-package ob-mermaid)
+#+end_src
+
+#+RESULTS: mermaid_package
+
+#+name: flow_diagram
+#+BEGIN_SRC mermaid :file ../../f/f_twin/flow_diagram.svg :export none
+---
+title: implementation sketch
+---
+flowchart LR
+KN["`
+script
+knowledge
+agenda
+links
+tasks
+`"]
+DOC@{ shape: docs, label: "Knowledge"}
+MC@{ shape: procs, label: "mcp server"}
+DT@{ shape: lin-cyl, label: "storage" }
+EL@{ shape: notch-pent, label: "ellama" }
+GP@{ shape: notch-pent, label: "gptel" }
+PI@{ shape: notch-pent, label: "pi-coding", pos: "c", w: 60, h: 60, constraint: "off" }
+%%A@{ icon: "fa:user", form: "square", label: "User Icon", pos: "t", h: 60 }
+
+E(emacs) --> GP
+E --> EL
+E -- ask --> EL
+EL -- connect --> OL[\ollama\]
+OL -- answer --> EL
+EL -- insert --> E
+GP -- connects --> MC
+MC -- summarize --> DOC
+GP -- decide --> JT[\vllm\]
+JT -- elaborate --> GP
+GP -- insert --> E
+E -- debug --> PI
+PI -- write --> DT
+PI -- edit --> E
+E -- edit --> OR[org-file]
+OR -- contain --> KN
+#+END_SRC
+
+*** diagram results
+
+#+CAPTION: diagram of the implementation
+#+NAME:   fig:flow_diagram
+#+ATTR_HTML: :align center
+#+RESULTS: flow_diagram
+[[file:../../f/f_twin/flow_diagram.svg]]
+
+But we can use plantuml or graphviz
+
+#+begin_example
+#+begin_src plantuml :exports both :file ../../f/f_twin/plantulm_dia.svg
+@startuml
+start
+:initialize;
+repeat :do something;
+repeat while (finished?) is (no)
+->yes;
+stop
+@enduml
+#+end_src
+#+end_example
+
+* todo agenda
+:PROPERTIES:
+:Effort:   1:00
+:END:
+
+Each section can be linked to a data by inserting an agenda entry [C-c .].
+We can put:
+- dates :: <2026-06-17 Wed>
+- past dates :: [2026-11-01]
+- date range :: <2026-06-26>--<2026-07-13>
+- effort ::  C-c C-x e (org-set-effort)
+- timestamp :: [C-c .]
+- sync :: org-caldav package
+- notification :: packages:  org-yaap ntfy appt
+- calendar :: [[elisp:(copy-file org-icalendar-combined-agenda-file "./current_agenda.ics" t)]]
+- schedules :: SCHEDULED: <2026-07-28 Tue> - [[elisp:(org-schedule)]] [C-c C-s]
+- deadlines :: DEADLINE: <2026-07-22 Wed>  - [[elisp:(org-deadline)]] [C-c C-d]
+- recurrent tasks :: pay the server DEADLINE: <2005-10-01 Sat +1m>
+- log activities :: [[elisp:(org-clock-in)]], [[elisp:(org-clock-out)]], [[elisp:(org-clock-in-last)]], [[elisp:(org-clock-report)]]
+- timer :: [[elisp:(org-timer-start)]], [[elisp:(org-timer-set-timer)]], [[elisp:(org-timer-stop)]]
+- todos :: [[elisp:(org-todo-list)]], [[elisp:(org-agenda-list-stuck-projects)]] 
+
+#+BEGIN: clocktable :scope subtree :maxlevel 2
+#+CAPTION: Clock summary at [2026-06-26 Fri 17:45]
+| Headline   | Time |
+|------------+------|
+| *Total time* | *0:00* |
+#+END:
+
+#+CAPTION: org agenda
+#+NAME:   fig:org_agenda
+#+ATTR_HTML: :align center
+[[../../f/f_twin/org_agenda.png]]
+
+*** project management
+
+From the agenda you can directly create a gantt
+
+#+name: gantt_diagram
+#+BEGIN_SRC mermaid :file ../../f/f_twin/gantt_agenda.svg :export none
+---
+displayMode: compact
+title: Ignored if specified in chart
+config:
+  gantt:
+      useWidth: 800
+      rightPadding: 0
+      topAxis: true  #false
+      numberSectionStyles: 2
+---
+gantt
+    dateFormat  <YYYY-MM-DD>
+    title  Knowledge base action plan
+    excludes  weekends
+
+    review : vert, v1, <2026-06-22>, 1d
+
+    section local models
+        deploy LLMs          :done,  deploy, <2026-05-20>, 7d
+        coding agent         :done,  deploy, <2026-05-27>, 14d
+
+    section list & summarize
+        parse knowledge         :done,  dev, <2026-06-01>, 5d
+        create graphs           :done,  dev, <2026-06-07>, 7d
+
+    section hierarchy
+        hierarchy     :done, distil, <2026-06-16>, 9d
+        visualization :crit, distil, <2026-06-20>, 4d
+
+    section video
+        sceencast    :active, create, <2026-06-12>, 5d
+        animate text :active, create, <2026-06-17>, 9d
+
+    section publish
+        content     :active, share, <2026-06-22>, 10d
+        publication :milestone, share, <2026-06-27>, 5d
+#+END_SRC
+
+#+CAPTION: Gantt representation of the project
+#+NAME:   fig:mermaid_gantt
+#+ATTR_HTML: :align center
+#+RESULTS: gantt_diagram
+[[file:../../f/f_twin/gantt_agenda.svg]]
+
+*** Kanban
+
+We can as well display the agenda items as a kanban
+
+#+name: kanban_diagram
+#+BEGIN_SRC mermaid :file ../../f/f_twin/kanban_agenda.svg :export none
+---
+config:
+  kanban:
+    ticketBaseUrl: 'https://mermaidchart.atlassian.net/browse/#TICKET#'
+---
+kanban
+  Todo
+    [compare model serve]
+    docs[benchmark vllm, llama.cpp and ollama]
+  [In progress]
+    id6[blog posts about the local implementation ]
+  id9[Ready for deploy]
+    id8[cloud webdav]@{ assigned: 'bot1' }
+  id10[Ready for test]
+    id4[Create parsing tests]@{ ticket: MC-2038, assigned: 'K.Sveidqvist', priority: 'High' }
+    id66[last item]@{ priority: 'Very Low', assigned: 'knsv' }
+  id11[Done]
+    id5[agent confs, org files]
+    id2[local deployment]@{ ticket: MC-2036, priority: 'Very High'}
+    id3[graph integration]@{ ticket: MC-2037, assigned: bot1, priority: 'High' }
+#+end_src
+#+CAPTION: Kanban representation of the project
+#+NAME:   fig:mermaid_kanban
+#+ATTR_HTML: :align center
+#+RESULTS: kanban_diagram
+[[file:../../f/f_twin/kanban_agenda.svg]]
+
+*** themes and extensions
+
+- org-modern :: changes the behaviour of org files
+- org-download :: clipboard downloads to file
+
+
+*** integral
+:PROPERTIES:
+:ID:       org_files-math
+:ROAM_ALIASES: org files math
+:END:
+
+We can solve math problems using the output of an LLM prompt:
+*Solve the following integral \int_0^1 x^2 dx*
+
+#+begin_src python
+from sympy import symbols, integrate
+x = symbols('x')
+integral_value = integrate(x**2, (x, 0, 1))
+print(integral_value)
+#+end_src
+
+#+RESULTS:
+: None
+
+#+begin_src output
+1/3
+#+end_src
+The value of the integral \(\int_0^1 x^2 \, dx\) is \(\boxed{\frac{1}{3}}\).
+
+\begin{equation}
+x=\sqrt{b}      
+\end{equation}
+
+\[
+\int_0^1 x^2 \, dx = \left[ \frac{x^3}{3} \right]_0^1 = \frac{1^3}{3} - \frac{0^3}{3} = \frac{1}{3}
+\]
+
+Or $$\int_0^1 x dx $$. 
+
+#+begin_src python
+import sympy as sp
+x = sp.symbols('x')
+integral = sp.integrate(x, (x, 0, 1))
+print(integral)
+#+end_src
+
+The output of this code is =1/2=.
+
+*** lisp
+:PROPERTIES:
+:ID:       org_files-lisp
+:ROAM_ALIASES: org files lisp
+:END:
+
+#+begin_src elisp
+  (*(/ 1920 4) 3)
+#+end_src
+
+#+RESULTS:
+: 1440
+
+*** markup
+
+We have multiple formatting options:  [C-c C-x C-f] (org-emphasize)
+
+- bold :: ‘*bold*’ *bold*
+- italic :: ‘/italic/’ /italic/
+- underline :: ‘_underlined_’ _underlined_
+- verbatim :: ‘=verbatim=’ =verbatim=
+- code ::  ‘~code~’ ~code~
+- strike ::  ‘+strike-through+’ +strike+
+- sup :: ‘x^2’ x^2 ( ‘#+OPTIONS: ^:{}’ to disable export)
+- sub :: ‘x_2’ x_2
+- symbols :: \pi \Gamma
+- footnote :: ‘[fn:1]’ first footnote [fn:1] [[elisp:(org-footnote-action)]]
+  - inline :: ‘[fn:id:def]’ [fn:2:inline footnote]
+- citations :: ‘[cite@spiega_tech]’ [cite:@spiega_tech] [[elisp:(org-cite-insert)]]
+
+
+
+
+#+BEGIN_VERSE
+Here we have a verse
+#+END_VERSE
+
+#+BEGIN_QUOTE
+Here we have a quote
+#+END_QUOTE
+
+#+BEGIN_CENTER
+Here we center
+#+END_CENTER
+
+#+BEGIN_EXAMPLE
+Here is literal text
+#+END_EXAMPLE
+
+: other example
+
+[fn:1] here is the footnote
+Here is the second [fn:2]
+
+* exports and execution
+
+We have few options for code blocks:
+
+- :export :: [code,results,both,none,drawer]
+- :results :: [output,replace,none]
+- :var :: the name of the variable to be read by another code block
+- :tangle :: the file where to write the source code
+
+*drawer* is some information you can keep in the source without exporting or export it as <aside> speaker notes.
+It is important to include files with "#+INCLUDE: " to add configuration to certain types of exports.
+:results output avoids the formatting of the output in tables.
+
+:export_option:
+(code, results, both, none, drawer)
+:END:
+
+*** macros
+
+You can use macros to perform certain operations during export:
+
+#+begin_export html
+,#+MACRO: gnustamp (eval (concat "GNU/" (capitalize $1)))
+{{{gnustamp(ciccia)}}}
+#+end_export 
+#+MACRO: gnustamp (eval (concat "GNU/" (capitalize $1)))
+{{{gnustamp(ciccia)}}}
+
+org has a set of predefined macros
+
+#+begin_export html
+{{{keyword(TITLE)}}} - {{{title}}} - {{{author}}} - {{{date}}} - {{{input-file}}} - {{{property(OPTIONS}}}
+#+end_export 
+
+Turn into: 
+{{{keyword(TITLE)}}} - {{{title}}} - {{{author}}} - {{{date}}} - {{{input-file}}} - {{{property(OPTIONS}}}
+
+
+*** variables
+
+I can define variables [[https://orgmode.org/manual/Environment-of-a-Code-Block.html][env of code]].
+
+#+NAME: example-table
+| 1 |
+| 2 |
+| 3 |
+| 4 |
+
+and read their content to another code block
+
+#+NAME: table-length
+#+BEGIN_SRC emacs-lisp :var table=example-table
+  (length table)
+#+END_SRC
+
+#+RESULTS: table-length
+: 4
+
+I can export this file as presentation and copy its result into the publishing folder:
+
+#+name: export_file
+#+begin_src elisp 
+;; (org-reveal-export-to-html)
+(org-re-reveal-export-to-html)
+#+end_src
+
+#+RESULTS: export_file
+: agent_interview.html
+
+#+begin_src bash :var outF=export_file
+echo $outF ${outF/.html/_slide.html}
+#+end_src
+
+#+NAME: with-rownames
+| one | 1 | 2 | 3 | 4 |  5 |
+| two | 6 | 7 | 8 | 9 | 10 |
+
+#+BEGIN_SRC python :var tab=with-rownames :rownames yes
+return [[val + 10 for val in row] for row in tab]
+#+END_SRC
+
+#+RESULTS:
+| one | 11 | 12 | 13 | 14 | 15 |
+| two | 16 | 17 | 18 | 19 | 20 |
+
+
+#+NAME: exampleant-list
+- simple
+  - not
+  - nested
+- list
+
+#+BEGIN_SRC emacs-lisp :var x=example-list
+  (print x)
+#+END_SRC
+
+#+RESULTS:
+| simple | list |
+
+
+#+NAME: argsubst
+#+BEGIN_SRC emacs-lisp :var argument="default value"
+argument
+#+END_SRC
+
+#+RESULTS: argsubst
+: default value
+
+#+NAME: argsubst1
+#+CALL: argsubst("abcde")
+#+NAME: conf
+#+BEGIN_SRC conf :tangle /tmp/mine.conf :noweb yes
+setting1 1234
+setting2 <<argsubst1()>>
+#+END_SRC
+
+*** checklists
+
+Put recurrent tasks and load them [[elisp:(org-checklist)]] 
+
+  SCHEDULED: <2026-07-19 Thu 08:00 +1d>
+  - [ ] docker healthcheck 
+  - [ ] work on documentation
+
+#+name: checlist-active
+#+begin_src elisp :exports code :results output replace
+;;(use-package org-state)
+(use-package org-checklist
+  :straight (:host github :type git :repo "ilkerkesen/.emacs.d" ))
+#+end_src
+
+#+RESULTS: checlist-active
+  
+*** spreadsheets
+:PROPERTIES:
+:ID:       org_files-spreadsheet
+:ROAM_ALIASES: org files spreadsheet
+:END:
+
+Within org files we can run formulas in tables. You can edit the formulas for that cell with `[C-c =]` or open the table in another buffer `[C-c ']`. Debugger is `[C-c {]`
+
+- navigation :: [tab] next line, [M-arrow] swap row/col, |- insert hline, [M-S-arrow] add row/col, [S-arrow] move field
+- generate table :: [C-c |]
+- import table :: [[elisp:(org-table-import)]]
+- calculation :: insert [C-c =] [C-u C-c =] recalculate [C-c *]
+- reference :: location inline [C-c }] location current [C-c ?] @ row $ col, range .., calculation := 
+- remote :: operate on another table :=vsum(remote(file_types,@2$2..@2$4))
+- [[elisp:(calc)]] :: internal emacs calculator 
+ 
+
+#+tblname: file_types
+#+NAME: file-type-comp-sheet
+| file  | tool | info | Mean |
+|-------+------+------+------|
+| txt   |    0 |    2 |    1 |
+| md    |    4 |    7 |    5 |
+| org   |   18 |    9 |   13 |
+|-------+------+------+------|
+| Means |    7 |    6 |    6 |
+#+TBLFM: $4=floor(vmean($2..$3))::@5$2=floor(vmean(@2$2..@4$2))::@5$3=floor(vmean(@2$3..@4$3))
+
+#+NAME: file-type-comp-sum
+#+tblname: file_types_sum
+| file | tool |
+|------+------|
+| txt  |    3 |
+| md   |    3 |
+| org  |   18 |
+#+TBLFM: @2$2=vsum(remote(file_types,@2$2..@2$4))
+
+*** database
+
+We can save a table to a database
+#+name: db_write
+#+begin_src sqlite :header on :db ~/lav/src/spiega/data/db.sql :var file_type=file-type-comp-sheet
+DROP table if exists file_type;
+.import $file_type ftable
+SELECT file, tool, info FROM ntable where file is 'org';
+#+END_SRC
+
+
+We can select data from internal database
+
+#+name: db_connector
+#+begin_src sqlite :header on :db ~/lav/src/spiega/data/db.sql
+SELECT * FROM user_list limit 10;
+#+END_SRC
+
+*** statistics
+
+Enable org-babel with R
+
+#+begin_src emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((R . t)))
+#+end_src
+
+#+RESULTS:
+
+* piping software
+
+I can define a data structure in the document
+
+#+NAME: knowledge-base-tab
+|source|quantity|link|
+|code  | 3k3 sources |  [[~/lav/src][src]]    | 
+|tech  | 120 blog posts |  [[~/lav/siti/spiega/markdown][spiega]] | 
+|thoughts  | 30 posts |  [[~/lav/siti/scritti/markdown/][scritti]] | 
+|science| 30 works |  [[~/lav/kotoba/Fiziko][PhD]] | 
+|videos| 180 videos |  [[https://www.youtube.com/@viudi_music][viudi]] | 
+
+and read it from another code block.
+
+#+NAME: no-hline
+#+BEGIN_SRC python :var tab=knowledge-base-tab :hlines no
+return tab
+#+END_SRC
+
+#+RESULTS: no-hline
+| source   | quantity       | link    |
+| code     | 3k3 sources    | [[~/lav/src][src]]     |
+| tech     | 120 blog posts | [[~/lav/siti/spiega/markdown][spiega]]  |
+| thoughts | 30 posts       | [[~/lav/siti/scritti/markdown/][scritti]] |
+| science  | 30 works       | [[~/lav/kotoba/Fiziko][PhD]]     |
+| videos   | 180 videos     | [[https://www.youtube.com/@viudi_music][viudi]]   |
+
+#+NAME: hlines
+#+BEGIN_SRC python :var tab=knowledge-base-tab :hlines yes
+return tab
+#+END_SRC
+
+
+#+NAME: file-type-comp-tab
+| file  | tool | info | Mean |
+|-------+------+------+------|
+| txt   |    0 |    2 |    1 |
+| md    |    4 |    7 |    5 |
+| org   |   18 |    9 |   13 |
+#+TBLFM: $4=floor(vmean($2..$3))::@5$2=floor(vmean(@2$2..@4$2))::@5$3=floor(vmean(@2$3..@4$3))
+
+#+NAME: python-transform
+#+BEGIN_SRC python :var tab=file-type-comp-tab 
+import re
+import pandas as pd
+header = tab[0]
+data = tab[1:]
+df = pd.DataFrame(tab,columns=header)
+return df
+#+END_SRC
+
+#+RESULTS: python-transform
+:    txt   0  2   1
+: 0  txt   0  2   1
+: 1  md   4  7   5
+: 2  org  18  9  13
+
+#+RESULTS: hlines
+
+* org-roam
+
+Org-roam is a package which creates nodes out of files and sections and populates a database with all the knowledge information and create advanced representations with ~org-roam-ui~ and searchable information with [[elisp:org-roam-db-explore]] and run queries with 
+
+#+begin_src elisp
+(org-roam-db-query [:select * :from nodes])
+#+end_src
+
+We can visualize and navigate the information
+
+#+NAME:   fig:2d_graph
+#+ATTR_HTML: :height 550px :max-height 550px :align center
+[[../../f/f_twin/org_mode_07.gif]]
+
+In 2d or 3d
+
+#+NAME:   fig:3d_graph
+#+ATTR_HTML: :height 550px :max-height 550px :align center
+[[../../f/f_twin/org_mode_06.gif]]
+
+
+** markdown compatibility
+
+We want to apply markdown compatibility for the org-roam by using the package [[https://github.com/nobiot/md-roam][md-roam]] which helps extending the knowledge base to old files but lacks some important features. Markdown are though a bit more universal.
+
+# -*- mode: snippet -*-
+# name: tikz image for html export
+# key: tikz
+# --
+#+name: tikz Image
+#+header: :results file drawer
+#+header: :file /tmp/org_latex_image.png
+#+header: :imagemagick yes
+#+header: :headers '("\\\\usepackage{tikz}")
+#+HEADER: :fit yes :imoutoptions -geometry 400
+#+begin_src latex
+\begin{tikzpicture}
+\fill[yellow] (0,0) circle (3cm);
+\end{tikzpicture}
+#+end_src

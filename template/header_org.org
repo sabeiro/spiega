@@ -1,0 +1,10 @@
+#+TITLE: spiega tech
+#+SUBTITLE: shared documentation across projects
+#+DATE: 14-05-2026
+#+KEYWORDS: Data science, language models, LLMs
+#+description:
+#+INCLUDE: "../template/header.org" 
+#+OPTIONS: body-only:t
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: { @COMPLETED(c) @INPROGRESS(p) } LEGACY(l) REVIEW(r) GENERATED(g)
+#+STARTUP: latexpreview

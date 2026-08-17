@@ -1,0 +1,535 @@
+:root {
+    --bg: #1a1b1d;
+    --text: #e2e2e3;
+    --code-bg: #282a33;
+    --primary: #4fc3f7;
+    --secondary: #90a4ae;
+    --code-bg: #121215;
+    --table-bg: #262831;
+}
+body {
+    font-family: Inter, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    line-height: 1.6;
+}
+
+a { color: var(--primary); }
+h1, h2, h3 { color: #90a4ae; }
+pre, code {
+    background: var(--code-bg);
+    padding: 0.4em 0.8em;
+    border-radius: 4px;
+    font-family: 'Monospace', Consolas, monospace;
+    font-size: 0.85em;
+    color: #cfd8dc;
+}
+
+article {
+    /* max-width: 1000px; */
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+figure {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+img {
+    max-width: 800px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.3);
+    /* filter:alpha(opacity=30); */
+}
+
+blockquote {
+    border-left: 4px solid var(--primary);
+    background: #121215;
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    color: #cfd8dc;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+}
+table td, th {
+    border: 1px solid var(--secondary);
+    padding: 8px 12px;
+}
+th { background: #262831; color: #cfd8dc; text-align: left; }
+
+details {
+    border-bottom: 1px solid var(--secondary);
+    background: #121215;
+    padding: 8px 0;
+}
+
+details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--primary);
+    user-select: none;
+    padding: 4px 0;
+}
+
+.blog-content{
+    max-width:600px;
+}
+
+
+/* =========================================
+   BLOG THEME VARIABLES
+   Customize these colors easily
+   ========================================= */
+:root {
+    /* Dark Theme Colors */
+    --bg-body: #0f1114;       /* Very dark grey, not pitch black */
+    --bg-card: #181b20;       /* Slightly lighter for separation */
+    --text-main: #cbd5e1;     /* Soft off-white, not pure white */
+    --text-muted: #64748b;    /* Muted grey for body text */
+    
+    /* The Elegant Hx Family Color Palette (Monochromatic Slate) */
+    --hue-title: 230;         /* Blue-Iridescent range */
+    --header-shadow: 0 0 30px rgba(96, 165, 250, 0.15);
+    
+    /* Spacing & Layout */
+    --content-max-width: 1000px;
+    --section-padding: 40px 0;
+}
+
+/* =========================================
+   BASE RESET & BODY STYLES
+   ========================================= */
+.blog-page {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.8; /* High line height for readability */
+    font-size: 17px;   /* Slightly larger text for easier reading */
+    margin: 0;
+    padding: 20px 0;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   MAIN ARTICLES CONTAINER
+   ========================================= */
+.blog-content {
+    max-width: var(--content-max-width);
+    margin: 0 auto;    /* Centers the content on page */
+    padding: 0 20px;
+}
+
+/* =========================================
+   TYPOGRAPHY HIERARCHY (The Elegant Gradient)
+   ========================================= */
+
+/* h1: Main Title - Big Impact */
+.blog-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    color: #e2e8f0;
+    margin-bottom: 1rem;
+    text-align: center;
+    /* Slight text glow to make it feel alive in dark mode */
+    text-shadow: var(--header-shadow);
+}
+
+/* h2: Subheading - Slightly dimmer, strong border top */
+.blog-content h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #a0cbd6;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    border-top: 1px solid rgba(96, 165, 250, 0.3);
+    padding-top: 15px;
+    display: inline-block; /* Keeps width tight around text */
+}
+
+/* h3 - Smaller, no border top */
+.blog-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #96b0d4; /* Lighter blue */
+    margin-top: 2rem;
+}
+
+/* h4 to h6: Becomes lighter/muted */
+.blog-content h4, 
+.blog-content h5, 
+.blog-content h6 {
+    color: #7f9fae; 
+    margin-top: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Paragraphs */
+.blog-content p {
+    color: var(--text-main);
+    margin-bottom: 1.5em;
+    text-align: left; /* Standard article readability */
+    opacity: 0.9;
+}
+
+/* Code Blocks */
+.blog-content pre {
+    background: #090c12;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* =========================================
+   IMAGES
+   ========================================= */
+.blog-content img {
+    display: block;
+    max-width: 100%; /* Responsive */
+    height: auto;
+    margin: 2rem auto; /* Vertically centered, centered margin */
+    border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+}
+
+.blog-content img:hover {
+    transform: scale(1.02); /* Gentle zoom effect */
+}
+
+/* =========================================
+   COLLAPSIBLE SECTIONS (Accordion)
+   ========================================= */
+.blog-content details {
+    margin-bottom: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    overflow: hidden; /* Keeps radius clean around summary box */
+}
+
+.blog-content summary {
+    list-style: none; /* Removes default marker */
+    padding: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+}
+
+/* Styling the toggle icon (CSS trick for + / - sign) */
+.blog-content summary::after {
+    content: '+';
+    font-size: 1.2em;
+    float: right;
+    transition: transform 0.2s ease;
+}
+
+/* Rotate icon when open */
+.blog-content details[open] summary::after {
+    content: '-';
+    transform: rotate(180deg);
+}
+
+/* Animation for content sliding */
+.blog-content details[open] p,
+.blog-content details[open] ul {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.blog-content details ul {
+    color: var(--text-muted); /* List items distinct color */
+    padding-left: 20px;
+}
+.blog-content details li {
+    margin-bottom: 0.5rem;
+}
+
+/* =========================================
+   UTILITY: Hiding Elements
+   ========================================= */
+.blog-content hr, 
+html[lang="no"] ::placeholder {
+    display: none; /* Completely removes standard hr tags */
+    visibility:hidden;
+}
+
+/* =========================================
+   NAVBAR
+   ========================================= */
+
+/* --- 2. HEADER STYLES --- */
+.navbar {
+    background-color: var(--bg-element);
+    padding: 1rem 2rem;
+    width: 100%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Subtle shadow */
+    
+    display: flex;
+    align-items: center;       /* Vertically center items */
+    justify-content: center;   /* Horizontally center whole container */
+    
+    position: relative;
+    z-index: 10;
+    transition: all 0.3s var(--transition);
+}
+
+/* Typography */
+.navbar-title {
+    font-weight: 200;        /* Elegant light weight */
+    letter-spacing: 0.15em; /* Wide spacing for elegance */
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    cursor: default;
+}
+
+.navbar-title a {
+    text-decoration: none;
+    color: var(--text-main);
+    transition: color 0.3s var(--transition);
+}
+
+.navbar-title a:hover {
+    color: var(--accent);
+}
+
+/* Navigation Links */
+.nav-menu {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    align-items: center;
+}
+
+.nav-menu li {
+    opacity: 0.7; /* Soft presence */
+    list-style: none;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    transition: color 0.3s var(--transition), font-weight 0.3s;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid transparent; /* Prepare for hover effect */
+}
+
+.nav-menu a:hover, 
+.nav-menu a.active {
+    color: var(--text-main);
+    opacity: 1;
+    font-weight: 400;
+    border-bottom: 1px solid var(--text-muted); /* Elegant underline */
+}
+
+/* Hamburger Menu Button (Visible only on mobile) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.bar {
+    width: 24px;
+    height: 1px;
+    background-color: var(--text-muted);
+    transition: background 0.3s var(--transition);
+    border-radius: 2px;
+}
+
+.hamburger .bar:nth-of-type(1) { transform-origin: top left; }
+.hamburger .bar:nth-of-type(2) { }
+.hamburger .bar:nth-of-type(3) { transform-origin: center right; }
+
+
+@media (width >= 400px) {
+    dl {
+	display: grid;
+	grid-template-columns: max-content auto;
+    }
+    dt {
+	grid-column-start: 1;
+	font-weight: 700;
+    }
+    dd {
+	grid-column-start: 2;
+    } 
+}
+/* --- 3. RESPONSIVE DESIGN --- */
+@media (max-width: 768px) {
+    body {
+        align-items: center; /* Center content */
+        margin: 0;
+        justify-content: center;
+    }
+    /* Reveal Hamburger, Hide Title on tiny screens if desired, or keep compact */
+    .navbar-title {
+        font-size: 0.9rem;
+    }
+    .hamburger {
+        display: flex; /* Show the hamburger icon */
+    }
+    /* The Menu List positioning for mobile */
+    .nav-menu {
+        position: absolute;
+        background-color: var(--bg-color); /* Match main bg */
+        top: 0;
+        right: -100%; /* Hidden off-screen to the right */
+        height: 100%;
+        width: 60%; /* Sidebar size */
+        flex-direction: column; /* Stack links */
+        justify-content: center;
+        gap: 2rem;
+        padding-right: 4rem;
+        transition: right 0.4s var(--transition);
+        border-left: 1px solid #333;
+        opacity: 0;
+    }
+    /* Mobile Links Styles */
+    .nav-menu.mobile-active {
+        right: 0;
+        opacity: 1;
+    }
+    .nav-menu li {
+        text-align: right; /* Right aligns text within mobile column usually looks cleaner */
+    }
+    .hamburger .bar:nth-of-type(1) { 
+        transform: rotate(-45deg);
+    }
+    .hamburger .bar:nth-of-type(2) { 
+        /* Optional: hide middle bar or keep static */
+    }
+    .hamburger .bar:nth-of-type(3) { 
+        transform: rotate(45deg);
+    }
+    /* Optional: Fade out logo on toggle */
+    .nav-menu.mobile-open + .navbar-title{
+        /* This is a bit tricky to animate purely in css without media queries 
+           sticking to simplicity: let's leave logo visible or hide based on preference */
+    }
+}
+
+/* Simple animation for background blur on scroll (optional extra touch) */
+body:hover::after {
+    /* This is a trick to handle blur logic via pseudo, but kept simple here */
+}
+
+.transparent-card {
+    /* 1. The Light Background Underneath */
+    background-color: #f4f4f4; 
+    
+    /* Optional: Add subtle noise/texture to the background */
+    background-image: linear-gradient(#f4f4f4 1px, #ecece 1px); 
+    background-size: 100% 100%; 
+    
+    /* Border Radius to define the card shape */
+    border-radius: 12px;
+    
+    /* Ensure container handles overflow of rounded corners */
+    overflow: hidden;
+    
+    /* Container Shadow (Optional, usually image shadow looks better) */
+    padding: 16px; 
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Drop shadow for the whole card */
+    display: inline-block;
+    width: 100%; /* Adjust as needed */
+    margin: 0;
+}
+
+.transparent-card .transparent-img {
+    /* Ensure the image retains its aspect ratio and transparency */
+    width: auto; /* Use fit-width */
+    height: auto;
+    display: block;
+    
+    /* 2. Drop Shadow on the Image itself (Follows the shape of your PNG) */
+    /* blur(10px) makes it soft, 4px offset creates depth */
+    filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.2)); 
+    /* OR standard box-shadow for sharper edge: */
+    /* box-shadow: 5px 5px 5px rgba(0,0,0,0.2); */
+}
+```
+
+.img_box {
+    box-shadow: 0 5px 15px rgba(.7,.7,.7,0.3);
+    filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.2)); 
+}
+section.collapse {
+    /* max-height:600px;
+       overflow-y:scroll; */
+}
+.footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#table-of-contents{
+    display:none;
+}
+#org-div-home-and-up{
+    display:none;
+}
+.subtitle{
+    font-size: 1.5rem;
+}
+#postamble{
+    display: none;
+}
+
+.figure img{
+    background:#fffffff7;
+    
+}
+.timestamp-wrapper{
+    /* float: right; */
+    /* margin: 10px; */
+    margin-left: auto; 
+    margin-right: 0;
+    display: flex;
+    justify-content: right;
+    align-items: right;
+}
+.timestamp{
+    font-size:7pt;
+    color:#5c9;
+}
+.todo{
+    float: right;
+    margin: 10px;
+    font-size:10pt;
+    color:#9c4;
+}
+.tag{
+    font-size:7pt;
+    color:#9a4;
+}
+table{
+    margin:auto;
+}
+.org-svg{
+    max-height:500pt;
+}

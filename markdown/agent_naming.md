@@ -1,3 +1,19 @@
+---
+title: agents naming environemnt
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: agent_naming
+category: #tech #reinforcement-learning
+roam_refs: agent naming
+roam_aliases: ["agent naming"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
+
 # agent naming environment
 
 In this project we create an agent able to distinguish and name object on the environment
@@ -6,12 +22,12 @@ In this project we create an agent able to distinguish and name object on the en
 
 Similar to [keras article](https://keras.io/examples/rl/deep_q_network_breakout/) we create a model to parse the input image from atari games and decide how to interact with the environment: i.e. how to move.
 
-![breakout](../f/f_gen/breakout_atari.png "breakout atari") 
+![breakout](../../f/f_gen/breakout_atari.png "breakout atari") 
 _using openai gym to train an agent to play breakout_
 
 To understand how the agent is learning the enviroment we create a visualization to focus on the main step of learning.
 
-![attention_init](../f/f_gen/attention_init.png "attention map") 
+![attention_init](../../f/f_gen/attention_init.png "attention map") 
 _visualization to monitor the development of the learning process_
 
 The visualization consists in:
@@ -36,7 +52,7 @@ Compared to the [original implementation of the game](https://www.deepmind.com/p
 
 For [more references](https://github.com/fg91/Deep-Q-Learning/blob/master/DQN.ipynb)
 
-![attention_init](../f/f_gen/collision.png "collision") 
+![attention_init](../../f/f_gen/collision.png "collision") 
 _velocity and collision as input parameters_
 
 The model outputs different classes defined by measurable interaction with the environment, mainly: myself, tool, walls, info, dangers...
@@ -55,7 +71,7 @@ The attention map tells a lot about the key challanges of this exercise
 Compared to other games breakout has a lot of interesting challanges in the understanding of causalit
 y.
 
-![attention_calss](../f/f_gen/class_map.png "attivation classes")
+![attention_calss](../../f/f_gen/class_map.png "attivation classes")
 _attivation classes _
 
 We do the same for the different types of moves
@@ -70,7 +86,7 @@ In the eyes of the agent I first see a clear **correlation**:
 * **ball**: multiple bounces -> mean
 * **paddle**: complete control through actions -> cause
 
-![attention_init](../f/f_gen/attention_evolution.png "attention map") 
+![attention_init](../../f/f_gen/attention_evolution.png "attention map") 
 _evolution of attention over time, the focus on digits drops over time, the agent is then learning to avoid losing life focusing on the bottom._
 
 We insert additional scores as output which will depend directly from an action and study the activation for that specific action:

@@ -1,0 +1,39 @@
+# Acer Laptop (NVIDIA RTX 5060)
+services:
+  ollama:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - "UID=${UID:-1000}"
+        - "GID=${GID:-1000}"
+    container_name: ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    runtime: "nvidia"
+    #user: "sabeiro:sabeiro"
+    ports:
+      - "127.0.0.1:11434:11434"
+      - "127.0.0.1:18789:18789"
+    restart: unless-stopped
+    volumes:
+      - ${HOME}/lav/src/:/root/lav/src
+      - ./pi_config/:/root/.pi
+      - ${HOME}/Downloads/llm_model/:/root/.ollama
+
+    environment:
+      - OLLAMA_VULKAN=1
+      - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_NUM_PARALLEL=4
+      - OLLAMA_MAX_LOADED_MODELS=3
+
+networks:
+  webserver-net:
+    name: webserver_webserver-net
+    driver: bridge
+    external: true

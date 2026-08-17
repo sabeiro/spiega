@@ -1,0 +1,133 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: admin_tools
+:END:
+#+title: admin tools
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge task
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-06-22>
+#+property: header-args:bash :result output replace :export none 
+
+* admin tool
+:PROPERTIES:
+:ID:       admin-tool-list
+:ROAM_ALIASES: admin tool list
+:END:
+
+
+Collection of powerful admin tools easy to deploy.
+
+* docker
+:PROPERTIES:
+:ID:       admin-tool_docker
+:ROAM_ALIASES: admin tool docker
+:END:
+
+
+I mainly use docker to deploy services since it is easy to test the container before sending it in production.
+Recently is more and more common to have different architectures and while some years ago was common to run everything on intel now compatibility with ARM, AMD and apple chips needs to be proved.
+The work moves from writing code to set up configuration and although the work doesn't require much development requires a lot of testing and performance profiling. 
+All projects have a dedicated folder for the deployment of that service and the useful configuration files.
+`docker` and `docker compose` have different logic and different usability and I prefer to distinguish the use. Although the two commands have the same capabilities I prefer to clearly distinguish the use to make the project more readable.
+The logic I use is the following:
+
+- [[~/lav/src/intertino/webserver/php/Dockerfile][Dockerfile]] :: to create the container by loading an image and install libraries. Entry-point most of the time
+- [[~/lav/src/intertino/webserver/docker-compose.yml][docker compose]] :: to administrate more containers, expose ports and define networks
+
+
+** running processes
+:PROPERTIES:
+:ID:       admin-tool_docker-processes
+:END:
+
+We can list the active process by simply running the command:
+#+name: docker-ps
+#+begin_src bash :exports both :results  replace
+docker ps 
+#+end_src
+
+#+RESULTS: docker-ps
+| CONTAINER    | ID                    | IMAGE                | COMMAND      | CREATED | STATUS | PORTS | NAMES |      |                     |                         |                     |                         |                  |                       |                   |                   |
+| 4bb63d5601f6 | webserver-nginx       | "nginx               | -g           | 'daemon | of…"   | 2     | weeks | ago  | Up                  | 7                       | days                | 0.0.0.0:80->80/tcp,     | [::]:80->80/tcp, | 0.0.0.0:443->443/tcp, | [::]:443->443/tcp | webserver-nginx-1 |
+| d5fc1e541144 | webserver-php-app     | php                  | 2            | weeks   | ago    | Up    | 7     | days | webserver-php-app-1 |                         |                     |                         |                  |                       |                   |                   |
+| 0f7823549bef | mariadb               | docker-entrypoint.s… | 2            | weeks   | ago    | Up    | 7     | days | 3306/tcp            | webserver-mysql-1       |                     |                         |                  |                       |                   |                   |
+| 8e1d87e0a88c | certbot/certbot       | "/bin/sh             | -c           | 'trap   | ex…"   | 2     | weeks | ago  | Up                  | 7                       | days                | 80/tcp,                 | 443/tcp          | webserver-certbot-1   |                   |                   |
+| 703c46dde436 | mcp_server-mcp_server | "sh                  | /app/run.sh" | 4       | weeks  | ago   | Up    | 7    | days                | (healthy)               | 8001-8002/tcp       | mcp_server-mcp_server-1 |                  |                       |                   |                   |
+| 1d1da137a3a9 | llama_cpp-llama_cpp   | python3              | 4            | weeks   | ago    | Up    | 7     | days | (unhealthy)         | 0.0.0.0:8787->8080/tcp, | [::]:8787->8080/tcp | llama_cpp               |                  |                       |                   |                   |
+
+And this is the current setup I have running on this laptop
+
+*** docker network
+:PROPERTIES:
+:ID:       admin-tool_docker-network
+:ROAM_ALIASES: admin tool docker network
+:END:
+
+We can list the active process by simply running the command:
+#+name: docker-network
+#+begin_src bash :exports both :results replace
+docker network list
+#+end_src
+
+#+RESULTS: docker-network
+| NETWORK      | ID                      | NAME   | DRIVER | SCOPE |
+| 63db087931ed | bridge                  | bridge | local  |       |
+| 79eb94f48e06 | host                    | host   | local  |       |
+| 4c78f2856d14 | llama_cpp_default       | bridge | local  |       |
+| 1a01f0f0d2f7 | none                    | null   | local  |       |
+| 1bf3ddec6244 | ollama_default          | bridge | local  |       |
+| 7d5834e09e3b | webserver-net           | bridge | local  |       |
+| 95f40f2ec001 | webserver_webserver-net | bridge | local  |       |
+
+Where webserver-net is where nginx routes the different end-points to the appropriate containers.
+
+
+*** docker admin
+
+
+Stop all containers
+
+#+name: docker-network
+#+begin_src bash :exports both :results replace
+docker stop $(docker ps -aq)
+#+end_src
+
+Delete all containers
+
+#+name: docker-network
+#+begin_src bash :exports both :results replace
+#docker rm -f $(docker ps -q)
+docker rm $(docker ps -aq)
+#+end_src
+
+* nginx
+:PROPERTIES:
+:ID:       admin-tool_nginx
+:ROAM_ALIASES: admin tool nginx
+:END:
+
+Nginx is a quick a reliable web-server. I used apache in the past but the language was always hard to interpret and traefik which is just a reverse proxy and has limited usage.
+
+
+* local LLMs
+
+Unload all models and free VRAM
+
+#+name: ollama_clear
+#+begin_src bash export: results results: replace
+  local model_name=$(ollama ps | awk 'NR==2 {print $1}')
+  if [ -z "$model_name" ]; then
+    echo "No model is currently loaded."
+    return 1
+  fi
+  curl http://localhost:11434/api/generate -d "{\"model\": \"$model_name\", \"keep_alive\": 0}}
+#+end_src
+
+
+

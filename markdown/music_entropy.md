@@ -1,3 +1,19 @@
+---
+title: entropy in music
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: entropy_in_music 
+category: #tech
+roam_refs: entropy in music
+roam_aliases: ["entropy in music"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
+
 # Entropy as measure for creativity
 
 $$ E = -\sum_i p_i\log p_i $$
@@ -24,14 +40,14 @@ CREATE (Aere:Song { id:'0', name:'Aere', entropy:'4.962'})
 CREATE (AjdeJano) - [:DIST{d: 0.470}] -> (Prolecic),
 ```
 
-![distance songs](../f/f_viudi/DistCanzoni.png "dist songs")
+![distance songs](../../f/f_viudi/DistCanzoni.png "dist songs")
 _distance between songs_
 
 You can see a clear connection to the songs which is pretty much the one we expect.
 
 The evolution of entropy depends on the author and stabilizes over time, in same cases it shrinks.
 
-![entropy evolution](../f/f_viudi/EntropyEvolution.png "entropy evolution")
+![entropy evolution](../../f/f_viudi/EntropyEvolution.png "entropy evolution")
 _evolution of entropy_
 
 In the graph Bach's ciaccone, lazy bird of Coltrane and Vitali ciaccona where analyzed.

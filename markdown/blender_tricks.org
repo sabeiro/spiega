@@ -1,0 +1,177 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: agentic_interview
+:END:
+#+title: blender tricks
+#+DATE: <2026-06-23>
+#+AUTHOR: sabeiro
+#+STARTUP: showall
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+
+
+* blender tricks
+
+Here is a collection of blender tricks I always forget about
+
+*** render options
+
+- Sampling :: noise and sample number
+- Light paths :: from 12 to 4
+  - illumination :: limited
+  - fastGI :: fast global illumination approximation
+  - light tree :: for multiple sources
+- Simplify :: texture limit to set
+  - camera culling :: only the objects in view are rendered
+- bake :: the texture once (for procedural texture)
+- memory :: lower tile size
+- persistent data :: turned on
+- layer :: separate collections into layers
+- output :: exr image (faster than png)
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/render_sampling.png]]
+
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/render_light.png]]
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/render_simplify.png]]
+
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/render_bake.png]]
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/limited_illumination.png]]
+
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/render_memory.png]]
+
+
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/render_culling.png]]
+
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/render_fastGI.png]]
+
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/light_tree.png]]
+
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/view_layer.png]]
+
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/output_image.png]]
+
+
+*** lights
+
+- sun :: the most performant
+- point/area :: ok
+- mesh light :: low performance
+
+
+*** clean up
+
+Purge data
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/data_purged.png]]
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/data_unused.png]]
+
+
+*** preferences
+
+Edit -> preferences ->
+- system :: Enable cuda
+- viewport :: subdivision
+
+Save startup file
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/preference_cuda.png]]
+
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/gpu_subdivision.png]]
+
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/startup_file.png]]
+
+
+
+
+
+*** mesh
+
+Simplify mesh: Edit [tab] -> [m]
+Subdivide: Edit [tab] -> [right click]
+Decimate: modifiers -> decimate
+
+#+NAME:   fig:merge_mesh
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/merge_mesh.png]]
+
+
+#+NAME:   fig:subdivide_mesh
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/subdivide_mesh.png]]
+
+
+#+NAME:   fig:decimate_mesh
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/decimate_mesh.png]]
+
+*** duplicate
+
+duplicate -> [shift-d]
+instance -> [alt-d]
+
+
+*** view
+
+Reset orbit rotation: object -> view -> frame selected
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/frame_selected.png]]
+
+
+
+*** apply to multiple objects
+
+Apply properties (keyframes, materials, nodes...) to multiple objects
+
+Link data : [Ctrl-l]
+

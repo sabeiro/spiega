@@ -1,3 +1,22 @@
+---
+title: geospatial utils
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: geospatial_utils
+category: #tech
+roam_refs: geospatial_utils
+roam_aliases: ["geospatial utils"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
+# geo transformation and queries for GIS
+
+For many years I worked with GIS software to run analytics on spatial data. Here is a collection of different operations I used across different projects which I wanted to share to people who might need to run similar analysis.
+
 # Geo operations
 Materials:
 * [Points in polygon](points-in-polygon)
@@ -371,8 +390,8 @@ G.add_node(1)
 G.add_edge(1,2)
 G.add_node("spam")
 G.add_nodes_from("spam")
-G.number_o../f/f_nodes()
-G.number_o../f/f_edges()
+G.number_o../../f/f_nodes()
+G.number_o../../f/f_edges()
 G.nodes()
 G.edges()
 G.neighbors(1)
@@ -406,3 +425,7 @@ nx.draw_circular(G)
 nx.draw_spectral(G)
 plt.show()
 ```
+
+## License
+
+[CC by-sa-nc](https://creativecommons.org/licenses/by-nc-sa/4.0/)

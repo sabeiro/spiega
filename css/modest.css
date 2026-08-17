@@ -182,9 +182,8 @@ textarea {
     display:block;
 }
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700);
-
-@import url(http://fonts.googleapis.com/css?family=Arimo:700,700italic);
+/* @import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700); */
+/* @import url(http://fonts.googleapis.com/css?family=Arimo:700,700italic); */
 
 html {
     font-size: 18px;
@@ -226,7 +225,7 @@ blockquote {
 
 pre,
 code {
-    background-color: #fafafa;
+    /* background-color: #fafafa; */
 }
 table{
     width:100%;

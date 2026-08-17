@@ -1,3 +1,19 @@
+---
+title: mini hub logistics
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: mini_hub
+category: #tech
+roam_refs: mini hub
+roam_aliases: ["mini hub logistics"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
+
 # mini hubs
 
 In this project we want to assess the convenience of temporary storage called mini hubs in the last mile delivery. If mini hubs prove to be more convenient than van2door deliveries a competitive price can help unroll the business model to the market. 
@@ -27,7 +43,7 @@ The mini hubs allow the redistribution of shifts and **workforce** where we cons
 * merchants storing parcels
 * lockers
 
-![berlin hub](../f/f_ride/berlin_hub.png "berlin hub")
+![berlin hub](../../f/f_ride/berlin_hub.png "berlin hub")
 _distribution of potential mini hubs (green) and pickup stores (red)_
 
 When a customer purchases a good the parcel gets ready in one of the big store of the city. In this project we want to compare the costs of different **scenarios**:
@@ -88,7 +104,7 @@ Successively additional information should be added to the project:
 
 * isochrones for hubs
 
-![berlin street](../f/f_ride/berlin_street.png "berlin street")
+![berlin street](../../f/f_ride/berlin_street.png "berlin street")
 _created routing graphs for vans and carts_
 
 
@@ -100,12 +116,12 @@ We use [routing_node2node](https://github.com/sabeiro/geomadi/blob/master/exampl
 
 We create a batch of different orders, for each batch we find the mini hub clustering a specific distance radius and calculate all the routes.
 
-![berlin oct8](../f/f_ride/berlin_oct8.png "berlin oct8")
+![berlin oct8](../../f/f_ride/berlin_oct8.png "berlin oct8")
 _relative distance between geohashes the lighter the shortest the distance_
 
 # steps
 
-![berlin demand](../f/f_ride/berlin_demand.png "berlin demand")
+![berlin demand](../../f/f_ride/berlin_demand.png "berlin demand")
 _Demand simulation will come from randomly selecting graph nodes_
 
 The simulation considers the following steps:
@@ -153,17 +169,17 @@ Data available under [intertino](https://intertino.it/palmo.zip)
 |  18|     198|  90|   306|  425|     18| 102|
 |   0|     571|   0|   306|    0|      0|   0|
 
-![radius distance](../f/f_ride/radius_distance.png "radius vs distance")
+![radius distance](../../f/f_ride/radius_distance.png "radius vs distance")
 _van and bike drive distances per radius of hubs_
 
 At a first sight the kilometers run between pickup stores and hubs are really large. Considering the driving time between any pickup store to any point in the city it might not be too unrealistic.
 
-![radius time](../f/f_ride/radius_time.png "radius vs time")
+![radius time](../../f/f_ride/radius_time.png "radius vs time")
 _van and bike drive time per radius of hubs_
 
 Too many hubs cause a long driving time for vans and don't increase much the service time around the hub.
 
-![hub location](../f/f_ride/hub_location.png "location of the hub")
+![hub location](../../f/f_ride/hub_location.png "location of the hub")
 _best spot for an hub for a given location_
 
 The hubs are closing to a crossing in dense populated areas.

@@ -1,0 +1,12 @@
+mcp
+httpx
+numpy
+fastapi
+uvicorn
+opencv-python-headless
+ultralytics
+ollama
+fastmcp
+llama-cpp-python
+#llama_cpp_python-0.3.16+cuda13.0.sm89.ada-cp312-cp312-win_amd64.whl
+#export PATH="/home/sabeiro/.lmstudio/bin:$PATH"

@@ -1,0 +1,115 @@
+:PROPERTIES:
+:GPTEL_MODEL: qwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:END:
+#-*- mode: org -*-
+#+STARTUP: showall
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: { @COMPLETED(c) @INPROGRESS(p) } LEGACY(l) REVIEW(r) GENERATED(g) SLIDE(s) NOSLIDE(n)
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_cv/mcp_server/
+
+* camera esp32
+
+This project is meant to use embedded devices for robotics purposes.
+
+** goal
+
+The images captured by the cameras are served on a web page. On the client side we can run computer vision applications on the browser.
+
+
+** hardware
+
+How to use the esp32 cameras
+- [[https://lastminuteengineers.com/getting-started-with-esp32-cam/][tutorial 1]] :: 
+- [[https://www.sunfounder.com/blogs/news/esp32-cam-tutorial-step-by-step-guide-to-setup-streaming-and-troubleshooting][tutorial 2]] ::
+- [[https://www.sunfounder.com/blogs/news/esp32-cam-tutorial-step-by-step-guide-to-setup-streaming-and-troubleshooting][tutorial 3]] ::
+- [[https://randomnerdtutorials.com/projects-esp32-cam/][ideas]] ::
+
+- chip :: ESP32
+
+* robotics stack
+
+- [[https://www.zephyrproject.org/][zephyr]] ::
+- [[https://www.freertos.org/][freertos]] ::
+- [[https://docs.ros.org/en/rolling/index.html][ros]] :: 
+
+** file
+The project consists in the following files
+
+- CH341SER :: firmware
+- [[./README.md][README.md]] :: project description
+- [[./build_esp.sh][build_esp.sh]] :: run the compile on the device
+- [[./camera_esp32.ino][camera_esp32.ino]] :: platformio file 
+- [[./camera_esp32.org][camera_esp32.org]] :: agentic project description
+- [[shell:ls *log][log files]] :: log files
+- [[./data/][data/]] :: useful data
+- [[shell:bash ./install_dependencies.sh][install_dependencies.sh]] :: click to install dependencies
+- [[./include/][include/]] :: included libraries
+- [[./platformio.ini][platformio.ini]] :: platformio specific hardware configuration
+- [[./scripts][scripts]] :: building scripts
+- [[./test/][test/]] :: arduino test alternatives for webservers (testing)
+- [[./src/][src/]] :: application source code
+
+
+#+name: project files
+#+begin_src bash :results output replace :async
+ls ~/lav/src/blender_cv/camera_esp32
+#+end_src
+
+
+
+* ros2
+
+We start with a simple example in ROS2 lyrical.
+We have nodes which communicate through ROS like:
+- webserver ::
+- actuators ::
+- sensors ::
+- 
+
+
+#+name: ros-example
+#+begin_src bash :results output replace :async
+source /opt/ros/lyrical/setup.bash
+/opt/ros/lyrical/bin/ros2 run turtlesim turtlesim_node
+#+end_src
+
+Show the graphs
+
+#+name: ros-graph
+#+begin_src bash :results output replace :async
+source /opt/ros/lyrical/setup.bash
+/opt/ros/lyrical/bin/ros2 run rqt_graph rqt_graph
+#+end_src
+
+#+name: ros-example
+#+begin_src bash :results output replace :async
+source /opt/ros/lyrical/setup.bash
+/opt/ros/lyrical/bin/ros2 run turtlesim turtle_teleop_key
+#+end_src
+
+#+RESULTS: ros-example
+
+
+#+name: ros-example
+#+begin_src bash :results output replace
+source /opt/ros/lyrical/setup.bash
+/opt/ros/lyrical/bin/rqt_bag 
+#+end_src
+
+
+#+name: ros-dependencies
+#+begin_src bash :results output replace
+sudo apt install python3-colcon-common-extensions
+source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash
+#+end_src
+
+
+#+name: ros-build
+#+begin_src bash :results output replace
+cd ~/lav/src/blender_cv/camera_esp32/src
+colcon build
+#+end_src

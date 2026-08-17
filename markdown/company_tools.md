@@ -1,25 +1,42 @@
-10 day tech startup launch plan:
-- Domain on GoDaddy (5 min)
-- Logo ideas on Looka (5 min)
-- Brand assets on Figma (30 min)
-- Webpage on Webflow (5 hours)
-- Backend data on Airtable (1 hour)
-- Collect leads on Typeform (20 min)
-- Customer CRM on Copper (1 hour)
-- SEO optimization on Ahrefs (2 hours)
-- Customer feedback on Canny (1 hour)
-- Payment collection on Stripe (2 hours)
-- Marketing designs on Canva (2 hours)
-- Automation workflow on Zapier (1 hour)
-- Newsletter each week on Substack (1 day)
-- Landing page chatbot on Intercom (1 hour)
-- Product roadmap & tasks on Trello (1 hour)
-- Initial marketing on Product Hunt (3 hours)
-- Step by step instructions on Notion (2 hours)
-- Email marketing on Intuit Mailchimp (1 hour)
-- Early MVP app on Bubble, Softr, Flutterflow (6 days)
+---
+title: company_tools
+author: Giovanni Marelli
+date: 2019-07-02
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: company_tools
+category: #tech
+roam_refs: company tools
+roam_aliases: ["company tools"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+# company tools
 
-Keep it simple:
+What are the most important productivity tools for a small company.
+Here is a short checklist
+
+* ERP: soon or later it is really important to invest in an ERP and open source and modular ERPs like [[https://odoo.com][odoo]] allow great integration of other modules into the productive framework of the company.
+* CRM: odoo has is also
+* Domain and web page: preferentially static pages well indexed
+* Logo and graphics: 
+* Brand asset: figma? 
+* backend data: airtable?
+* shared folder: webdav, NAS, next cloud
+* customer feedback:
+* marketing design: canva?
+* automation workflow: zapier?
+* payment: stripe?
+* newsletter: substack?
+* landing page: intercom?
+* product roadmap and tasks: trello? odoo?
+* marketing: product hunt?
+* knowledge base: notion?
+* email marketing: mailchimp?
+* MVP hosting: aws?
+
+Main steps
 
 1. Launch landing page
 2. Get customers in
@@ -27,11 +44,11 @@ Keep it simple:
 4. Collect feedback
 5. Repeat & improve
 
-You don’t have to spend 3-6 months coding to launch. 
-
 
 https://github.com/great-expectations/great_expectations
 https://github.com/lightdash/lightdash
 https://github.com/dbt-labs/dbt-core
 https://github.com/PrefectHQ/prefect
 https://github.com/airbytehq/airbyte
+
+

@@ -1,0 +1,40 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: data_sovereignty
+:END:
+#+TITLE: data sovereignty
+#+SUBTITLE: The importance of owning the infrastructur
+#+STARTUP: showall latexpreview
+#+OPTIONS: tex:t
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+TODO: active done crit milestone todo review knwoledge task
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-06-22>
+#+KEYWORDS: Data science, language models, LLMs
+
+* Data sovereignty
+
+Cloud services are mostly top edge performance. They scale and provide the most updated solutions, on-prem services need experts to be maintained.
+Putting aside the cost part at the moment the main concern is about risks especially in the agentic era.
+
+** Risks with agents
+
+
+Cursor is sharing code across sections: [[https://forum.cursor.com/t/cursor-shared-the-code-of-another-user-into-my-workspace/154883][cursor code leak]] like in this example
+
+#+ATTR_ORG: :file ../../f/f_media/llm_01.png :width 300px
+[[file:/../../f/f_media/llm_01.png]] 
+
+Plans keep on changing and you can't control tool cost.
+
+#+ATTR_ORG: :file ../../f/f_media/llm_01.png :width 300px
+[[file:/../../f/f_media/llm_01.png]] 
+
+
+

@@ -1,7 +1,41 @@
+---
+title: cloud providers
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: cloud_providers
+category: #tech
+roam_refs: cloud providers
+roam_aliases: ["cloud providers"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
 # cloud providers
 
-The main cloud providers for the '20 decade are aws, gcp and azure but digitalocean, linode and others are used too. 
+The main cloud providers or hyperscaler for the '20 decade are aws, gcp and azure and they differentiate for their scalability from fixed resource booking data centers like digitalocean, linode and others are used too. 
 Here is a good [overview on aws](https://www.youtube.com/watch?v=Z3SYDTMP3ME).
+
+## App deployment on-prem vs AWS
+
+**On prem**: I launch an instance from my cloud provider, I log into it with ssh, I install the libraries and launch the application, install and configure nginx, create certificate with certbot and rerun nginx.
+**AWS**:
+
+* I create a VPC
+* I create a internet gateway
+* I add a subnet and add routes from the public
+* I create an EC2 in that VPC
+* I create an elastic IP to attach to the EC2
+* I create security groups that allow at least ssh and http
+* I log into the instance, install libraries, run the application, launch it, install nginx
+* I can't use certbot so I need to activate cloudfront
+* I create a load balancer
+* I create a target group where my EC2 sits
+* I create a cloudfront distribution
+* request a certificate for your cloudfront domain
+
 
 # filesystem
 

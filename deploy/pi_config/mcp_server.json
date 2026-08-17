@@ -1,0 +1,8 @@
+{
+  "mcp": true,
+  "name": "ollama-mcp-server",
+  "port": 18789,
+  "api": 11434,
+  "models": ["llama3.2:1b", "llama3.1:8b"],
+  "tools": ["code-ask", "code-read", "code-run"]
+}

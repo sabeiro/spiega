@@ -1,3 +1,18 @@
+---
+title: websites
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: websites
+category: #tech
+roam_refs: websites
+roam_aliases: ["websites"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
 # websites
 
 # Mr Relais - 1999
@@ -7,14 +22,14 @@ First website to promote online eletronics lessons. High school project to sell 
 
 Material and screenshots lost :( apart from the logo
 
-![relais](../f/f_stage/site_relais.jpg "mr relais")
+![relais](../../f/f_stage/site_relais.jpg "mr relais")
 _mr relais logo_
 
 # kotoba - 2006-2011
 
 [Kotoba](https://intertino.it/kotoba) about university studies, written in php
 
-![kotoba](../f/f_stage/site_kotoba.png "kotoba")
+![kotoba](../../f/f_stage/site_kotoba.png "kotoba")
 _kotoba: Erreignisse der Anmut (Heiddegger)_
 
 Features: 
@@ -30,45 +45,45 @@ Features:
 
 During 2013 I was working in different projects in Tanzania, the website [tanto](https://intertino.it/dauvi/siti/tanto) is a collection of reports and work done during this period.
 
-![tanto](../f/f_stage/site_tantoL.png "tanto")
+![tanto](../../f/f_stage/site_tantoL.png "tanto")
 _tanto, data collection and repository for the Tanzanian projects_
 
 Web data collection:
 
-![tanto](../f/f_stage/site_livelihood.png "tanto")
+![tanto](../../f/f_stage/site_livelihood.png "tanto")
 _livelihood survey: estimate the wealth of a population and monitor the growth caused by the introduction of electricity_
 
-![tanto](../f/f_stage/site_patientForm.png "tanto")
+![tanto](../../f/f_stage/site_patientForm.png "tanto")
 _hospital data collection_
 
 # dauvi - 2013-2017
 
 [Dauvi](https://dauvi.org) is the first server for hosting the odoo ERP and publishing the first apps written in cordova
 
-![dauvi](../f/f_stage/site_dauvi.png "dauvi")
+![dauvi](../../f/f_stage/site_dauvi.png "dauvi")
 _dauvi website_
 
 # website requests - 2013
 
 A collection of websites during the consultancy period 
 
-![robiro](../f/f_stage/site_robiro.png "robiro")
+![robiro](../../f/f_stage/site_robiro.png "robiro")
 _robirò: jewelry shop_
 
-![iab](../f/f_stage/site_iab.png "iab")
+![iab](../../f/f_stage/site_iab.png "iab")
 _presentation for the IAB (interactive advertisement bureau)_
 
-![agitazioni](../f/f_stage/site_agitazioni.png "agitazioni")
+![agitazioni](../../f/f_stage/site_agitazioni.png "agitazioni")
 _agitazioni: a cultural association_
 
-![baresco](../f/f_stage/site_baresco.png "baresco")
+![baresco](../../f/f_stage/site_baresco.png "baresco")
 _baresco: glass handcraft_
 
 # intertino - 2016
 
 Website to promote web digital and analytical tools
 
-![intertino](../f/f_stage/site_intertino.png "intertino")
+![intertino](../../f/f_stage/site_intertino.png "intertino")
 _intertino_
 
 # anticolo - 2016-2021
@@ -84,7 +99,7 @@ Features:
 * multiple visualization libraries
 
 
-![anticolo](../f/f_stage/site_anticolo.png "anticolo")
+![anticolo](../../f/f_stage/site_anticolo.png "anticolo")
 _anticolo_
 
 

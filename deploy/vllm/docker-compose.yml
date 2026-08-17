@@ -1,0 +1,36 @@
+services:
+  vllm:
+    #image: vllm/vllm-openai:latest
+    build:
+      context: .
+    container_name: vllm
+    stdin_open: true
+    tty: true
+    ports:
+      - "8989:8000"
+    volumes:
+      - ${HOME}/Downloads/llm_model/:/model
+      - ${HOME}/Downloads/llm_cache/:/vllm_cache
+      - ${HOME}/Downloads/llm_model/:/root/.cache/
+    environment:
+      - VLLM_MODEL_PATH=/model/
+      - VLLM_CACHE_PATH=/vllm_cache/
+      - VLLM_CONFIG_ROOT=/model/
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    cpus: '4'
+    shm_size: '8G'
+    # entrypoint: /app/start_server.sh
+    # command: >
+    #   vllm serve /model/Ministral-3-14B-Reasoning-2512-Q4_K_M.gguf
+

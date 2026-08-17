@@ -1,0 +1,27 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: storage_governance
+:END:
+#+TITLE: storage governance
+#+SUBTITLE: ownership and traceability
+#+DATE: 14-05-2026
+#+KEYWORDS: Data science, language models, LLMs
+
+
+
+
+* [#B] Storage governance
+
+Storage is a big cost for companies, most of the clients I talked with are frustrated by the high cost of data and the low value they get.
+Telemetry data are usually collected and directly stored. Few processing is performed on those. 
+
+
+#+CAPTION: example of a flow of responsibilities
+#+ATTR_HTML: :width 600px :alt data governance model proposed :align center
+#+NAME:   fig:data governance
+[[../../f/f_sawmill/data_governance.svg]]
+

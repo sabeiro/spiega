@@ -1,0 +1,88 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: IoT_controller
+:END:
+#+TITLE: IoT Controller 
+#+DATE: 2026-06-17
+#+OPTIONS: toc:nil num:nil html:true
+#+DESCRIPTION: Complete guide to all IoT controller devices supported by Blender Twin system
+
+#+SETUPFILE: setup.org
+#+PROPERTY: header-:html-body: <style>.device-table { border-collapse: collapse; width: 100%; margin: 1em 0; } .device-table th, .device-table td { border: 1px solid #ddd; padding: 0.5em; text-align: left; } .device-table th { background-color: #f2f2f2; }</style>
+
+* Introduction
+:PROPERTIES:
+:ID: IoT digital twin
+:ROAM_ALIASES: IoT digital twin
+:END:
+
+This document provides comprehensive specifications for all IoT controller devices supported by the Blender Twin IoT Controller system. Each device serves specific roles within the IoT sensor controller architecture.
+
+* Device Overview
+
+We have the following devices available:
+
+- [[id:m5stack][M5Stack Core 2 - ESP32 Development Platform]] :: mainly as BLE midi controller and voice assistant
+- [[id:esp32_CAM][ESP32-CAM - Vision Sensor Controller]] :: as remote camera serving a web-page
+- [[id:arduino_mkr1000][Arduino MKR1000 - WiFi IoT Controller]] :: to send sensor data
+- [[id:Arduino_R4][Arduino R4 - IoT Sensor Controller]] :: as DSP using 
+- [[id:raspberry_pi_pico-intro][raspberry]] :: as DSP 
+- [[id:teensy][Teensy 3.6 - High-Speed Microcontroller]] :: as audio processing
+  
+
+#+NAME: all-devices-table
+| Device              | Category                  | Primary Role                    | Key Feature                    |
+|-----              |--|----|----|
+| ESP32-Cam          | Vision                    | Camera Feed                   | OV2640 camera, WiFi          |
+| Arduino MKR1000    | Gateway                   | WiFi Gateway                  | WiFi + BLE                   |
+| M5Stack Core 2     | Development Platform      | Modular IoT Hub               | ESP32-S3, touchscreen        |
+| Raspberry Pi Pico  | Edge Controller           | Edge Node                     | Dual-core ARM, 26 GPIO       |
+| Teensy 3.6         | Precision Control         | High-Speed I/O                | 96 MHz, fast ADC             |
+
+** Device Categories
+- Gateway: Multi-protocol (MQTT/HTTP/WebSocket/MQTT-SN)
+- Vision: Camera capture and edge vision processing
+- Edge Control: Local logic and control nodes
+- Gateway/Aggregator: Serial bridge and sensor aggregation
+
+* Installation Prerequisites
+:PROPERTIES:
+:CUSTOM_ID: installation
+:END:
+
+#+NAME: install-checklist
+- Flash compatible firmware via Arduino IDE/PlatformIO
+- Configure WiFi/Bluetooth credentials
+- Set MQTT broker credentials
+- Install device drivers
+- Upload controller code
+- Test sensor connectivity
+- Deploy to production network
+- Verify device registration
+
+* Security Requirements
+:PROPERTIES:
+:CUSTOM_ID: security
+:END:
+
+#+NAME: security-requirements
+| Device            | Security Features                     |
+|-----           |--|
+| ESP32-Cam       | Secure boot, TLS MQTT, WiFi WPA2     |
+| MKR1000         | Hardware encryption, BLE security    |
+| Core 2          | Secure boot, TLS, OTA protection     |
+| Pico            | Secure boot, Flash protection         |
+| Teensy 3.6     | Secure boot, OTP memory protection   |
+
+* Conclusion
+:PROPERTIES:
+:CUSTOM_ID: conclusion
+:END:
+
+All IoT controller devices integrate seamlessly with the Blender Twin IoT controller architecture, providing edge intelligence and sensor aggregation capabilities.
+
+#+STARTUP: showall

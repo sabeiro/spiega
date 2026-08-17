@@ -1,0 +1,235 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: esp32_CAM
+:END:
+#+TITLE: ESP32-CAM 
+#+DATE: 2026-06-17
+#+OPTIONS: toc:nil num:nil html:true
+#+DESCRIPTION: ESP32-Cam specifications for edge computer vision and image capture in Blender Twin
+
+* Introduction
+:PROPERTIES:
+:CUSTOM_ID: introduction
+:END:
+
+The ESP32-CAM is an affordable vision-capable microcontroller designed for edge computer vision, image capture, and simple neural network inference applications within the Blender Twin IoT controller system.
+
+* Hardware Specifications
+:PROPERTIES:
+:CUSTOM_ID: hardware-specifications
+:END:
+
+** Core Processor
+:PROPERTIES:
+:CUSTOM_ID: core-processor
+:END:
+
+#+NAME: esp32cam-specs
+| Component          | Specifications                          |
+|--------------    |-------------              |----|
+| Dual Core        | Xtensa LX6 @ 240 MHz          |
+| RAM              | 520 KB SRAM                          |
+| Flash            | 4-16 MB (configurable)              |
+| ADC              | 10-bit, 12 channels                  |
+| GPIO Pins        | 44                                    |
+
+** Camera Integration
+:PROPERTIES:
+:CUSTOM_ID: camera
+:END:
+
+- OV2640 2MP image sensor (1600x1200 max)
+- MIPI/CSI camera interface
+- Up to 15 fps at VGA resolution
+- Raw Bayer and JPEG formats
+- VSYNC/PCLK/LED/PCAL signals
+- External sensor support via I2S
+
+** Connectivity
+:PROPERTIES:
+:CUSTOM_ID: connectivity
+:END:
+
+#+NAME: esp32cam-connectivity
+| Interface       | Type           | Speed                 | Description                    |
+|----        |--|-------       |-----|----|
+| WiFi           | 802.11b/g/n   | Up to 150 Mbps         | Station and AP mode              |
+| Bluetooth      | BLE           | Up to 1 Mbps           | Device-to-device communication    |
+| USB/OTG        | USB 2.0       | Up to 480 Mbps         | Host mode, debugging             |
+| SPI            | 8-bit         | 80 MHz max             | SD cards, external modules        |
+| I2C            | 2-4 pins      | 400 kHz max            | I2C sensors, displays             |
+| I2S            | Audio         | PCM/Left+Right          | Audio capture, external sensors   |
+
+** Storage Support
+:PROPERTIES:
+:CUSTOM_ID: storage
+:END:
+
+#+NAME: esp32cam-storage-table
+| Device Type  | Maximum Size | Interface | Use Case                          |
+|--        |--|
+| SD Card      | 512 GB       | SPI        | Images, videos, logs              |
+| SPI Flash    | 4-16 MB      | SPI        | Firmware storage                   |
+| USB Drive    | 2 TB         | USB OTG     | Large storage expansion            |
+
+** Power Management
+:PROPERTIES:
+:CUSTOM_ID: power-management
+:END:
+
+#+NAME: esp32cam-power
+| Mode           | Current       | Description                    |
+|--------      |--|
+| Deep Sleep    | 150 µA        | Minimum power mode              |
+| Standby       | 35 mA         | WiFi off, BLE off              |
+| Light Sleep   | 110 mA        | WiFi on (idle)                 |
+| Normal        | 119 mA        | WiFi on, active                |
+
+* Integration with Blender Twin
+:PROPERTIES:
+:CUSTOM_ID: integration-with-blender-twin
+:END:
+
+** Role in IoT Controller
+The ESP32-Cam serves as a **vision sensor collector**:
+
+| Role                       | Description                           |
+|----------              |-----|
+| Camera Sensor Hub         | Captures frames from OV2640 camera     |
+| Edge Vision Processing    | Performs basic image analysis          |
+| Motion Detection          | Detects movement in captured frames    |
+| Image Transmission        | Sends frames via WiFi to controller    |
+| Local Storage             | Saves images/snapshots to SD card      |
+
+** Use Cases
+- Edge computer vision deployments
+- Motion-activated image capture
+- Simple OCR tasks
+- Face detection (basic)
+- Visual logging and recording
+- Basic object detection
+
+* Code Examples
+:PROPERTIES:
+:CUSTOM_ID: code-examples
+:END:
+
+#+NAME: camera-capture-example
+```cpp
+#include <WiFi.h>
+#include <Arduino_ESP32Camera.h>
+#include "mqtt.h"
+
+String camera_topic = "visionsensor/camera_feed";
+
+void setup() {
+  Serial.begin(115200);
+  
+  WiFi.begin("SENSOR_NETWORK", "sensor_pass");
+  
+  initialize_camera();
+  
+  OV2640.begin();
+  OV2640.setResolution(RES_VGA);
+  OV2640.startCapture([&](const uint8_t* frame, size_t length) {
+    mqtt_publish(camera_topic, frame, length);
+    check_motion(frame, length);
+  });
+}
+
+void loop() {
+  // Continuous frame capture
+  camera_capture();
+  
+  delay(50);
+}
+```
+
+* Security Considerations
+:PROPERTIES:
+:CUSTOM_ID: security
+:END:
+
+#+NAME: esp32-security
+- Hardware-based flash encryption
+- Secure boot
+- BLE pairing protection
+- WiFi WPA2/WPA3
+- TLS/SSL encrypted MQTT
+
+* Performance Optimization
+:PROPERTIES:
+:CUSTOM_ID: performance
+:END:
+
+#+NAME: esp32cam-optimization-checklist
+1. Reduce image resolution for streaming
+2. Enable camera frame skipping
+3. Optimize WiFi transmit power
+4. Enable deep sleep mode
+5. Use BLE for device discovery
+6. Enable frame compression
+7. Set appropriate frame rate
+
+* Setup Instructions
+:PROPERTIES:
+:CUSTOM_ID: setup-instructions
+:END:
+
+#+NAME: esp32cam-setup-guide
+1. **Flash firmware** via Arduino IDE/ESP-Flasher
+2. **Configure WiFi credentials**
+3. **Set camera resolution** to VQA/VGA
+4. **Upload code to board**
+5. **Connect to WiFi network**
+6. **Test video stream** via browser
+7. **Configure MQTT topics**
+8. **Deploy to production network**
+
+* Connection Details
+:PROPERTIES:
+:CUSTOM_ID: connection-details
+:END:
+
+** MQTT Configuration
+```cpp
+// Camera sensor subscription
+const char* camera_topic = "visionsensor/camera_feed";
+
+void initialize_camera() {
+  // Open hardware lines
+  pinMode(CAMERA_VSYNC, INPUT);
+  pinMode(CAMERA_PCLK, INPUT);
+  pinMode(CAMERA_XCLK, INPUT);
+  pinMode(CAMERA_YEN, INPUT);
+  pinMode(CAMERA_PWDN, OUTPUT);
+  
+  // Initialize camera
+  OV2640.begin();
+  OV2640.setResolution(RES_VGA);
+  OV2640.setFrameDelay(0);
+  
+  // Enable frame interrupt
+  OV2640.startCapture(frame_callback);
+}
+```
+
+* Conclusion
+:PROPERTIES:
+:CUSTOM_ID: conclusion
+:END:
+
+The ESP32-Cam provides an affordable, versatile platform for edge computer vision within the Blender Twin IoT controller system. Its WiFi capabilities, OV2640 camera integration, and dual-core processor make it ideal for:
+
+- Vision sensor networks
+- Edge image capture
+- Motion detection systems
+- Basic computer vision deployments
+
+For more information, refer to [[file:https://www.espressif.com/en/products/devkits/esp32cam][ESP32-Cam Official Spec Sheet]]
+
+#+STARTUP: showall

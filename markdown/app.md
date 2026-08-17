@@ -1,3 +1,18 @@
+---
+title: app developement 
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: app_dev
+category: #tech
+roam_refs: app_developement
+roam_aliases: ["app development"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
 # app
 
 # java
@@ -10,7 +25,7 @@ App to interact with a SQL database
 
 App to fill a livelihood survey on a remote database
 
-![tanto_survey](../f/f_dauvi/njombe.svg "tanto survey")
+![tanto_survey](../../f/f_dauvi/njombe.svg "tanto survey")
 _Tanto survey_
 
 The survey is populated using a json template.
@@ -30,7 +45,7 @@ Cordova is an early '10 cross platform application builder which allows to devel
 * admin login
 * admin worker and bus entry change
 
-![apps](../portfolio/f/apps.png "apps")
+![apps](../portfol../../f/apps.png "apps")
 _canova and Venezia è unica_
 
 **Venezia è unica** is an app (mock up) to purchase coupons and transportation tickets from a single place. Adding more purchase will activate a discount.
@@ -41,7 +56,7 @@ A portal to connect professionals from the agricultural industry and an IoT serv
 
 * insert 
 
-![gardali](../portfolio/f/services.png "gardali")
+![gardali](../portfol../../f/services.png "gardali")
 _gardalì portal_
 
 # angular
@@ -52,7 +67,7 @@ Here are few examples of apps written in nodejs
 
 [Geocode](https://github.com/intertino/app/nodejs/geocode/) is an app to anonymize addresses. It takes a list of addresses and parse line by line using a geocode service and applying the anonymization required: i.e. remove digits from coordinates or use geohash.
 
-![geocode](../f/f_intertino/cover_geocode.png "geocode cover")
+![geocode](../../f/f_intertino/cover_geocode.png "geocode cover")
 _geocode app_
 
 The core or the application is a chain of promises 
@@ -82,7 +97,7 @@ async function parse_row(row) {
 
 [text corrector](https://github.com/intertino/app/nodejs/text_corrector/) is an automated assistant to help writing outreach sales emails. 
 
-![cover_corrector](../f/f_intertino/cover_corrector.png "text corrector")
+![cover_corrector](../../f/f_intertino/cover_corrector.png "text corrector")
 
 _text corrector overview_
 
@@ -98,20 +113,20 @@ The user starts editing the draft in the left box, the draft is composed in diff
 * goodbye
 * signature
 
-![block_editor](../f/f_intertino/block_editor.png "block editor")
+![block_editor](../../f/f_intertino/block_editor.png "block editor")
 
 _the editor block composed in sections_
 
 Every time a change is made an algo evaluates the distance from the previous version is computed. The current algo is a mixture of Levenshtein and time difference. 
 If the change is consistent enough the current text is appended to a prompt for the language model which can be edited in this section:
 
-![block_criteria](../f/f_intertino/block_criteria.png "block criteria")
+![block_criteria](../../f/f_intertino/block_criteria.png "block criteria")
 
 _the criteria block with editable prompts_
 
 The resquest is sent to the backend that appends the authentification and sends the request to the language model. Within few seconds the response is formated and displayed in the correction block:
 
-![block_correction](../f/f_intertino/block_correction.png "block correction")
+![block_correction](../../f/f_intertino/block_correction.png "block correction")
 
 _the correction block with suggestions_
 
@@ -119,13 +134,13 @@ The correction block has an apply button that validates the correction and apply
 
 Alternatively there is an instruction section with editable prompts
 
-![block_instruction](../f/f_intertino/block_instruction.png "block instruction")
+![block_instruction](../../f/f_intertino/block_instruction.png "block instruction")
 
 _the instruction block with editable prompts_
 
 That would send a request to the language model to generate the email following the instructions
 
-![block_generated](../f/f_intertino/block_generated.png "block generated")
+![block_generated](../../f/f_intertino/block_generated.png "block generated")
 
 _the generated block with suggestions_
 
@@ -133,13 +148,13 @@ _the generated block with suggestions_
 
 The app is mainly written in `nodejs` using `express` and `ejs`. The main functions are written in `javascript` and executes on the frontend.
 
-![front_back](../f/f_intertino/front_back.svg "front back")
+![front_back](../../f/f_intertino/front_back.svg "front back")
 
 _front- and back- end implementation_
 
 The implementation is as following
 
-![node_calls](../f/f_intertino/node_call.svg "node calls")
+![node_calls](../../f/f_intertino/node_call.svg "node calls")
 
 _structure of the calls_
 

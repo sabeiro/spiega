@@ -1,0 +1,271 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: m5stack
+:END:
+#+TITLE: M5Stack Core 2 
+#+DATE: 2026-06-17
+#+OPTIONS: toc:nil num:nil html:true
+#+DESCRIPTION: M5Stack Core 2 specifications for embedded development in Blender Twin IoT system
+
+* Introduction
+:PROPERTIES:
+:CUSTOM_ID: M5Stack usage
+:ROAM_ALIASES: m5stack usage
+:END:
+
+The M5Stack Core 2 is an upgrade from the original Core, featuring a larger screen, improved battery management, and built-in ESP32-S3 processor. It's part of M5Stack's modular IoT development platform designed for rapid prototyping and deployment.
+
+* Hardware Specifications
+:PROPERTIES:
+:ID: m5stack_hardware-specifications
+:ROAM_ALIASES: m5stack hardware
+:END:
+
+** Core Processor
+:PROPERTIES:
+:CUSTOM_ID: core-processor
+:END:
+
+#+NAME: core2-specs
+| Component           | Specs                                 |
+|----------      |--|----|
+| MCU            | ESP32-S3 @ 160 MHz (dual-core)     |
+| RAM            | 80 MB PSRAM                         |
+| Flash          | 16 MB                                |
+| WiFi           | 802.11b/g/n 2.4/5 GHz               |
+| Bluetooth      | BLE 4.2/Bluetooth 5                  |
+| Touchscreen    | 1.31" 134×266 @ 113 DPI            |
+
+** Connectivity
+:PROPERTIES:
+:CUSTOM_ID: connectivity
+:END:
+
+#+NAME: core2-connectivity
+| Interface         | Type           | Speed                | Description                     |
+|----         |-----|----    |--|
+| WiFi              | 2.4/5 GHz      | Up to 150 Mbps        | Station/AP mode                  |
+| Bluetooth         | BLE 5.2/5.1   | 1 Mbps                | Peripheral mode                  |
+| USB-C             | USB 2.0        | Up to 480 Mbps        | OTG, programming                 |
+| UART              | TTL            | 115.2 kbps max        | Debug, firmware                  |
+| I2C               | 2-pin/4-pin    | 400 kHz max           | Sensors, displays                 |
+| SPI               | 4-line         | 20 MHz                | SD cards, modules                 |
+| I2S               | Audio          | 2 channel             | Audio capture/output             |
+| GPIO              | 8-pin          | N/A                   | Modular expansion                |
+
+** Storage Support
+:PROPERTIES:
+:CUSTOM_ID: storage
+:END:
+
+#+NAME: core2-storage
+| Device Type    | Capacity        | Interface      | Use Case                           |
+|--        |--|
+| MicroSD Card   | 64 GB max       | SPI            | Data logging, storage              |
+| USB Drive      | 2 TB max        | USB-C OTG      | Large file storage                 |
+| Internal Flash | 16 MB           | SPI            | Firmware storage                    |
+
+** Power Management
+:PROPERTIES:
+:CUSTOM_ID: power-management
+:END:
+
+#+NAME: core2-power
+| Mode          | Current          | Description                  |
+|--------      |----|
+| Normal       | 150-350 mA       | WiFi active                    |
+| Deep Sleep   | 150 µA           | WiFi off, BLE off            |
+| Light Sleep  | 25 mA            | WiFi idle                     |
+| Sleep        | 1.5 mA           | WiFi off                      |
+| Standby      | 1.1 mA           | Sleep mode                    |
+
+** Battery Life
+:PROPERTIES:
+:CUSTOM_ID: battery
+:END:
+
+- Built-in 2070 mAh battery
+- Li-ion/Li-Po support
+- USB-C charging (5V)
+- Power bank compatible
+- Battery status reporting
+
+** Sensor Interface
+:PROPERTIES:
+:ID: m5stack_sensors
+:ROAM_ALIASES: m5stack sensors
+:END:
+
+- I2C support up to 400 kHz
+- SPI support up to 20 MHz
+- UART for serial modules
+- Analog inputs
+- SPI/SDIO data buses
+- GPIO for external I/O
+
+* Integration with Blender Twin
+:PROPERTIES:
+:ID: m5stack_integration-with-blender-twin
+:ROAM_ALIASES: m5stack blender twin
+:END:
+
+** Role in IoT Controller
+The M5Stack Core 2 acts as an **ESP32 development platform** for IoT edge applications:
+
+| Role                      | Description                              |
+|----------              |-----|
+| Development Platform   | Rapid prototyping with modular design   |
+| Edge Controller         | Run local logic, preprocess data        |
+| Modular Node           | Connect to other M5Stack modules        |
+| WiFi IoT Node          | Connect to sensor networks              |
+| Development Hub        | IDE-friendly flash environment           |
+
+** Use Cases
+- IoT development platform
+- Modular sensor node integration
+- Edge control applications
+- Rapid prototyping
+- Teaching platforms
+- M5Stack ecosystem integration
+
+* Code Examples
+:PROPERTIES:
+:CUSTOM_ID: code-examples
+:END:
+
+#+NAME: core2-basic-example
+```cpp
+#include <Arduino.h>
+#include <WiFi.h>
+#include <HTTP.h>
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println("M5Stack Core 2 Booting...");
+  
+  delay(1000);
+  
+  WiFi.begin("IoT_NETWORK", "iot_passphrase");
+  
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+  }
+  
+  Serial.println("WiFi Connected!");
+  Serial.println(WiFi.localIP());
+  
+  // Subscribe to MQTT topic
+  subscribe_mqtt_topic();
+  
+  // Initialize sensors
+  initialize_sensors();
+}
+
+void loop() {
+  read_sensors();
+  publish_sensor_data();
+  
+  delay(100);
+}
+```
+
+* Security Features
+:PROPERTIES:
+:CUSTOM_ID: security
+:END:
+
+#+NAME: core2-security
+- TLS/SSL for MQTT
+- Encrypted WiFi (WPA2/WPA3)
+- Secure device identification
+- Secure boot (flash encryption)
+- Secure pairing mode
+- OTA update protection
+
+* Setup Instructions
+:PROPERTIES:
+:CUSTOM_ID: setup-instructions
+:END:
+
+#+NAME: core2-setup
+1. **Connect to USB-C** for programming
+2. **Install Arduino IDE** or PlatformIO
+3. **Install ESP32 board package**
+4. **Configure WiFi credentials**
+5. **Flash firmware**
+6. **Test MQTT connections**
+7. **Deploy to production**
+8. **Configure sensors/modules**
+
+* Performance Characteristics
+:PROPERTIES:
+:CUSTOM_ID: performance
+:END:
+
+#+NAME: core2-performance
+| Metric          | Value                | Use Case                          |
+|--             |----|
+| WiFi Speed      | Up to 150 Mbps           | Large data transmission            |
+| BLE Speed       | 1 Mbps                  | Mesh networking                   |
+| Processing      | Dual-core @ 160 MHz     | Edge logic processing              |
+| RAM             | 80 MB                    | Large sensor array handling       |
+| Flash           | 16 MB                    | App storage                       |
+
+* Connection Details
+:PROPERTIES:
+:CUSTOM_ID: connection-details
+:END:
+
+** MQTT Configuration
+```cpp
+// MQTT setup for Core 2
+const char* mqtt_server = "mqtt.blendertwin.local";
+const char* topic = "m5stack/core2/data";
+
+#include <ArduinoJson.h>
+
+void publish_sensor_data() {
+  DynamicJsonDocument doc(1024);
+  
+  doc["temperature"] = read_temperature();
+  doc["humidity"] = read_humidity();
+  doc["battery"] = get_battery_percent();
+  doc["voltage"] = read_voltage();
+  
+  String json = String(doc);
+  mqtt_publish(topic, json);
+}
+```
+
+* Module Ecosystem
+:PROPERTIES:
+:CUSTOM_ID: ecosystem
+:END:
+
+#+NAME: m5stack-modules
+| Module          | Function                 | Use Case                       |
+|----         |--|
+| Core 2 Display  | 1.31" touchscreen         | Visualization                   |
+| Core 2 Li-ion   | Built-in battery          | Portable deployment            |
+| Core 2 LoRa     | WiFi/LoRa dual mode       | Long-range communication        |
+| Core 2 Zigbee   | Zigbee 3.0 support        | Smart home integration          |
+
+* Conclusion
+:PROPERTIES:
+:CUSTOM_ID: conclusion
+:END:
+
+The M5Stack Core 2 provides a powerful, modular development platform for IoT edge applications within the Blender Twin IoT controller architecture. Its ESP32-S3 processor, large screen display, and modular ecosystem make it ideal for:
+
+- IoT prototyping
+- Development hubs
+- Edge control
+- Teaching platforms
+
+For more information, refer to [[file:https://shop.m5stack.com/products/m5stack-core2]]
+
+#+STARTUP: showall

@@ -1,0 +1,80 @@
+# Architecture (one LLM, no "two models"):
+# - ollama: only container that uses GPU; runs the model. /api/tags, /api/show, and
+#   chat requests (from the gateway) go here.
+# - mcp: CPU only. Two processes in one container (two ports): 8000 = MCP protocol (Emacs),
+#   8001 = FastAPI agent (control UI, tool-injecting chat, health, vision). Nginx exposes
+#   both under /mcp: /mcp → 8000, /mcp/* → 8001. Chat is forwarded to ollama.
+# - nginx: /mcp and /mcp/* → mcp container; / and /api/* → ollama.
+# Parallel: set OLLAMA_NUM_PARALLEL to 2+ if your GPU has room; 1 is safest for small VRAM.
+# control panel: https://ollama.jetson/mcp/control/
+# All config is in this file for debugging.
+services:
+  mcp_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+        #image: jetson-mcp:latest
+    container_name: mcp_server
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8001:8001"
+      - "127.0.0.1:8002:8002"
+    volumes:
+      - ./:/app
+      - mcp_data:/app/data  # response_log.db when options.log_response is set (overrides host dir)
+    privileged: true
+    environment:
+      - MCP_HTTP_HOST=0.0.0.0
+      - MCP_HTTP_PORT=8002
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_NUM_GPU=20
+      - OLLAMA_NUM_CTX=1024
+      - MCP_HTTP_HOST=0.0.0.0
+      # - MCP_AGENT_DEBUG=1
+      - MCP_HTTP_PORT=8002
+      # One request at a time to Ollama; wait up to 5s for VRAM capacity
+      - OLLAMA_AGENT_MAX_CONCURRENT=1
+      - OLLAMA_CAPACITY_WAIT=5
+      # Retry Ollama on runner crash/OOM: 3 attempts, 5s delay (then 503)
+      - OLLAMA_RETRY_ATTEMPTS=3
+      - OLLAMA_RETRY_DELAY=5
+      # VRAM gate: don't forward if Ollama already uses this many bytes (6 GiB). Set to empty to disable.
+      - OLLAMA_MAX_VRAM_BYTES=6442450944
+      # Smaller model for the tool loop (from /api/tags). Use the most suited of what we have, e.g. llama3.2:1b.
+      - OLLAMA_TOOL_MODEL=llama3.2:1b
+      # When payload options.log_response or log_response is true, store Q&A in SQLite here (join on req_id with perf logs).
+      - OLLAMA_RESPONSE_LOG_DB=/app/data/response_log.db
+      # Camera (cam0): index 0 = /dev/video0. Vision model for describing the scene (e.g. llava, moondream).
+      - CAMERA_INDEX=0
+      - OLLAMA_VISION_MODEL="llava"
+    networks:
+      - webserver-net
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+        reservations:
+          memory: 128M
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/api/health')"]
+      interval: 60s
+      timeout: 3s
+      retries: 5
+      start_period: 25s
+
+  blender-mcp-bridge:
+    image: alpine/socat:latest
+    container_name: blender-mcp-bridge
+    network_mode: "host"
+    command: TCP-LISTEN:19191,fork,reuseaddr TCP:127.0.0.1:9191
+    restart: unless-stopped
+      
+volumes:
+  mcp_data:   # /app/data in mcp (response_log.db for eval)
+
+networks:
+  webserver-net:
+    name: webserver_webserver-net
+    driver: bridge
+    external: true
+

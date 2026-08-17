@@ -1,0 +1,63 @@
+# ========== Dockerfile for Acer Laptop (NVIDIA RTX 5060) ========================
+# GPU: NVIDIA GeForce RTX 5060
+# RAM: 32GB
+# Host: ~/lav/src/ (shared path between host and container)
+# Config: ~/lav/src/pi_config/ (mounted to container)
+# ====================================================================================
+
+FROM ollama/ollama:latest
+
+# Install dependencies
+RUN apt update && apt install -y --no-install-recommends \
+    git curl vim wget ca-certificates \
+    && apt clean && rm -rf /var/lib/apt/lists/*
+
+# Create directory for seamless host↔guest integration
+RUN mkdir -p /root/lav/src /root/.pi \
+    && chmod -R 755 /root/lav/src /root/.pi
+
+# Symlink home directory for convenience
+RUN ln -s /root/lav/src /home/lav/src 2>/dev/null || true
+# Install pi-coding-agent
+RUN curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-prompt --no-onboard
+RUN curl -fsSL https://pi.dev/install.sh |  bash -s -- --no-prompt --no-onboard
+#RUN pipx install pi-coding-agent
+
+# Environment
+ENV PATH="/root/.local/bin:$PATH"
+ENV OLLAMA_KEEP_ALIVE=1h
+ENV OLLAMA_HOST=0.0.0.0
+ENV OLLAMA_VULKAN=1
+
+# Ports
+EXPOSE 11434 18789
+
+HEALTHCHECK CMD curl -f http://localhost:11434/tags || exit 1
+
+
+ARG UID=1000
+ARG GID=1000
+
+# Create user matching host system (same UID/GID)
+RUN set -x \
+    groupadd -g "${GID}" sabeiro \
+    && useradd -u "${UID}" -g "${GID}" -m -d /home/sabeiro sabeiro \
+    && echo "User sabeiro created with UID=${UID}, GID=${GID}" \
+    && set +x
+
+# Fix permissions on host shared directories (bind mounts handled by host)
+RUN mkdir -p /home/sabeiro/lav/src /home/sabeiro/.pi /home/sabeiro/Downloads/llm_model \
+    && chown -R "${UID}:${GID}" /home/sabeiro/lav/src /home/sabeiro/.pi /home/sabeiro/Downloads/llm_model 2>/dev/null || true \
+    && chown -R "${UID}:${GID}" /home/sabeiro
+
+# Set up ollama home with correct ownership
+RUN mkdir -p /home/sabeiro/.ollama \
+    && ln -sf /home/sabeiro/Downloads/llm_model /home/sabeiro/.ollama 2>/dev/null || true \
+    && chown -R "${UID}:${GID}" /home/sabeiro/.ollama
+
+# Switch to the created user and start ollama  
+USER sabeiro
+WORKDIR /home/sabeiro
+
+# Start Ollama service
+CMD ["ollama", "serve"]

@@ -1,0 +1,233 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: knowledge_graph
+:END:
+#+title: knowledge graph
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-05-22>
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_twin/docs/
+
+* knowledge graph
+:PROPERTIES:
+:HTML_CONTAINER_CLASS: highlight
+:ID:       knwoledge_graph-intro
+:ROAM_ALIASES: knwoledge graph intro
+:END:
+
+Knowledge graphs are used to organize and link the knowledge base.
+There are different tools to create an effective and searchable graph which can return useful result but the creation of those graphs is not trivial and creating a hierarchical structure without losing the essential information is pretty hard.
+Here we concentrate on different approaches using minimal tools.
+
+** graph creation
+:PROPERTIES:
+:ID:       knwoledge_graph-creation
+:ROAM_ALIASES: knwoledge graph creation
+:END:
+
+The creation of graphs requires a mixture of manual practices and automated techniques. One extreme is a language model building the connections, the other extreme is the user tagging all the sources.
+Is really important that the user to a certain degree creates the most relevant nodes while writing to be able to highlight the points which will be more relevant in the project. It is not granted that the LLM will grasp the relative importance of some points and creating too many nodes make search unusable. 
+
+- [[https://www.orgroam.com/manual.html][org-roam]] :: where you create nodes inside your documents and all your knowledge gets linked together.
+- [[id:agent_call-graph][agentic graph]] :: where LLMs need to parse your knowledge base
+
+- naming :: LLMs are superior, users tend to give generic names and forget what they point to
+- relevance :: users have better context to judge where nodes should be and why it's important to link there
+- depth :: LLMs are great help to summarize any type of document (even long source code) but they hardly stress the relevance of the text
+
+# C-c " g
+#+PLOT: file:"../../f/f_twin/graph_radar.svg" title:"advantages" transpose:yes type:radar min:0 max:5
+| conf          |workload      | control |relevance|usefulness | integration  | depth    | versatility |
+|---------------+--------------+---------+---------+-----------+--------------+----------+-------------|
+| manual        |          5.0 |      5.0|     4,7 |        5.0|           4.7|       3.0|          3.8|
+| automated     |          2.0 |      3.0|     3.4 |        3.7|           3.8|       5.0|          3.6|
+
+#+CAPTION: Manual vs automated knowledge creation
+#+NAME:   fig:graph_radar 
+#+ATTR_HTML: :max-width 400px :align center
+[[../../f/f_twin/graph_radar.svg]]
+
+It is important to start the earliest to tag and create nodes in the documents to create the important links and references and make the content searchable and LLMs are a great tools to expand the tagging and description of files where never properly indexed. LLMs should as well help in updating frequently the information because there is nothing worse than obsolete, contradictory information.
+
+
+** visualize and navigate
+:PROPERTIES:
+:ID:       knwoledge_graph-viz
+:ROAM_ALIASES: knwoledge graph visualization
+:END:
+
+The graph information can be retrieved by querying one database. Graphs contain one table of nodes and a table of links otherwise called entities and relationships.
+
+Example of org-roam database exploration with [[elisp:org-roam-db-explore]] and query 
+#+begin_src elisp
+(org-roam-db-query [:select * :from nodes])
+#+end_src
+Example of [[https://neo4j.com/docs/cypher-manual/current/introduction/][cypher neo4j]] query:
+#+begin_src sql
+MATCH (n)-[r]->(m) RETURN *; 
+#+end_src
+
+Some UI useful to navigate the database
+
+- [[http://localhost:7474/browser/][neo4j ui]] :: basic UI to visualize your graphs
+- [[https://github.com/yWorks/yfiles-jupyter-graphs-for-neo4j][yFiles]] :: more advanced visualizer for jupyter notebooks
+- [[http://localhost:35901/][org-roam-ui]] :: fully featured, nice looking and useful knowledge graph updating in real time while typing 
+
+* done emacs                                                          :present:
+:PROPERTIES:
+:ID:       knwoledge_graph-emacs
+:ROAM_ALIASES: knwoledge_graph-emacs
+:END:
+
+Emacs integrates bash commands with macros and program outputs, I can connect language models with mcp servers.
+I currently use [[~/lav/src/spiega/emacs/emacs.el][emacs.el]]
+as current init file and  [[~/lav/src/spiega/emacs/.emacs.d/gptel_tools.el][gptel_tools.el]] for connecting with mcp.  [[~/lav/src/spiega/emacs/.emacs.d/gptel_allowed_commands.txt][gptel_tools_allowed commands]] is an additional list of bash commands which the tool allows
+
+Features:
+- LLMs :: I use different packages to interact with the local models
+  - [[https://github.com/s-kostyaev/ellama][ellama]] :: for reasoning and structuring the project and for code examples in any buffer
+  - [[https://github.com/karthink/gptel][gptel]] :: for the integration with mcp
+    - [[https://github.com/karthink/gptel?tab=readme-ov-file#model-context-protocol-mcp-integration][gptel base]] :: base package
+    - [[https://github.com/lizqwerscott/mcp.el][mcp.el]] :: start the hub
+    - [[../../deploy/emacs/.emacs.d][custom gptel tools]] :: user defined tools
+    - [[https://github.com/lizqwerscott/gptel-mcp.el/blob/master/gptel-mcp.el][gptel-mcp]] :: integration between the packages
+  - [[https://github.com/lizqwerscott/mcp.el][mcp]] :: for adding my own tools and external mcp
+  - [[https://github.com/MatthewZMD/aidermacs][aideremacs]] :: connect aider with emacs but was creating too much trash in the repository
+  - [[https://github.com/dnouri/pi-coding-agent][pi agent]] :: connect pi-agent with emacs 
+
+#+property: class mermaid
+#+name: sequence_diagram
+#+begin_src mermaid :file ../../f/f_twin/sequence_diagram.svg :class mermaid :exports none
+sequenceDiagram
+ emacs-->ellama: prompt
+ emacs-->gptel: tools
+ emacs-->pi_agent : instruction
+ pi_agent-->ollama: prompt
+ gptel-->mcp_server: prompt
+ mcp_server-->llama.cpp: instruction
+ gptel-->emacs: code
+ pi_agent-->emacs: code
+#+end_src
+
+#+CAPTION: result of mermaid plot
+#+ATTR_HTML: :alt cat/spider image :title Action! :class img-wrapper
+#+NAME:   fig:org_plot
+#+ATTR_HTML: :align center
+#+RESULTS: sequence_diagram
+[[file:../../f/f_twin/sequence_diagram.svg]]
+
+
+
+* done .org files                                               :present:dev:
+:PROPERTIES:
+:ID:       knwoledge_graph-org_mode
+:END:
+
+The [[https://orgmode.org/features.html][org mode]] is the most expressive way to structure projects or take notes. 
+
+.org files allow a really expressive integration of information:
+- agenda :: to schedule a task or to set an alert [C-c a]
+- tags :: to specify meta information for that section [C-c C-q]
+- status :: whether an action is done or pending [Space - left/right arrow]
+- trees :: explain hierarchical structures [::]
+- [[id:org_files-spreadsheet][spreadsheet]] :: formulas on tables
+- nodes :: tag every element to create interconnections
+- code :: define code to execute `#+begin_src bash` `#+end_src`
+- graph :: interconnect elements 
+- plots :: plot data with gnuplot
+- link :: link to anything: files, websites, buffers, images...
+- [[shell:ls *org][local org files]] :: open new buffers from shell
+- [[https://www.orgroam.com/][roam]] :: organizes the .org node information into graphs
+
+*** .org file examples                                              :NOSLIDE:
+:PROPERTIES:
+:ID:       knwoledge_graph-org_file_example
+:ROAM_ALIASES: knwoledge_graph-org_file_example
+:END:
+
+Add gptel tools like reading the content of a buffer
+#+name: gptel-tooling
+#+begin_src elisp :results output replace
+  ;; (insert (duckduckgo-search-text "intertino"))
+  (defun my/read-buffer-content (buffer-name)
+    (let ((buffer (get-buffer buffer-name)))
+      (if (bufferp buffer)
+  	(with-current-buffer buffer
+  	  (concat "[BUFFER CONTENT]: "(buffer_string)))
+        "[ERROR]: Buffer does not exist")))
+  (gptel-make-tool
+   :name "get-buffer-content-as-string"
+   :function 'my/read-buffer-content
+   :description "returns the string contents inside the emacs buffer"
+   :args '(list '(:name "buffer"
+  		      :type "string"
+  		      :description "buffer name to read"))
+   :category "emacs")
+#+end_src
+
+Display system information
+#+BEGIN: clocktable :scope subtree :maxlevel 2
+#+CAPTION: Clock summary at [2026-05-16 sab 15:16]
+| Headline     | Time   |
+|--------------+--------|
+| *Total time* | *0:00* |
+#+END:
+
+Call internal endpoint
+#+name: blender-mcp
+#+begin_src bash :results output replace
+  curl -s -X PORT http://localhost:9876/run -H 'Content-Type: applicationon/json -d {"text":"Add a cube at origin and rotate it by 90 degrees z"}'
+#+end_src
+
+List the file to edit
+#+name: doc-to-complete
+#+begin_src bash :results output replace
+  ls -S ~/lav/siti/spiega/markdown | tail -n 5
+#+end_src
+
+
+# C-c " g
+#+PLOT: file:"../../f/f_twin/bar_chart.svg" title:"performance" ind:1 deps:(3) type:2d with:histograms set:"yrange [0:]"
+| LLM     | token/s   | H-index |
+|-----------+-----------+---------|
+| qwen2.5   |    257.72 |   21.39 |
+| qwen3.5   |    165.77 |   19.68 |
+| llama3.2  |     71.00 |   11.50 |
+| mistral   |    134.19 |   14.33 |
+|deepseek   |    257.56 |   17.67 |
+
+#+CAPTION: results of org plotting
+#+ATTR_HTML: :align center
+#+NAME:   fig:org_plot
+[[../../f/f_twin/bar_chart.svg]]
+
+
+Find relevant files
+#+name: find-files
+#+begin_src bash :results output replace
+  export fileL=$(rg --hidden --no-ignore -l "auth|token|nemo" | head -n)
+  rg -l "auth|token" ./
+#+end_src
+
+Use context from another session
+
+#+name: use-context
+#+begin_src bash :var instruction="improve code" fileL=find-files :results output replace
+  echo "ciccia" $fileL
+#+end_src
+
+
+** gource
+
+This package is mainly meant to review commit history of a repository:
+
+#+begin_src bash
+cd ~/lav/src/spiega/
+gource
+#+end_src

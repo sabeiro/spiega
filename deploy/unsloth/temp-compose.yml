@@ -1,0 +1,40 @@
+services:
+  unsloth:
+    container_name: unsloth
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+      - "unsloth"
+      - "studio"
+      - "--host"
+      - "0.0.0.0"
+      - "-p"
+      - "8888"
+    volumes:
+      - ${HOME}/Downloads/llm_model/:/workspace/work
+      - ${HOME}/Downloads/llm_cache/git/:${HOME}/.pi/agent/git/
+      - ${HOME}/Downloads/llm_cache/sessions/:${HOME}/.pi/agent/sessions/
+      - ${HOME}/Downloads/llm_cache/node_modules/:${HOME}/.config/opencode/node_modules/
+      - ../pi_config/:${HOME}/.pi
+      - .profile:${HOME}/.profile
+      - .bashrc:${HOME}/.bashrc
+      - ../opencode:${HOME}/.config/opencode/
+      - ${HOME}/lav/src/:${HOME}/lav/src/
+    ports:
+      - "127.0.0.1:8888:8888"
+      - "127.0.0.1:8889:8889"
+      - "127.0.0.1:2222:2222"
+    environment:
+      - MODEL_PATH=/model/gemma-4-E4B-it-Q4_K_M.gguf
+      - MODEL_NAME=Model
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    networks:
+      - webserver-net

@@ -1,3 +1,19 @@
+---
+title: music evaluation
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: music_evaluation
+category: #tech
+roam_refs: music_evaluation
+roam_aliases: ["music_evaluation"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
+
 # evaluation in music
 
 During a music contest we had to evaluate around 600 bands, 3 songs per band. In the final 6 bands are accepted.
@@ -8,7 +24,7 @@ To provide an accurate evaluation of those bands we need to find good criteria t
 
 Usually a quantitative measure of quality is tricky, especially if all features have the same weight, the resolution of the scores is not high enough and the final score is an arithmetic sum.
 
-![music_evaluation](../f/f_kotoba/music_evaluation.png "screenshot of the app")
+![music_evaluation](../../f/f_kotoba/music_evaluation.png "screenshot of the app")
 _app for music evaluation_
 
 
@@ -28,3 +44,6 @@ Let's define some criteria
 
 The evaluation should be normalized by genres, i.e. the rhythm of a rock song should be relative to rock considering that the maximum increamental variations should reach a maximum of 10.
 
+## License
+
+[CC by-sa-nc](https://creativecommons.org/licenses/by-nc-sa/4.0/)

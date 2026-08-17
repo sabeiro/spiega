@@ -1,0 +1,27 @@
+# cp /etc/systemd/system/unison.service
+[Unit]
+Description=Unison File Synchronization Service
+After=network.target
+
+[Service]
+# --- IMPORTANT: Configure these lines for your setup ---
+# The user that will run the Unison process (use a non-root user if possible)
+User=<your_server_username>
+
+# The directory where Unison is installed (adjust if necessary)
+WorkingDirectory=/usr/bin/unison
+
+# The command to execute: This starts Unison in the foreground,
+# which systemd will manage.
+ExecStart=/usr/bin/unison -s /path/to/local/sync/folder -r <remote_user>@<remote_host>:/path/to/remote/sync/folder
+
+# Restart policy: Always restart the service if it crashes or stops unexpectedly.
+Restart=always
+RestartSec=5s
+
+# Standard output and error logging settings
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

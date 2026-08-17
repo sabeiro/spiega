@@ -13,7 +13,7 @@ output:
 
 # data analytics
 
-![aud overlap](../f/f_intertino/audOverlap.gif "audience overlap")
+![aud overlap](../../f/f_intertino/audOverlap.gif "audience overlap")
 _radar plots to show the differences between audiences_
 
 * [2014-2016] [R scripts](https://github.com/sabeiro/intertino/tree/master/R) for data visualization

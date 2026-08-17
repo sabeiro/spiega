@@ -1,0 +1,814 @@
+:PROPERTIES:
+:GPTEL_MODEL: qwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model living in Emacs and a helpful assistant. Respond concisely. gptel loaded
+:GPTEL_TOOLS: Agent Skill TodoWrite Grep Read Glob Write Insert Edit Mkdir Diagnostics YouTube WebFetch WebSearch Eval Bash blender_interface send_to_blender read_buffer echo_message append_to_buffer read_file create_file make_directory list_directory run_shell_command
+:ID: emacs
+:GPTEL_BOUNDS: ((response (2472 2904)))
+:END:
+#+title: emacs
+#+STARTUP: showall
+#+OPTIONS: tex:t
+#+TODO: active done crit milestone todo review knwoledge task
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-06-22>
+
+* emacs
+
+Emacs is the main software I use since 2002. You never feel you understand it enough and every time I tried something different I really couldn't perceive the advantage and went back to emacs.
+I even asked claude/cursor what would be the best tool for writing software with interactive sessions, organize your workflow as per org mode, coordinate the agents and act on the system at the same time and the bot responded: keep using emacs. LLMs helped me to improve the way I use it and now it's hard to exit it since all the agents, programs and news are integrated here and the different outputs get piped together.
+My current configuration is [[~/lav/src/spiega/emacs/emacs.el][.emacs.el]].
+
+*** adaptability
+
+Emacs grows with you. IDEs have many configuration options but they don't give you the freedom to adapt to your workflow and many options are limited.
+Especially the UI doesn't let you create a really readable interface were you just focus on what information is needed.
+Some useful [[https://github.com/Gavinok/emacs.d/blob/main/init.el][examples]]. 
+
+
+*** .org and emacs
+
+Emacs is the most versatile text editor, it has an overwhelming option of integration and configuration.
+It takes time to configure it but the productivity speed is unbeatable.
+I tried IDEs but I find the UI too confusing to concentrate and they force you to work in a single manner.
+Emacs is the best option for .org too:
+
+- export :: many emacs packages export the files into blog posts and slides
+- babel :: you can link system programs to the execution of code blocks
+- roam :: in the background all the information you work on are linked together
+- integration :: .org connects with all the tools like agenda, web-search, journal ... 
+- tools :: emacs allows agent to use tools
+
+More on [[id:agent_call-emacs][emacs]]
+
+*** emacs and LLMs
+
+There are multiple configurations to include LLMs in emacs:
+
+- [[https://github.com/s-kostyaev/ellama][ellama]] :: for reasoning and structuring the project and for code examples in any buffer
+- [[https://github.com/karthink/gptel][gptel]] :: for the integration with mcp
+  - [[https://github.com/karthink/gptel?tab=readme-ov-file#model-context-protocol-mcp-integration][gptel base]] :: base package
+  - [[https://github.com/lizqwerscott/mcp.el][mcp.el]] :: start the hub
+  - [[../../deploy/emacs/.emacs.d][custom gptel tools]] :: user defined tools
+  - [[https://github.com/lizqwerscott/gptel-mcp.el/blob/master/gptel-mcp.el][gptel-mcp]] :: integration between the packages
+- [[https://github.com/lizqwerscott/mcp.el][mcp]] :: for adding my own tools and external mcp
+
+More on [[id:agent_call-emacs][agent_call-emacs]].
+
+* edit
+
+*** search
+
+- isearch :: [[elisp:(isearch)]]
+
+* configuration
+
+** font and faces
+
+#+begin_src elisp
+(custom-set-variables
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#000044" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
+ '(custom-enabled-themes '(misterioso))
+ '(custom-safe-themes
+   '("43b0db785fc313b52a42f8e5e88d12e6bd6ff9cee5ffb3591acf51bbd465b3f4" "47aaf1021bdd742a2f91448f089ad6fe95028c9557638d4333452ce85da980de" default)))
+#+end_src
+
+** packages
+
+To use the packages listed here open this org file in emacs and set straight.el to test the experimental packages
+
+#+begin_src elisp
+;; If you're using straight.el, keep package.el from auto-loading.
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
+(setq package-enable-at-startup nil)
+;; Bootstrap straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el"
+                         user-emacs-directory))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+(use-package package)
+(setq package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+	("melpa-stable" . "https://stable.melpa.org/packages/")
+	("gnu" . "https://elpa.gnu.org/packages/")
+	("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+(setq package-archive-priorities
+      '(("melpa-stable" . 10)
+	("gnu" . 7)
+	("melpa" . 5)))
+(setq package-check-signature 'allow-unsigned)
+(setq package-archive-contents nil)
+(package-initialize)
+(advice-add 'package-refresh-contents :override
+            (lambda (&rest _)
+              (message "Package refresh skipped (run M-x list-packages to refresh archives)"))
+            '((name . no-refresh-on-init)))
+(setq byte-compile-warnings '(cl-functions))
+(use-package cl-lib)
+(let ((default-directory  "~/.emacs.d/"))
+  (normal-top-level-add-subdirs-to-load-path))
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+#+end_src
+
+* software
+
+There is a rich collections of software which can be added to emacs.
+
+explain what the package `org-roam` does in emacs
+
+** econky
+
+#+begin_src elisp
+(add-to-list 'load-path "~/.emacs.d/lisp/econky")
+(require 'econky)
+(defun my/setup-econky-frame (frame)
+  "Configura o layout 80/20 ao abrir um novo frame via emacsclient."
+  (with-selected-frame frame
+    (let ((econky-buffer (get-buffer-create "*econky*")))
+      (econky-start)
+      (let ((window-side (split-window-right (- (window-total-width) 
+                                                (/ (window-total-width) 5)))))
+        (switch-to-buffer "*scratch*")
+        (set-window-buffer window-side econky-buffer)
+        (set-window-dedicated-p window-side t)))))
+(add-hook 'after-make-frame-functions #'my/setup-econky-frame)
+
+#+end_src
+
+
+** spelling
+
+#+begin_src elisp
+(cond
+  ((executable-find "hunspell")
+   (setq ispell-program-name "hunspell")
+   (ispell-set-spellchecker-params)
+   (setq ispell-local-dictionary "en_US,it_IT")
+   (ispell-hunspell-add-multi-dic "en_GB,it_IT")
+   (setq ispell-local-dictionary-alist
+         '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
+  ((executable-find "aspell")
+   (setq ispell-program-name "aspell")
+   (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))))
+(add-hook 'text-mode-hook 'flyspell-mode)
+;; For markdown, use flyspell but skip code blocks and URLs
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (setq flyspell-generic-check-word-predicate
+                  (lambda ()
+                    (not (or (markdown-code-block-at-point-p)
+                             (markdown-inline-code-at-point-p)
+                             (markdown-link-p)))))
+            (flyspell-mode 1)))
+#+end_src
+
+
+
+*** file manager
+
+[[elisp:(dired)]]
+
+*** media player
+
+[[elisp:(emms)]]
+
+#+begin_src elisp
+(use-package emms)
+#+end_src
+
+#+RESULTS:
+
+
+*** shell
+
+Shell in a buffer
+
+- shell :: [C-e s] [[elisp:(eshell)]]
+
+Insert a shell command [[elisp:(org-insert-structure-template "s")]] [C-c C-x s s]
+
+#+begin_example
+(("n" . "notes") ("a" . "export ascii") ("c" . "center")
+ ("C" . "comment") ("e" . "example") ("E" . "export")
+ ("h" . "export html") ("l" . "export latex") ("q" . "quote")
+ ("s" . "src") ("v" . "verse"))
+#+end_example
+
+*** web browser
+
+You can start a web browser [[elisp:(eww '"intertino.it")]] 
+
+*** news feed
+
+Retrieve the news feed [[elisp:(elfeed)]] 
+
+#+BEGIN_SRC elisp
+(use-package elfeed)
+(setq elfeed-feeds
+      '(("https://nullprogram.com/feed/" blog )
+	("https://planet.emacslife.com/atom.xml" )
+	("https://www.rainews.it/rss" rai)
+	("https://yhetil.org/emacs-devel/new.atom" emacs lists devel)
+        ("https://yhetil.org/emacs-bugs/new.atom" emacs lists bugs)
+        ("https://sachachua.com/blog/category/emacs-news/feed/" emacs news)))
+(setf url-queue-timeout 30)
+#+END_SRC
+
+#+RESULTS:
+: 30
+
+*** email
+
+We can use ~mu4e~ package.
+
+#+BEGIN_SRC elisp
+(use-package mu4e)
+#+end_src
+
+*** voice assistant
+
+Voice assistant and dictation 
+
+
+#+begin_src elisp
+;; https://git.sr.ht/~lepisma/emacs-speech-input
+(use-package esi-dictate
+  :straight (:host github :type git :repo "lepisma/emacs-speech-input")
+  :custom
+  (esi-dictate-dg-api-key "<DEEPGRAM-API-KEY>")
+  (esi-dictate-llm-provider <llm-provider-using-llm.el>)
+  ; (esi-dictate-llm-prompt )
+  ; Here is an example configuration for using OpenAI's
+  ; (esi-dictate-llm-provider (make-llm-openai :key "<OPENAI-API-KEY>" :chat-model "gpt-4o-mini"))
+  :bind (:map esi-dictate-mode-map
+              ("C-g" . esi-dictate-stop))
+  :config
+  (setq llm-warn-on-nonfree nil)
+  :hook (esi-dictate-speech-final . esi-dictate-fix-context))
+#+end_src
+
+#+RESULTS:
+
+Could not install
+
+#+begin_src elisp
+(use-package voicemacs
+  :straight (:host github :type git :repo "jcaw/voicemacs" )
+  )
+#+end_src
+
+#+RESULTS:
+: t
+
+* multimedia
+** inkscape
+
+#+begin_src elisp
+(when (use-package 'dbus nil t)
+  (defun inkscape-test ()
+    "Test Inkscape D-Bus integration - creates a new desktop with a rectangle."
+    (interactive)
+    (let* ((desktop (dbus-call-method
+                     :session "org.inkscape" "/org/inkscape/application"
+                     "org.inkscape.application" "desktop_new"))
+           (rect (dbus-call-method
+                  :session "org.inkscape" desktop
+                  "org.inkscape.document" "rectangle"
+                  :int32 100 :int32 100 :int32 100 :int32 100)))
+      (message "Created desktop: %s, rectangle: %s" desktop rect))))
+#+end_src
+
+** lilypond
+#+begin_src elisp
+(require 'lilypond-mode)
+(autoload 'LilyPond-mode "lilypond-mode" "LilyPond Editing Mode" t)
+(add-to-list 'auto-mode-alist '("\\.ly$" . LilyPond-mode))
+(add-to-list 'auto-mode-alist '("\\.ily$" . LilyPond-mode))
+(add-hook 'LilyPond-mode-hook (lambda () (turn-on-font-lock)))
+(add-hook 'LilyPond-mode-hook (function (lambda () (add-to-list 'LilyPond-command-alist '("OpenPDF" "open '%f'")))))
+(defvar ac-lilypond-identifiers
+  '((candidates . (lambda () (all-completions ac-target LilyPond-identifiers)))))
+(defvar ni-LilyPond-keywords
+  (mapcar (lambda (x) (concat "\\" x)) LilyPond-keywords))
+(defvar ac-lilypond-keywords
+  '((candidates . (lambda () (all-completions ac-target ni-LilyPond-keywords)))))
+(defvar ac-lilypond-Creserved-words
+  '((candidates . (lambda () (all-completions ac-target LilyPond-Capitalized-Reserved-Words)))))
+(defvar ac-lilypond-ncreserved-words
+  '((candidates . (lambda () (all-completions ac-target LilyPond-non-capitalized-reserved-words)))))
+(provide 'init-lilypond)
+#+end_src
+
+* coding
+
+How can we configure emacs for coding.
+
+** code assistant
+
+#+begin_src elisp
+(use-package pyvenv)
+(use-package company)
+(use-package company-jedi)
+(use-package flymake)
+(use-package flycheck)
+(use-package pylint)
+(use-package elpy)
+#+end_src 
+
+#+RESULTS:
+
+
+#+begin_src elisp
+(add-hook 'python-mode-hook 'company-jedi-setup)
+(add-hook 'python-mode-hook 'company-jedi-initialize)
+(add-hook 'python-mode-hook 'global-company-mode)
+(add-hook 'python-mode-hook 'elpy-enable)
+(custom-set-variables
+ '(elpy-debug-level 'debug))
+(add-hook 'python-mode-hook 'flymake-mode)
+(custom-set-variables
+ '(flymake-python-pylint-executable "pylint")
+ '(flymake-python-pylint-args '("--rcfile=.pylintrc")))
+(defun my-python-complete ()
+  (interactive)
+  (company-jedi-complete))
+(global-set-key (kbd "C-x c") 'my-python-complete)
+(defun my-python-debug ()
+  (interactive)
+  (elpy-debug))
+(global-set-key (kbd "C-x d") 'my-python-debug)
+#+end_src 
+
+#+RESULTS:
+: my-python-debug
+
+#+begin_src bash
+pip install jedi pylint 
+#+end_src 
+
+** auto-completion
+
+Built-in:
+- dabbrev :: expand: [M-/] complete: [M-C-/]
+- hippie-expand :: 
+- cape :: completion at point
+  
+Extensions:
+- company :: [[elisp:(company-mode)]]  [[elisp:(company-mode nil)]]
+- corfu :: [[elisp:(corfu-mode)]] mode advanced
+- minuet :: [[elisp:(minuet-next-suggestion)]]
+- helm ::
+- ivy :: 
+- eglot :: 
+- devdocs :: 
+
+
+Minibuffer completion
+- vertico ::  [[elisp:(use-package vertico)]]  drop down menu
+- orderless :: [[elisp:(use-package orderless)]] 
+- consult ::
+- marginalia ::
+- embark ::
+ 
+#+begin_src emacs-lisp
+(use-package vertico ;;minibuffer completion
+  :ensure t
+  :init (vertico-mode)
+  :bind (:map minibuffer-local-map
+              ("<next>" . vertico-next-group)
+              ("<prior>" . vertico-previous-group)))
+#+end_src
+
+#+RESULTS:
+: vertico-previous-group
+
+** helm
+
+Heavy coding assistant
+
+#+begin_src emacs-lisp
+(use-package helm ;;display completion
+    :straight t
+    :config
+    )
+#+end_src
+
+#+RESULTS:
+
+** ivy
+
+Display completion
+
+#+begin_src emacs-lisp
+(use-package ivy ;;dispay completion
+)
+#+end_src
+
+#+RESULTS:
+
+** jupyter
+#+begin_src elisp
+(when (executable-find "jupyter")
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((jupyter . t)))
+  (define-key jupyter-org-interaction-mode-map (kbd "C-s-c h") #'jupyter-org-hydra/body)
+  (define-key jupyter-org-interaction-mode-map (kbd "C-c h") nil))
+#+end_src
+** additional
+eglot snippet ement
+
+** orderless
+
+Display completion
+
+#+begin_src emacs-lisp
+(use-package orderless)
+#+end_src
+
+#+RESULTS:
+
+** clang-format
+C language formatter
+#+begin_src elisp
+(use-package clang-format
+    :commands (clang-format-buffer clang-format-on-save-mode))
+(add-hook 'c-mode-hook 'clang-format-on-save-mode)
+(add-hook 'c++-mode-hook 'clang-format-on-save-mode)
+(add-hook 'glsl-mode-hook 'clang-format-on-save-mode)
+#+end_src
+
+** corfu
+
+Corfu basic 
+
+#+begin_src emacs-lisp
+(use-package corfu ;; autocompletion
+  :hook ((prog-mode . (lambda () (setq-local corfu-auto))
+         (shell-mode . corfu-mode)
+         (eshell-mode . corfu-mode))
+  :init
+  (global-corfu-mode)
+  )
+#+END_SRC
+
+#+RESULTS:
+| corfu-mode |
+
+More advanced options
+
+#+begin_src emacs-lisp
+(use-package corfu
+  ;; :disabled
+  :ensure t
+  ;; Optional customization
+  :custom
+  (corfu-cycle t)                 ; Allows cycling through candidates
+  (corfu-auto t)                  ; Enable auto completion
+  (corfu-auto-prefix 10)
+  (corfu-auto-trigger ".")
+  (corfu-auto-delay 0.1)
+  (corfu-popupinfo-delay '(0.5 . 0.2))
+  (corfu-preview-current 'insert) ; insert previewed candidate
+  (corfu-preselect 'prompt)
+  (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
+  ;; Optionally use TAB for cycling, default is `corfu-complete'.
+  :bind (:map corfu-map
+              ("M-SPC"      . corfu-insert-separator)
+              ("TAB"        . corfu-next)
+              ([tab]        . corfu-next)
+              ("S-TAB"      . corfu-previous)
+              ([backtab]    . corfu-previous)
+              ("S-<return>" . corfu-insert)
+              ("RET"        . nil))
+
+  :init
+  (global-corfu-mode)
+  (corfu-history-mode)
+  (corfu-popupinfo-mode)) ; Popup completion info
+#+end_src 
+
+** cape
+
+
+
+#+begin_src emacs-lisp
+(use-package cape
+  :ensure t
+  :defer 10
+  :bind ("C-c f" . cape-file)
+  :init
+  ;; Add `completion-at-point-functions', used by `completion-at-point'.
+  (defun my/add-shell-completion ()
+    (interactive)
+    (add-to-list 'completion-at-point-functions 'cape-history)
+    (add-to-list 'completion-at-point-functions 'pcomplete-completions-at-point))
+  (add-hook 'shell-mode-hook #'my/add-shell-completion nil t)
+  :config
+  ;; Make capfs composable
+  (advice-add #'eglot-completion-at-point :around #'cape-wrap-nonexclusive)
+  (advice-add #'comint-completion-at-point :around #'cape-wrap-nonexclusive)
+  ;; Silence then pcomplete capf, no errors or messages!
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent))
+#+end_src 
+
+#+RESULTS:
+: cape-file
+
+** hippie-exp
+
+
+#+begin_src emacs-lisp
+(use-package hippie-exp
+  :bind ([remap dabbrev-expand] . hippie-expand)
+  :commands (hippie-expand)
+  :custom
+  (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'"))
+  (dabbrev-upcase-means-case-search t)
+  :config
+  (setopt hippie-expand-try-functions-list
+          '(tempel-expand
+            try-expand-all-abbrevs
+            try-expand-dabbrev
+            try-expand-dabbrev-all-buffers
+            try-expand-dabbrev-from-kill
+            try-complete-lisp-symbol-partially
+            try-complete-lisp-symbol
+            try-complete-file-name-partially
+            try-complete-file-name)))
+#+END_SRC
+
+	    
+* LLM coding assistant 
+
+Language models without IDE capabilities have limited added value. We can in principle build a coding assistant within emacs but I prefer by now to use different coding assistant with different capabilities.
+My workflow:
+- simple tasks :: and test every progress. Agents taking too many autonomous decisions are difficult to oversee
+- little interpretation :: agents need to understand and wait for agreement
+
+Well configured coding assistants don't need extreme performant models 
+
+- [[https://github.com/dnouri/pi-coding-agent][pi agent]] :: [[https://pi.dev/][pi-coding-agent]] the one I'm currently use the most
+- [[https://github.com/MatthewZMD/aidermacs][aideremacs]] :: [[https://aider.chat/][aider]] too many interactions 
+- [[https://github.com/colobas/opencode.el][opencode]] :: [[https://opencode.ai/][opencode]] in emacs
+
+More on [[id:agent_context][agentic context]]
+
+
+** ollama chat
+
+#+begin_src elisp
+;; Ollama client helpers
+(defun my/ollama-chat (prompt)
+  "Send PROMPT to Ollama and show the response in a temp buffer."
+  (interactive "sPrompt: ")
+  (let* ((url-request-method "POST")
+         (url-request-extra-headers
+          '(("Content-Type" . "application/json")))
+         (url-request-data
+          (encode-coding-string
+           (json-encode
+            `(("model" . "llama3.2")
+              ("stream" . :json-false)
+              ("prompt" . ,prompt)))
+           'utf-8))
+         (buf (url-retrieve-synchronously "http://localhost:11434/api/generate")))
+    (with-current-buffer buf
+      (goto-char (point-min))
+      (re-search-forward "^$")
+      (forward-char 1)
+      (let ((json-object-type 'alist))
+        (message "%s" (alist-get 'response (json-read)))))
+    (kill-buffer buf)))
+;; Example command for Blender prompts
+(defun my/blender-prompt (task)
+  "Prepare a Blender instruction from TASK."
+  (interactive "sBlender task: ")
+  (my/ollama-chat
+   (concat
+    "Rewrite this as a concise Blender instruction: "
+    task)))
+(global-set-key (kbd "C-c o") #'my/ollama-chat)
+(global-set-key (kbd "C-c b") #'my/blender-prompt)
+;; Meta bindings for convenience
+(global-set-key (kbd "M-a") #'save-buffer)
+(global-set-key (kbd "M-s") #'save-buffer)
+;; (unless (package-installed-p 'blender-mode)
+;;   (package-install 'blender-mode))
+;; (use-package 'blender-mode)
+#+end_src
+
+
+     
+** aider emacs
+
+
+
+#+begin_src elisp
+(use-package aidermacs
+    :ensure t
+    :bind (("C-c f x" . aidermacs-transient-menu))
+    :config (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
+    :custom
+    (aidermacs-default-chat-model 'code)
+    (aidermacs-default-model "ollama_chat/qwen3.5:9b"))
+(defun my-aider-add-related (query)
+  (interactive "sSearch context: ")
+  (let* ((cmd (format "rg -l \"%s\"" query))
+	 (files (split-string (shell-command-to-string cmd) "\n" t))
+	 (aider-cmd
+	  (concat "aider " (mapconcat #'identity files " "))))
+    (vterm)
+    (vterm-send-string aider-cmd)
+    (vterm-send-return)))
+
+#+end_src
+
+** elmo
+
+#+begin_src elisp
+(defun elmo-python-code ()
+  "Function to integrate ELMo-like functionality using Python."
+  (interactive)
+  ;; Assuming you have a Python script that interacts with ELMo and
+  returns results.
+  (let ((python-eldoc-buffer (make-temp-file "elmocode" nil t)))
+    (with-current-buffer python-eldoc-buffer
+      (insert "#!/usr/bin/env python3\n"
+              "import json\n"
+              "\n"
+              "def elmo_functionality(text):\n"
+              f"   # Dummy ELMo function that returns a JSON
+              object. Replace with actual ELMo call.\n"
+              f"   return {json.dumps({'result': 'processed
+              text'})}\n"
+              "\n"
+              "result = elmo_functionality('"'"'Your input text
+              here'"'"')\n")
+      (write-region nil nil python-eldoc-buffer)
+      (shell-command (concat "chmod +x " python-eldoc-buffer))
+      (call-process-shell-command
+       python-eldoc-buffer
+       :stderr nil
+       :read-only t
+       :treat-piped-output-as-errors nil))
+    ;; Now you can access the result in your current buffer.
+    (message "ELMo function call completed. Result is accessible via `M-x elmo-python-code`")
+    ))
+(global-set-key (kbd "<f12>") 'elmo-python-code)
+#+end_src
+
+
+*** code REPL
+
+Emacs has many code REPL features were you can send lines of code and test the execution and the data transformation.
+I mainly use REPL with:
+
+- python :: I can access all the methods and help in the panel
+- IoT :: I can open a serial terminal
+- nodejs :: I can test promises too
+- R :: visualize on the fly the results
+- octave :: for more complex mathematical functions
+
+* other packages
+
+*** treesit
+
+Source code into syntax tree
+
+- activate :: [[elisp:(tree-sitter-mode)]]
+
+#+begin_src elisp
+(use-package treesit-auto)
+(use-package tree-sitter)
+(use-package tree-sitter-org
+  :straight (:host github :type git :repo "Idorobots/tree-sitter-org" )
+  )
+#+end_src
+
+#+RESULTS:
+: t
+
+*** ido-mode
+
+
+* bot review
+
+The provided Emacs configuration file demonstrates a comprehensive setup tailored for efficient coding and development. The work encompasses various features that enhance productivity, code management, and collaboration within the software lifecycle.
+
+** Key Features:
+
+1. **Customization and Personalization**:
+   - Themes: Uses the 'misterioso' theme with custom colors to improve visual comfort.
+   - Font Settings: Adjustable font size through global shortcuts for better readability.
+   - Transparency Control: Toggle transparency settings with `C-c l`.
+
+2. **Package Management**:
+   - Extensive Package List: Includes packages like `gptel`, `eradio`, `ess-R-data-view`, and more, tailored for development needs.
+   - Auto-Install and Update: Packages are managed using MELPA, ensuring up-to-date features and tools.
+
+3. **Code Mode Enhancements**:
+   - Multiple Language Support: Extensive support for languages including R, Python, JavaScript, CSS, HTML, PHP, etc., with mode-specific functionalities like indentation and beautification.
+   - Interactive Code Execution: Features like running code snippets directly from Emacs buffers for quick testing and prototyping.
+
+4. **Development Tools**:
+   - Version Control Integration: Basic backup settings to prevent data loss.
+   - Desktop Mode: Restores open buffers across sessions, enhancing productivity.
+   - Shell Interactions: Enhanced shell modes for better integration with Node.js and Python.
+
+5. **Project Management**:
+   - Projectile Integration: For managing projects efficiently, particularly useful with `platformio-mode`.
+   - Keybindings for common project tasks like building, uploading, serial communication, and cleaning.
+
+6. **AI and LLM Integration**:
+   - Ellama (formerly gptel) for AI-driven coding assistance, enabling features like code review, summarization, translation, and more.
+   - Minuet for inline code suggestions using AI models.
+
+7. **Spelling and Documentation**:
+   - Flyspell integration for on-the-fly spelling correction in text and markdown modes.
+   - ESS (Emacs Speaks Statistics) for R development with enhanced interactivity.
+
+8. **Custom Functions and Commands**:
+   - Various custom functions like `my-python-auto-run`, `toggle-transparency`, and more, tailored to specific workflows.
+   - Keybindings for quick access to features like running Python code snippets or toggling transparency.
+
+** Usage and Importance:
+
+- **Enhanced Productivity**: Features like auto-completion, inline suggestions, and AI-driven assistance significantly reduce the time spent on repetitive tasks and improve overall coding efficiency.
+- **Collaboration**: Tools like `gptel` facilitate real-time collaboration with developers and stakeholders, enabling quick feedback and discussions.
+- **Learning and Development**: Comprehensive language support and documentation tools encourage continuous learning and skill development.
+- **Error Prevention**: Features like flyspell help catch spelling errors early in the coding process, reducing bugs.
+
+Overall, this configuration represents a robust setup for modern software development using Emacs. It integrates various features that cater to different aspects of the software lifecycle, from initial planning and coding to deployment and documentation, making it an essential tool for developers seeking an efficient and flexible development environment.
+
+* 2026
+** 2026-07 July
+*** 2026-07-24 Friday
+**** customize face
+
+Entered on [2026-07-24 Fri 14:09]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::(custom-set-variables]]
+**** binding hooks
+Entered on [2026-07-24 Fri 14:18]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::global-set-key \[C-mouse-4\] 'text-scale-increase]]
+**** environment
+Entered on [2026-07-24 Fri 14:18]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::prefer-coding-system 'utf-8]]
+**** packages
+
+Entered on [2026-07-24 Fri 14:18]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::;;----------------------------------PACKAGES---------------------------------------]]
+**** interface
+Entered on [2026-07-24 Fri 14:18]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::;;-----------------------------------INTERFACE-----------------------------]]
+**** modes
+Entered on [2026-07-24 Fri 14:19]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::;;-----------------------------------MODES-----------------------------]]
+**** org-mode settings
+Entered on [2026-07-24 Fri 14:19]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::;;---------------------------------------Org-mode-settings-----------------------------------]]
+**** autocomepletion
+
+Entered on [2026-07-24 Fri 14:21]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::;;;---------------------------------------autocompletion--------------------------------------]]
+**** coding assistant
+
+Entered on [2026-07-24 Fri 14:23]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::;;-----------------------------------coding-assistant----------------------------]]
+**** interactive coding
+Entered on [2026-07-24 Fri 14:23]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::;;-----------------------------------interactive-coding----------------------------]]
+**** LLM assistance
+Entered on [2026-07-24 Fri 14:25]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::;;-----------------------------------LLM-----------------------------]]
+**** multimedia
+
+Entered on [2026-07-24 Fri 14:26]
+  
+  [[file:~/lav/src/spiega/emacs/emacs.el::;;-----------------------------------Multimedia-----------------------------]]

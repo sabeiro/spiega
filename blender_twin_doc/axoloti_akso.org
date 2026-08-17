@@ -1,0 +1,250 @@
+:PROPERTIES:
+:ID: axoloti_akso
+:ROAM_ALIASES: axoloti, akso, open-hardware
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response 0 50000))
+:END:
+#+TITLE: axoloti :: akso 
+#+DATE: 2026-06-19 13:45
+#+OPTIONS: toc:nil num:nil html:true
+#+DESCRIPTION: Hardware knowledge base for axoloti and akso open hardware platforms
+
+#+STARTUP: showall
+
+* axoloti: Open Source Hardware Audio Platform
+#+NAME: axoloti-overview
+| Component        | Specification                                 |
+|------------------|----------------------|-----|---------------|-----|
+| **MCU**          | ESP32-S3 Multi-Core (240-300MHz)                 |
+| **RAM**          | 8-16 MB SRAM                                    |
+| **Flash**        | 8-32MB (configurable)                            |
+| **WiFi**         | 802.11 b/g/n/ac (2.4/5GHz, 802.11ax)             |
+| **BT**           | BLE 5.2 + Classic BT                            |
+| **ADC**          | 4x 12-bit + 2x 12-bit ADC1/ADC2                   |
+| **PWM**          | 80MHz (up to 16 channels for audio)              |
+| **DAC**          | I2S + PWM-based audio output                     |
+| **GPIOs**        | 32 total                                         |
+| **I2S**          | 4-bit audio interface                             |
+| **I2C**          | Multiple I2C peripherals                         |
+| **SPI**          | 1x SPI + SD/MMSD                                |
+| **Voltage**      | 3.3V / 5V tolerant                              |
+| **Form**         | 1.2in x 0.8in x 0.12in (compact)                |
+| **Community**    | GitHub (Axoloti project)                         |
+| **OS**           | Custom firmware (ESP-IDF based)                 |
+
+* axoloti Software Stack
+
+** Audio Processing Capabilities
+#+NAME: axoloti-audio
+- Real-time audio DSP
+- 80MHz PWM for high-res audio
+- Multiple DAC channels
+- I2S stereo output
+- Audio visualization
+- VCA control
+
+** Development Tools
+| Tool              | Language | Purpose                    |
+|-------------------|------|-----|----|
+| axoloti_firmware  | C/C++   | Core DSP engine               |
+| Axoloti Web IDE   | Web-based | Block-based programming      |
+| ESP-IDF           | C/C++   | Advanced firmware development |
+| axoloti-python    | Python  | Scripting interface           |
+
+* GPIO Configuration
+
+** Standard Axoloti I/O
+#+NAME: axoloti-gpio
+| Pin     | Function               | Default Use           |
+|------|-----|----------------|----|
+| GPIO    | Digital I/O             | Generic use             |
+| I2S     | Audio Interface         | Audio input/output      |
+| I2C     | Sensor communication    | Accelerometer, temp     |
+| ADC     | Analog input            | Audio, voltage sensing  |
+| PWM     | Servo/LED control       | Servo, lighting         |
+| SPI     | Flash/SD card           | Storage                 |
+
+* Branch: akso (Advanced Open Hardware)
+#+NAME: akso-overview
+** akso Features
+- Extended audio capabilities
+- Advanced DSP libraries
+- Network audio protocols (RTP, RTCP)
+- Multi-node audio networking
+- Enhanced touch control
+- Custom firmware features
+
+** akso Architecture
+| Layer                    | Protocol                         |
+|--------------------------|---------------|------------|
+| **Application Layer**    | JSON-RPC, MQTT                  |
+| **Transport Layer**      | TCP/UDP, BLE Mesh               |
+| **Network Layer**        | WebSocket, HTTP                 |
+| **Audio Layer**          | I2S, PulseWidth Modulation      |
+
+** akso vs axoloti
+| Feature                 | axoloti | akso |
+|-------------------------|-----------|------|
+| **Purpose**             | Generic ESP32      | Audio-focused |
+| **Audio Channels**      | 80MHz PWM       | Dual 80MHz PWM      |
+| **DAC Output**          | PWM + I2S        | Enhanced I2S      |
+| **Network Audio**       | Basic             | RTP/RTCP/AVTP      |
+| **DSP Libraries**       | Standard             | Advanced DSP libs  |
+
+* Wiring Diagram
+
+** Sensor Integration
+#+NAME: axoloti-wiring
+| Sensor/Actuator    | axoloti Pin   | Type                    |
+|--------------------|-----------------|------------|
+| **MPU6050 IMU**   | I2C (SCL/SDA)  | I2C (0x68)               |
+| **ADS1115 ADC**   | I2C SDA/SCL    | I2C (0x48)               |
+| **OLED Display**  | I2C SDA/SCL    | I2C (0x3C)               |
+| **RGB LED**       | GPIO 2-5       | PWM RGB Strip            |
+| **Buzzer**        | GPIO 6         | DAC Output               |
+| **Servo**         | GPIO 10        | 80MHz PWM Pulse      |
+
+** Audio Chain Setup
+| Component         | Connection         | Purpose                |
+|-------------------|-----------|--------------|
+| **MP3 Decoder**   | SD Card         | Music playback           |
+| **USB Audio**     | USB OTG         | USB audio input        |
+| **Line In**       | I2S            | External audio         |
+| **Line Out**      | I2S            | Audio output           |
+| **Power Amp**     | 3.5mm Out       | Amplifier input        |
+
+* Code Examples
+
+** axoloti Audio Loop
+#+BEGIN_SRC cpp
+#include <axoloti_core.h>
+#include <axoloti_dsp.h>
+
+// Initialize audio
+void axoloti_init() {
+  // Setup audio buffer
+  audio_buffer.allocate(4096);
+  audio_buffer.fill_with_silence();
+}
+
+// Audio processing loop
+void axoloti_loop() {
+  // Read input
+  int16_t sample = audio_input.read();
+  
+  // Apply DSP
+  float gain = 0.8f;
+  float filtered = sample * gain;
+  
+  // Write to output
+  audio_output.write((int16_t)filtered);
+}
+
+// Audio initialization
+void axoloti_start() {
+  axoloti_init();
+  axoloti_loop();
+}
+```
+
+#+END_SRC
+
+** akso MQTT Bridge
+#+BEGIN_SRC cpp
+#include <PubSubClient.h>
+#include <axoloti_mqtt.h>
+
+// MQTT connection to Blender Twin
+PubSubClient client(server, 1883, callback);
+
+void setup() {
+  Serial.begin(115200);
+  client.begin("axoloti.local");
+  client.setServer("broker.blendertwin.local", 1883);
+  
+  // Subscribe to topics
+  client.subscribe("axoloti/control/");
+}
+
+void loop() {
+  client.loop();
+  
+  // Publish status
+  client.publish("axoloti/status", "active");
+  delay(1000);
+}
+```
+
+#+END_SRC
+
+* Project Integration
+
+** Bluetooth LE Audio Configuration
+#+NAME: axoloti-ble-setup
+| Parameter            | Value                          | Purpose                     |
+|-------------------|------------------------------|------|-----|
+| **BLE Mode**         | CONFIG_BT_DUALMODE            | Classic + BLE               |
+| **Advertising**      | CONFIG_BLUETOOTH_ADVERTISING  | Advertising enabled         |
+| **GAP Role**         | BLE Central / Peripheral       | Device role switching       |
+| **Connection**      | BT Classic LE Dual            | Audio profile support       |
+| **MTU**              | 255 bytes                      | BLE audio MTU               |
+| **Interval**         | 5-30ms                         | Advertising interval        |
+
+* GPIO Limitations Note
+:PROPERTIES:
+:ID: axoloti-gpio-limitations
+:END:
+
+#+NAME: gpio-limitations
+- 32 GPIOs total
+- Reserved pins:
+  - I2S interface (3 pins)
+  - Audio ADC (ADC1/ADC2 pins)
+  - SDIO interface (pinmux)
+- I2C: Up to 2 buses
+- PWM: 80MHz for audio/actuation
+- DAC: I2S + PWM output
+
+* Power Requirements
+| Parameter      | Value                    |
+|-------------------|------------------|
+| **Input Voltage**    | 3.3V - 5V        |
+| **Quiescent Current**| ~150mA (WiFi off)|
+| **Audio Active**     | ~200-400mA       |
+| **WiFi TX Current**  | ~400-700mA       |
+| **BLE TX Current**   | ~150-300mA       |
+| **Peak Current**     | ~600mA           |
+| **Deep Sleep**       | ~45-50μA         |
+| **RTC Sleep**        | ~50-100μA        |
+
+* Recommended Tools
+
+** Development Tools
+#+NAME: axoloti-recommended-tools
+| Tool                   | Purpose                        |
+|------------------------|-------------------------------|
+| ESP32 Arduino Core     | Firmware programming            |
+| PlatformIO + ESP-IDF   | Advanced development            |
+| axoloti IDE            | Block-based audio programming   |
+| axoloti-python         | Python DSP scripting            |
+| BLE Scanner            | Device discovery               |
+| Wireshark              | Audio packet analysis           |
+| Audio Scope            | Waveform visualization          |
+| MQTT Explorer          | Topic monitoring               |
+
+* Hardware Diagnostics
+#+NAME: axoloti-diagnostics
+| Check           | Command/Method                    | Expected Output        |
+|-----------------|-------------------------|----|--|
+| **WiFi Status**   | WiFi.status()                  | 2 (connected)          |
+| **Audio Test**    | axoloti_audio_init()           | No errors              |
+| **BLE Mode**      | esp_ble_peripheral_config_get()| CONFIG_BT_MODE_ALL    |
+| **ADC Reading**   | analogRead()                   | 0-4095 (12-bit)        |
+| **I2S Test**      | I2S.write()                    | Audio signal output      |
+| **GPIO Pin Test** | digitalRead(pin)               | HIGH/LOW              |
+| **Flash Check**   | get.flashSize()                | 8-32MB               |
+
+This documentation reflects the axoloti and akso open hardware platform configuration for the Blender Twin IoT sensor controller architecture.

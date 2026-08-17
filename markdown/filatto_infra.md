@@ -1,9 +1,13 @@
 ---
-title: "Filatto"
+title: filatto infra
 author: Giovanni Marelli
-date: 2019-11-18
+date: 2019-09-12
 rights:  Creative Commons Non-Commercial Share Alike 3.0
 language: en-US
+id: filatto_infra
+category: #tech
+roam_refs: filatto infra
+roam_aliases: ["filatto infra"]
 output: 
 	md_document:
 		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
@@ -32,7 +36,7 @@ Filatto is a SaaS for micro-mobility based delivery which is able to interact be
 
 In this document we present the infra design for the order and delivery 
 
-![](../f/f_ops/filatto_structure.svg "filatto structure")
+![](../../f/f_ops/filatto_structure.svg "filatto structure")
 
 _Sketch of the infra suggested_
 
@@ -49,7 +53,7 @@ The suggested ERP for the project is [odoo](https://www.odoo.com/), reason is:
 * website/e-commerce builder
 * full-API
 
-![odoo](../f/f_ops/odoo.png "odoo apps")
+![odoo](../../f/f_ops/odoo.png "odoo apps")
 _view on odoo apps_
 
 In any case the middelware is a separate component and can be integrated with any full-API ERP.
@@ -62,7 +66,7 @@ The middelware is the key component of the project and hadles all the requests b
 * delivery app
 * ERP
 
-![filatto_infra](../f/f_ops/filatto_infra.svg "filatto infra")
+![filatto_infra](../../f/f_ops/filatto_infra.svg "filatto infra")
 _The middelware will receive and map supply and demand_
 
 
@@ -74,7 +78,7 @@ The data storage strategy consists in using different types of DBs to store and 
 * Maps and areas as geo shapes in mongo 
 * Customers preferences as graphs
 
-![filatto_infra](../f/f_ops/filatto_db.svg "filatto infra")
+![filatto_infra](../../f/f_ops/filatto_db.svg "filatto infra")
 _storage and suggested data bases_
 
 ## optimization
@@ -87,7 +91,7 @@ An additional service will take care of optimizations:
 
 Plese refer to [infra](antani_infra.html)
 
-![antani_infra](../f/f_ops/antani_infra.svg "antani infra")
+![antani_infra](../../f/f_ops/antani_infra.svg "antani infra")
 _deployment of antani_
 
 

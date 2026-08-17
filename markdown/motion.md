@@ -1,9 +1,13 @@
 ---
-title: "Motion"
+title: motion solutions
 author: Giovanni Marelli
-date: 2019-07-02
+date: 2019-09-12
 rights:  Creative Commons Non-Commercial Share Alike 3.0
 language: en-US
+id: motion_solution
+category: #tech
+roam_refs: motion solution
+roam_aliases: ["motion solution"]
 output: 
 	md_document:
 		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
@@ -11,7 +15,7 @@ output:
 
 # motion solution
 
-![dens_germany](../f/f_mov/dens_germany.png "dens germany")
+![dens_germany](../../f/f_mov/dens_germany.png "dens germany")
 _density of gps events across germany_
 
 # data type
@@ -37,15 +41,15 @@ In between we calculate the average position and time for each box.
 
 We can than convert the octrees in polygons and display the density values with a color map rendering first the large boxes.
 
-![dens_city](../f/f_mov/dens_city.png "dens_city")
+![dens_city](../../f/f_mov/dens_city.png "dens_city")
 _densities in the city_
 
-<!-- ![dens_germany](../f/f_mov/dens_germany.png "dens_germany") -->
+<!-- ![dens_germany](../../f/f_mov/dens_germany.png "dens_germany") -->
 <!-- _density overall the country_ -->
 
 We can clearly distinguish users driving on main roads
 
-![dens_street](../f/f_mov/dens_street.png "dens_street")
+![dens_street](../../f/f_mov/dens_street.png "dens_street")
 _density on the streets_
 
 # trajectories
@@ -56,12 +60,12 @@ We pivot all entries by the user id and we create a new dataframe where on each 
 |-|-|-|-|-|
 933a58bfed63df92570...| `[[1556210261, 13.497, 52.395], [155626...`|976|423|15562|
 
-![trajectory_country](../f/f_mov/trajectory_country.png "trajectory_country")
+![trajectory_country](../../f/f_mov/trajectory_country.png "trajectory_country")
 _trajectory country_
 
 All trajectories are defined by a bounding box which makes spatial filtering efficient
 
-![dens_traj](../f/f_mov/dens_traj3.png "dens traj")
+![dens_traj](../../f/f_mov/dens_traj3.png "dens traj")
 _densities and trajectories_
 
 ## frequencies
@@ -72,12 +76,12 @@ We create a dataframe each day to know how many users we see in the country
 |-|-|
 |00002af79399fef8eb17522aedba3cedc45bb3cd193a34...|85|
 
-![user_frequency](../f/f_mov/user_frequency.png "user frequency")
+![user_frequency](../../f/f_mov/user_frequency.png "user frequency")
 _user frequency_
 
 If we look at the distribution of events per users we notice extreme numbers and the median drops to 19
 
-![user_distribution](../f/f_mov/user_distribution.png "user distribution")
+![user_distribution](../../f/f_mov/user_distribution.png "user distribution")
 _user distribution_
 
 # Speed profile
@@ -90,38 +94,38 @@ We iterate over all trajectories and calculate the point to point space-time dif
 
 Where we calculate the speed as a normal equation of motion
 
-![speed_calculation](../f/f_mov/speed_calculation.png "speed_calculation")
+![speed_calculation](../../f/f_mov/speed_calculation.png "speed_calculation")
 _speed calculation_
 
 To calculate the segment speed we need first to smooth the input variables inducing correlation between the points. 
 Without smoothing data are too noisy to be processed
 
-![speed_noSmooth](../f/f_mov/speed_noSmooth.png "speed no smoothing")
+![speed_noSmooth](../../f/f_mov/speed_noSmooth.png "speed no smoothing")
 _speed, no smoothing_
 
 If we use a running average space-time and their derivatives are better defined
 
-![speed_runningAv](../f/f_mov/speed_runningAv.png "speed running average")
+![speed_runningAv](../../f/f_mov/speed_runningAv.png "speed running average")
 _speed, running average_
 
 If we use a Kaiser smoothing we have smooth profiles across all variables.
 
-![speed_kaiser](../f/f_mov/speed_kaiser.png "speed kaiser smoothing")
+![speed_kaiser](../../f/f_mov/speed_kaiser.png "speed kaiser smoothing")
 _speed, kaiser smoothing_
 
 In this way we can calculate the speed density across the city and clearly see the network infrastructure
 
-![speed_density](../f/f_mov/speed_density.png "speed density")
+![speed_density](../../f/f_mov/speed_density.png "speed density")
 _speed density_
 
 We can also observe the distribution of chirality across the city
 
-![chirality_density](../f/f_mov/chirality_distribution.png "chirality density")
+![chirality_density](../../f/f_mov/chirality_distribution.png "chirality density")
 _chirality density_
 
 and the distribution of angles, interesting there are some spots strongly polarized
 
-![angle_density](../f/f_mov/angle_distribution.png "angle density")
+![angle_density](../../f/f_mov/angle_distribution.png "angle density")
 _angle density_
 
 ## motion
@@ -149,31 +153,31 @@ x1|y1|t1|x2|y2|t2|sr|
 
 User defined definition of activities and trips
 
-![speed profile](../f/f_triang/speed_profile.svg "speed profile")
+![speed profile](../../f/f_triang/speed_profile.svg "speed profile")
 _speed profile and the threshold defining activities_
 
 We can display the dwelling and the trips across the city
 
-![dwelling_city](../f/f_mov/dwelling_city.png "dwelling_city")
+![dwelling_city](../../f/f_mov/dwelling_city.png "dwelling_city")
 _dwelling and moving across the city_
 
 Changing the threshold we can distinguish different types of movemens and we have completely different figures
 
-![odm_dwelling](../f/f_mov/odm_dwelling.png "dwelling odm")
+![odm_dwelling](../../f/f_mov/odm_dwelling.png "dwelling odm")
 _moving and dwelling_
 
 We sum up relations grouping first on destinations and than on origins and iterate coarsing the geometry until we reach similar counts per leg.
 
 We have many relations for each node
 
-![motion_detail](../f/f_mov/motion_detail.png "motion detail")
+![motion_detail](../../f/f_mov/motion_detail.png "motion detail")
 _inner city relations_
 
 ## dwelling
 
 Dwelling can be disconnected from the octree index
 
-![dwelling_heatmap](../f/f_mov/dwelling_heatmap.png "dwelling heatmap")
+![dwelling_heatmap](../../f/f_mov/dwelling_heatmap.png "dwelling heatmap")
 _dwelling heatmap_
 
 
@@ -182,12 +186,12 @@ _dwelling heatmap_
 
 We want to compare mobile antenna connections with gps signal density, 
 
-![retail_density](../f/f_mov/retail_density.png "retail density")
+![retail_density](../../f/f_mov/retail_density.png "retail density")
 _retail areas and densities_
 
 Compared to mobile data we have a completely different ranking of locations
 
-![retail_ranking](../f/f_mov/retail_ranking.png "retail ranking")
+![retail_ranking](../../f/f_mov/retail_ranking.png "retail ranking")
 _re shuffling of ranking of retail areas_
 
 

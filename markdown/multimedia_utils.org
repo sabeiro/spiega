@@ -1,0 +1,134 @@
+:PROPERTIES:
+:GPTEL_MODEL: qwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model living in Emacs and a helpful assistant. Respond concisely. gptel loaded
+:GPTEL_TOOLS: Agent Skill TodoWrite Grep Read Glob Write Insert Edit Mkdir Diagnostics YouTube WebFetch WebSearch Eval Bash blender_interface send_to_blender read_buffer echo_message append_to_buffer read_file create_file make_directory list_directory run_shell_command
+:ID: multimedia_utils
+:GPTEL_BOUNDS: ((response (3631 4063) (15939 15955) (15956 16010) (16011 16092) (16093 16237) (16238 16277)))
+:END:
+#+title: multimedia utils
+#+STARTUP: showall
+#+OPTIONS: tex:t
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+TODO: active done crit milestone todo review knwoledge task
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-06-22>
+
+* Multimedia utils
+
+Here is a collection of useful scripts created over 16y to manage multimedia processing.
+
+** audio
+
+#+name: audio_extract
+#+begin_src bash :exports both :results output replace
+#cat ~/lav/src/malastro/media/audio_extract.sh
+ffmpeg -i $1 -q:a 0 -map a $outF.mp3
+#+end_src
+
+** images
+
+*** video to gif
+
+We need to convert video clips into light gif for blog posts
+
+#+name: video_to_gif
+#+begin_src bash :exports both :results output replace
+cd ~/VideoProd/clip/
+for i in *mp4; do
+    echo ${i/.mp4/.gif} 
+    #ffmpeg -i $i -y -vf "fps=10,scale:500-1,palettegen" -loop 0 ${i/.mp4/.gif}
+    ffmpeg -i $i -vf "palettegen" -y palette.png
+    #ffmpeg -i $i -y -vf "fps=10" -i palette.png -filter_complex "paletteuse" -loop 0 ${i/.mp4/.gif}
+    ffmpeg -i $i -y -vf "fps=10,scale=500:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=32:stats_mode=single:[p];[s1][p]paletteuse=dither=floyd_steinberg" \
+	   ${i/.mp4/.gif}
+done
+#+end_src
+
+#+RESULTS: video_to_gif
+: org_mode_11.gif
+: org_mode_12.gif
+
+
+
+*** remove silence from video
+
+We want to remove silence from video clip
+
+#+name: video_no_silence
+#+begin_src bash :exports both :results output replace :async t
+cd ~/VideoProd/clip/
+bash ~/lav/src/malastro/media/video_cut_silence.sh obs_try.mp4 obs_voice.mp4
+#+end_src
+
+#+RESULTS: video_no_silence
+
+
+** video
+
+*** deshake video
+
+To deshake a video we need first to create a vector transform which computes the camera movements compared to the images movement and reconstruct the 3d scene.
+
+#+name: deshake_video
+#+begin_src bash :exports both :results output replace
+#cat ~/lav/src/malastro/media/deshake.sh
+ffmpeg -y -i unstable_$fName -vf vidstabdetect -f null -
+ffmpeg -y -i unstable_$fName -vf vidstabtransform,unsharp=5:5:0.8:3:3:0.4 $fName
+#+end_src
+
+
+
+
+#+name: audio_extract
+#+begin_src bash :exports both :results output replace
+cat ~/lav/src/malastro/media/audio_extract.sh
+ffmpeg -i $1 -q:a 0 -map a $outF.mp3
+#+end_src
+
+
+
+
+#+name: media_utils
+#+begin_src bash :exports both :results output replace
+ls ~/lav/src/malastro/media/
+#+end_src
+
+#+RESULTS: media_utils
+#+begin_example
+audio_extract.sh
+capture_video.sh
+convert_format.sh
+deshake.sh
+download_website.sh
+extract_frames.sh
+frame_interpolate.sh
+grab_video.sh
+img2pdf.sh
+img2video.sh
+midi_bluetooth.sh
+package_media.sh
+pal2mp4.sh
+player_bash.sh
+recordSoundCard.sh
+record_soundcard.sh
+reduce_video.sh
+resize_video.sh
+reverseClip.sh
+rotate_180.sh
+rotate_90.sh
+rotate_metadata.sh
+snd_baudline.sh
+snd_cards.sh
+snd_convert.sh
+snd_recordSoundcard.sh
+stabilize_clip.sh
+stabilize_gyro.sh
+stream_screen.sh
+stream_usb.sh
+transparent_video.sh
+webcam.sh
+#+end_example
+

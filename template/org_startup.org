@@ -1,0 +1,10 @@
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+# #+property: header-args:bash :dir ~/lav/src/spiega/markdown/
+#+BEGIN: clocktable :scope file :block thisweek :maxlevel 2 :step day :stepskip0 t
+#+END:
+#+BIBLIOGRAPHY: bibliography.bib
+# #+REVEAL_TITLE_SLIDE: ./static/title-slide.html
+# #+REVEAL_PLUGINS: (highlight,chalkboard)

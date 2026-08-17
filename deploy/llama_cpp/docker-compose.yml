@@ -1,0 +1,30 @@
+services:
+  llama_cpp:
+    container_name: llama_cpp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ~/Downloads/llm_model/models/:/model/
+      - ./app/run.sh:/app/run.sh:ro
+    ports:
+      - "8787:8080"
+    environment:
+      - MODEL_PATH=/model/gemma-4-E4B-it-Q4_K_M.gguf
+      - MODEL_NAME=Model
+    stdin_open: true
+    tty: true
+    # entrypoint: /app/run.sh
+    healthcheck:
+      test: ["CMD", "cat", "/app/models.yml"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped

@@ -1,0 +1,100 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: blender_animation
+:END:
+#+TITLE: blender_animation
+#+SUBTITLE: The importance of owning the infrastructure
+#+DATE: 14-05-2026
+#+KEYWORDS: Data science, language models, LLMs
+#+description:
+#+INCLUDE: "../template/header.org" 
+#+OPTIONS: body-only:t
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: { @COMPLETED(c) @INPROGRESS(p) } LEGACY(l) REVIEW(r) GENERATED(g)
+#+STARTUP: latexpreview noindent
+
+* blender animations
+
+We need first to run the blender mcp server. There are two addons [[https://github.com/ahujasid/blender-mcp][ahujasid]] and [[https://github.com/pranav-deshmukh/blender-mcp][deshmukh]]
+
+#+begin_src bash :results output :session mysession
+blender-mcp --host 127.0.0.1 --port 8001 --ollama-url http://localhost:11434 --ollama-model llama3.2
+#+end_src
+
+#+RESULTS:
+: blender-mcp: komando ne trovita
+
+#+begin_src elisp :results output :session mysession
+(setq org-adapt-indentation nil)
+#+end_src
+
+
+* Blender tasks
+** chairs
+Make a low-poly chair with a wooden material and soft studio lighting.
+
+# Import necessary modules
+import bpy
+
+# Delete existing objects to start clean
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# Create a new chair object
+chair = bpy.data.objects.new("Chair",
+bpy.data.meshes.new("ChairMesh"))
+bpy.context.collection.objects.link(chair) chair.location = (0, 0, 0)
+
+# Define vertices for the chair frame
+vertices = [ (-1, -1, 0), # Vertex 0 (1, -1, 0), # Vertex 1 (1, 1, 0),
+# Vertex 2
+    (-1, 1, 0), # Vertex 3 (-1, -1, -1), # Vertex 4 (1, -1, -1), #
+    Vertex 5 (1, 1, -1), # Vertex 6 (-1, 1, -1) # Vertex 7 ]
+
+# Define edges for the chair frame
+edges = [ (0, 1), (1, 2), (2, 3), (3, 0), (4, 5), (5, 6), (6, 7), (7,
+4), (0, 4), (1, 5), (2, 6), (3, 7) ]
+
+# Define faces for the chair frame
+faces = [ (0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (1, 2, 6, 5), (2,
+3, 7, 6), (3, 0, 4, 7) ]
+
+# Create the mesh from vertices, edges, and faces
+chair_mesh = chair.data chair_mesh.from_pydata(vertices, edges, faces)
+chair_mesh.update()
+
+# Add a wooden material to the chair
+wood_material = bpy.data.materials.new(name="WoodMaterial")
+wood_material.diffuse_color = (0.8, 0.54, 0.35, 1) # Slightly
+reddish-brown color
+
+# Assign the material to the chair
+if chair.data.materials: chair.data.materials[0] = wood_material else:
+    chair.data.materials.append(wood_material)
+
+# Set up soft studio lighting
+bpy.ops.object.light_add(type='POINT', location=(5, 5, 3))
+bpy.ops.object.light_add(type='POINT', location=(-5, -5, 3))
+bpy.ops.object.light_add(type='POINT', location=(0, 0, 10))
+
+# Set scene render settings for low-poly quality
+bpy.context.scene.render.resolution_x = 800
+bpy.context.scene.render.resolution_y = 600
+bpy.context.scene.render.engine = 'BLENDER_EEVEE'
+bpy.context.scene.eevee.shadow_method = 'NONE'
+bpy.context.scene.cycles.samples = 12
+
+# Set camera settings for optimal view
+camera = bpy.data.objects['Camera'] camera.location = (0, 0, 3)
+camera.rotation_euler = (pi/4, 0, pi/4)
+
+# Render the scene
+bpy.ops.render.render(write_still=True, filepath="low_poly_chair.png")
+
+
+#+begin_src python :results output :session blender_mcp
+#+end_src

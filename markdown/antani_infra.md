@@ -1,9 +1,13 @@
 ---
-title: "Antani"
+title: antani infrastructure
 author: Giovanni Marelli
 date: 2019-11-18
 rights:  Creative Commons Non-Commercial Share Alike 3.0
 language: en-US
+id: antani_infra
+category: #tech
+roam_refs: antani infrastrucure
+roam_aliases: ["antani infrastructure"]
 output: 
 	md_document:
 		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
@@ -13,11 +17,11 @@ output:
 
 Ant - agent/network intelligence 
 
-![antani_logo](../f/f_ops/antani_logo.svg "antani logo")
+![antani_logo](../../f/f_ops/antani_logo.svg "antani logo")
 
 _ants optimizing paths on a network_
 
-![antani_concept](../f/f_ops/antani_concept.svg "antani concept")
+![antani_concept](../../f/f_ops/antani_concept.svg "antani concept")
 
 _antani concept schema_
 
@@ -36,7 +40,7 @@ curl $SERVER/antani
 curl $SERVER/ant
 ```
 
-![antani_infra](../f/f_ops/antani_infra.svg "antani infra")
+![antani_infra](../../f/f_ops/antani_infra.svg "antani infra")
 _deployment of antani_
 
 ## server spec
@@ -146,7 +150,7 @@ Which can be called via a [get request](http://10.0.49.178/antani/solution/)
 
 We create a celery
 
-![help_kill](../f/f_ops/help_kill.png "help kill")
+![help_kill](../../f/f_ops/help_kill.png "help kill")
 
 _forum tips for killing_
 
@@ -155,7 +159,7 @@ _forum tips for killing_
 
 To complete the loop between optEn, backend and frontend we suggest the following data structure
 
-![data_structure](../f/f_ops/data_structure.png "data structure")
+![data_structure](../../f/f_ops/data_structure.png "data structure")
 
 _data structure_
 
@@ -181,13 +185,13 @@ The lambda reads the solution from s3 and returns it
 
 We create a lambda and connect it with the api gateway
 
-![lambda_api](../f/f_ops/lambda_api.png "lambda api")
+![lambda_api](../../f/f_ops/lambda_api.png "lambda api")
 
 _lambda and api gateway_
 
 and we created the resources and methods for enabling the call
 
-![api_gateway](../f/f_ops/api_gateway.png "api gateway")
+![api_gateway](../../f/f_ops/api_gateway.png "api gateway")
 
 _api gateway_
 

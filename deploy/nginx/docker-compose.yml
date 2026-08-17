@@ -1,0 +1,50 @@
+# Architecture (one LLM, no "two models"):
+# - ollama: only container that uses GPU; runs the model. /api/tags, /api/show, and
+#   chat requests (from the gateway) go here.
+# - mcp: CPU only. Two processes in one container (two ports): 8000 = MCP protocol (Emacs),
+#   8001 = FastAPI agent (control UI, tool-injecting chat, health, vision). Nginx exposes
+#   both under /mcp: /mcp → 8000, /mcp/* → 8001. Chat is forwarded to ollama.
+# - nginx: /mcp and /mcp/* → mcp container; / and /api/* → ollama.
+# Parallel: set OLLAMA_NUM_PARALLEL to 2+ if your GPU has room; 1 is safest for small VRAM.
+# control panel: https://ollama.jetson/mcp/control/
+# All config is in this file for debugging.
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+        #image: nginx
+    container_name: nginx
+    stdin_open: true
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Use NGINX_CONF_PATH to point at the repo's config if you run compose from elsewhere (e.g. NGINX_CONF_PATH=/var/www/webdav/webui/default_nginx.conf).
+      # Must include location = /api/tags and location = /api/show → ollama so FastAPI (mcp) doesn't take them.
+      - ./nginx_ssl.conf:/etc/nginx/conf.d/default.conf:ro
+      #- ./nginx_http.conf:/etc/nginx/conf.d/default.conf:ro
+      - ${HOME}/credenza/ssl:/etc/nginx/ssl:ro
+      - ${HOME}/lav/siti/:/var/www/html:ro
+      - /srv/lav/:/var/www/webdav
+      - webdav_tmp:/var/tmp/nginx/webdav
+      - ${HOME}/log/nginx/:/var/log/nginx/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - webserver-net
+    # depends_on:
+    #   mcp:
+    #     condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  webserver-net:
+    driver: bridge
+    external: false
+
+volumes:
+  webdav_tmp:
+

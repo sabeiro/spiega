@@ -1,0 +1,13 @@
+{
+  "version": "0.24.0",
+  "model": "deepseek-coder:6.7b",
+  "num_ctx": null,
+  "prompt_tokens": 78,
+  "completion_tokens": 464,
+  "total_tokens": 542,
+  "processing_time": 33.258774707,
+  "time_to_first_token": 3.9801814556121826,
+  "wall_clock_time": 33.263309955596924,
+  "tokens_per_second": 15.847755936088433,
+  "response_text": "Org-mode is an Emacs mode for creating and viewing structured text notes. It's designed to support both todo lists, planning, and note taking in one document. Here are some key functionalities provided by Org-mode:\n\n1. Structure: With the help of simple markup language, you can create a structure with sections that can contain bullet points or subheadings.\n\n2. Task Management: You can keep track of tasks and subtasks in one document using TODO items. It supports custom task statuses, scheduling, and deadlines. \n\n3. Time Tracking: Org-mode allows you to track the time spent on tasks with the help of timer functions that start/stop timers for different tasks.\n\n4. Tables and Grids: You can create tables and grids within documents using special syntax, which are then rendered in a nice format by Emacs or other programs.\n\n5. Export Options: Org-mode supports the creation of many types of files that can be exported to HTML, LaTeX, PDF, etc., depending on your needs.\n\n6. Integration with Other Tools: Org-mode integrates well with other tools like RSS feeds, email (via org-rmail), calendar systems, and even phone calls (org-vm for voice mail). \n\n7. Referencing and Links: You can reference files or URLs directly in the document using a simple syntax, which will be converted to clickable links when you export the document.\n\n8. Babel: This allows evaluation of code blocks with numerous languages through Emacs\u2019 own interpreter within Org-mode documents. \n\n9. Archiving and Refiling: You can archive old tasks or notes and refile them into different headings as needed.\n\n10. Presentations: You can export your document to HTML, which you can then serve up on the web for presentations.\n\nOverall, Org-mode provides a flexible and powerful tool for managing complex information in an organized manner within Emacs or other compatible software. It's not just another word processor, but rather a sophisticated note-taking system.\n"
+}

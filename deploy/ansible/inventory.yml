@@ -1,0 +1,13 @@
+# Inventory for webui (Jetson). Override with -i or set ANSIBLE_INVENTORY.
+# Usage: ansible-playbook -i inventory.yml playbook.yml -e "action=rebuild" -e "service=mcp"
+#
+# For same-machine run: set ansible_connection: local and ansible_host: 127.0.0.1
+---
+all:
+  hosts:
+    jetson:
+      ansible_host: ollama.jetson   # or 192.168.x.x
+      ansible_user: sab             # adjust to your SSH user
+      # ansible_connection: local   # uncomment to run on current host (no SSH)
+  vars:
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=accept-new'

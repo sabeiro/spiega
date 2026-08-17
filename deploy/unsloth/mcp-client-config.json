@@ -1,0 +1,69 @@
+{
+  "$schema": "https://pi.dev/schemas/client-config.json",
+  "name": "unsloth-mcp-client",
+  "version": "1.0",
+  "description": "Pi coding agent configuration for Unsloth inference service",
+  
+  "global": {
+    "UNSLOTH_TOKEN": "${UNSLOTH_TOKEN}",
+    "UNSLOTH_API_BASE": "http://localhost:8000/v1",
+    "context_window": 8192,
+    "timeout_seconds": 60
+  },
+  
+  "inference_client": {
+    "type": "local-llm",
+    "address": "${UNSLOTH_API_BASE:-http://localhost:8000/v1}",
+    "token_header": "Authorization",
+    "token_format": "Bearer ${UNSLOTH_TOKEN}",
+    "fallback_token": "unsloth_inference",
+    "session_config": {
+      "keep_alive_timeout": 300,
+      "max_retries": 3,
+      "retry_delay_seconds": 1
+    }
+  },
+  
+  "models": {
+    "default": {
+      "name": "Model",
+      "path": "/model/gemma-4-E4B-it-Q4_K_M.gguf",
+      "quantization": "Q4_K_M"
+    },
+    "fallback": {
+      "name": "tinyllama-1.1b",
+      "path": "/model/tinyllama-1.1b-Q4_K_M.gguf",
+      "quantization": "Q4_K_M"
+    }
+  },
+  
+  "defaults": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 2048,
+    "stream": false,
+    "n_predict": 2048
+  },
+  
+  "requests": {
+    "add_token_to_headers": true,
+    "token_header_name": "Authorization",
+    "token_value_format": "Bearer {}",
+    "add_to_useragent": true,
+    "useragent_prefix": "Pi-Coding-Agent/1.0"
+  },
+  
+  "logging": {
+    "enabled": true,
+    "level": "INFO",
+    "format": "json",
+    "output_path": "/workspace/inference-requests.log"
+  },
+  
+  "network": {
+    "host_network": true,
+    "allow_external": true
+  }
+}
+EOF
+echo "✓ Created mcp-client-config.json"

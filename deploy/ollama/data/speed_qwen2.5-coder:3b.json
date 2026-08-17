@@ -1,0 +1,13 @@
+{
+  "version": "0.24.0",
+  "model": "qwen2.5-coder:3b",
+  "num_ctx": null,
+  "prompt_tokens": 35,
+  "completion_tokens": 384,
+  "total_tokens": 419,
+  "processing_time": 6.273459689,
+  "time_to_first_token": 1.8416588306427002,
+  "wall_clock_time": 6.280001640319824,
+  "tokens_per_second": 86.64649253719722,
+  "response_text": "Org-mode is a powerful tool that provides a structured way to manage notes, tasks, and projects using plain text files. It offers a wide range of features for note-taking and productivity tools. Here are some of its key functionalities:\n\n1. **Text Formatting**: Org-mode allows users to format their text in various ways, including bold, italic, code blocks, lists, tables, and more.\n\n2. **Tasks Management**: Org-mode is designed to help manage tasks efficiently. It supports task management with checkboxes (`TODO`, `DONE`) and priority levels (`A`, `B`, `C`).\n\n3. **Hierarchical Structure**: Tasks can be organized into a hierarchical structure using headlines (top-level headings), subheadings, and nested items.\n\n4. **Timers and Scheduling**: Users can set timers for tasks to remind them when they need to complete them or deadlines to focus on specific projects.\n\n5. **Notebooks**: Org-mode supports multiple notebooks, allowing users to organize different types of notes together.\n\n6. **Exporting**: Org-mode can export its contents to various formats such as HTML, LaTeX, PDF, Markdown, and plain text for sharing with others or exporting to other applications.\n\n7. **Customization**: Users can customize the appearance and behavior of Org-mode through themes, hooks, and custom functions.\n\n8. **Version Control Integration**: Org-mode can be integrated with version control systems like Git to track changes and collaborate on projects.\n\n9. **Search and Filtering**: The search function allows users to quickly find specific notes or tasks using keywords or filters.\n\n10. **Bibliography Management**: Users can manage bibliographic information using org-bibtex, which integrates smoothly with LaTeX and PDF exports.\n\n11. **Custom Commands**: Org-mode provides custom commands for various tasks, such as exporting all notes in a single document or creating reports based on project data.\n\n222"
+}

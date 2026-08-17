@@ -1,0 +1,9 @@
+llama-cli -hf ggml-org/gemma-3-1b-it-GGUF
+llama-cli -m HauhauCS/Qwen3.6-27B-Uncensored-HauhauCS-Aggressive
+llama-cli -m OBLITERATUS/gemma-4-E4B-it-OBLITERATED
+llama-cli -m HauhauCS/Qwen3.5-9B-Uncensored-HauhauCS-Aggressive
+llama-cli -m unsloth/gemma-4-E4B-it-GGUF
+llama-cli -m KyleHessling1/Qwopus-GLM-18B-Merged-GGUF
+llama-cli -m spiritbuun/Qwen3.5-27B-DFlash-GGUF
+llama-cli -m meta-llama/Llama-2-7b-chat-hf
+llama-cli -m Ashuashruke0/qwen3.5-9b-uncensored-coder

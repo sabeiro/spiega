@@ -1,0 +1,67 @@
+:PROPERTIES:
+:GPTEL_MODEL: qwen2.5-coder:3b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (561 860) (862 885) (887 909) (911 946) (948 1104) (1114 1209) (1780 1884) (1887 2205) (2266 2525) (2528 2633) (2635 2792) (2793 2893)))
+:ID: portfolio_creation
+:END:
+#:+TITLE: portfolio creation
+#+STARTUP: showall
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: { @COMPLETED(c) @INPROGRESS(p) } LEGACY(l) REVIEW(r) GENERATED(g)
+
+* portfolio creation
+
+In the agentic era I got an idea on how to create portfolios, run interviews and apply to job positions in an agentic environment.
+The goal is to have a pretty objective portfolio where I list my [[./competences.csv][competences]] and I ask a bot to judge its content.
+
+| area | competence                                                                                                                                  |
+|------+---------------------------------------------------------------------------------------------------------------------------------------------|
+| ML   | machine learning, regression, fitting, training, data set preparation                                                                       |
+| geo  | spatial queries, algebraic transformations, GIS, document databases"sql,"data transformation, data pipelines, data structure, data modeling |
+
+The knowledge base is organized into these kind of documents:
+
+- [[../markdown/][blog posts]] the collection of all articles written in this context: 100+ files
+- [[../../../src/][source codes]] the code written all over my career: 3k3+
+- [[../../f/][images]] the images used for reports: 1k5
+- [[../markdown/resume.yml][resume]] the list of my experiences
+- [[../markdown/portfolio.yaml][portfolio projects]] the project descriptions (roles, functions, scope)
+- [[../markdown/skills.yml][skills]] the list of skills 
+- [[../markdown/personal_profile.yml][personal profile]] a brief description on the personal profile
+
+I created a library to interact with local models and file system [[../../../src/kotoba/kotoba/model_local.py][model_local.py]] which is loaded by [[../../../src/kotoba/example/graph_rag.py][graph rag]]. The model is deployed using [[../../../src/blender_cv/mcp_server/][mcp server]] on docker.
+
+* Tools tested:
+
+The system is integrated within emacs and there is no need to exit the program. LLMs help to write the python code which is executed in-line in a separate buffer. 
+
+- [[https://github.com/mark3labs/kit][kit]] created after [[https://github.com/mark3labs/mcphost][mcphost]]
+- [[https://opencode.ai/][opencode]]
+- [[https://github.com/s-kostyaev/ellama][ellama]]
+- [[https://github.com/karthink/gptel][gptel]]
+- [[https://aider.chat/][aider]]
+- [[https://github.com/MatthewZMD/aidermacs][aideremacs]] 
+
+
+#+begin_src python
+  blogD = c_t.dir2tree(os.environ['HOME'] + '/lav/siti/spiega/markdown/')
+  llm = c_t.get_llm_mcp(model_id=model_id)
+  blogD = c_t.summarize_text(llm,blogD)
+  blogD.to_csv(baseDir + "graph/blog_desc_" + modelN + ".csv",index=False)
+#+end_src
+
+
+and a function to create graphs [[../../../src/kotoba/kotoba/graph_rag.py][graph_rag.py]]
+
+
+# C-c " g
+#+PLOT: title:"Citas" ind:1 deps:(3) type:2d with:histograms set:"yrange [0:]"
+| Sede      | Max cites | H-index |
+|-----------+-----------+---------|
+| Chile     |    257.72 |   21.39 |
+| Leeds     |    165.77 |   19.68 |
+| Sao Paolo |     71.00 |   11.50 |
+| Stockholm |    134.19 |   14.33 |
+| Morelia   |    257.56 |   17.67 |

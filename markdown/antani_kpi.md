@@ -1,25 +1,28 @@
 ---
-title: "antani_kpi"
+title: antani_kpi
 author: Giovanni Marelli
 date: 2019-07-02
 rights:  Creative Commons Non-Commercial Share Alike 3.0
 language: en-US
+id: antani kpi
+category: #tech
+roam_refs: antani kpi
+roam_aliases: ["antani kpi"]
 output: 
 	md_document:
 		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
 ---
-
 # optimization engine comparison
 
 An optimization engine find the best combination for assigning tasks to a fleet.
 To compare performances we create a set up of around 600 spots, 6 task types (with different priorities) and a fleet of 8 drivers
 
-![setup](../f/f_ops/comp_setup.png "comp setup")
+![setup](../../f/f_ops/comp_setup.png "comp setup")
 _set up for the comparison_
 
 We prepare the job file and we send it to the routific api service and [visualize the solution](http://routific-viewer.herokuapp.com/jobs/k24ozyff68)
 
-![routific](../f/f_ops/routific.png "routific")
+![routific](../../f/f_ops/routific.png "routific")
 
 _routific solution explorer_
 
@@ -27,13 +30,13 @@ _routific solution explorer_
 
 We can run the optimization engine from a blank system or after a routific solution.
 
-![route engine](../f/f_ops/route_engine.png "route engine")
+![route engine](../../f/f_ops/route_engine.png "route engine")
 
 _comparison between routing engine_
 
 Starting from a routific solution we see that the optimization engine at first improves big springs
 
-![routific_evaluation](../f/f_ops/prob_2.png "routific evaluation")
+![routific_evaluation](../../f/f_ops/prob_2.png "routific evaluation")
 
 _optimization improves big springs_
 
@@ -49,13 +52,13 @@ The score is calculated via:
 $$ score = \frac{occupancy * potential}{duration * distance} $$
 
 
-![kpi comparison](../f/f_ops/kpi_comparison.png "kpi comparison")
+![kpi comparison](../../f/f_ops/kpi_comparison.png "kpi comparison")
 
 _comparison of kpi between engines_
 
 <!-- If we consider routed distances the figure change -->
 
-<!-- ![kpi comparison routed](../f/f_ops/kpi_compRouted.png "kpi comparison routed") -->
+<!-- ![kpi comparison routed](../../f/f_ops/kpi_compRouted.png "kpi comparison routed") -->
 
 <!-- _comparison of kpi between engines using routed distances_ -->
 
@@ -64,7 +67,7 @@ _comparison of kpi between engines_
 
 Routific was sending a complete solution within 3 minutes, the optimization engine was sending a better solution in 30 minutes, to speed up the process we introduced new moves
 
-![execution time](../f/f_ops/execution_time.png "execution time")
+![execution time](../../f/f_ops/execution_time.png "execution time")
 
 _execution time_
 

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control - Ollama & MCP</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Control - Ollama & MCP</h1>
+    <div class="base-url">
+      <label for="baseUrl">Base URL</label>
+      <input type="text" id="baseUrl" value="" placeholder="current origin">
+      <span class="hint">Leave empty to use current origin (same host). Override if you need a different API root.</span>
+    </div>
+    <div class="model-row">
+      <label for="modelSelect">Model</label>
+      <select id="modelSelect" title="Filled from GET /api/tags; used by Show, Generate, Chat, and suggested Raw bodies">
+        <option value="">Loading…</option>
+      </select>
+      <span class="hint model-hint">POST /api/show, /api/generate, and /mcp/api/chat use this model.</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <div class="layout-left">
+    <section class="panel ollama-panel">
+      <h2>Ollama (direct)</h2>
+      <p class="desc">These hit the Ollama container. <code>/api/chat</code> is routed to the MCP agent (see MCP section).</p>
+      <div class="actions">
+        <button type="button" id="ollamaTags">GET /api/tags</button>
+        <div class="inline">
+          <button type="button" id="ollamaShow">POST /api/show</button>
+          <span class="muted small">uses selected model</span>
+        </div>
+        <div class="generate">
+          <label for="genPrompt">Prompt</label>
+          <textarea id="genPrompt" rows="2" placeholder="Say hello in one sentence."></textarea>
+          <button type="button" id="ollamaGenerate">POST /api/generate</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel mcp-panel">
+      <h2>MCP gateway (agent)</h2>
+      <p class="desc">Health and agent chat (tools injected). Vision/YOLO endpoints return JSON or images.</p>
+      <div class="actions">
+        <button type="button" id="mcpHealth">GET /api/health</button>
+        <button type="button" id="mcpScreenshot">GET /api/screenshot</button>
+        <button type="button" id="mcpDescribe">GET /api/describe_vision</button>
+        <button type="button" id="mcpYolo">GET /api/yolo</button>
+        <button type="button" id="mcpYoloImage">GET /api/yolo_image</button>
+        <div class="chat">
+          <label for="chatMessage">Message</label>
+          <textarea id="chatMessage" rows="2" placeholder="What is 2+2? Use the numpy tool if needed."></textarea>
+          <button type="button" id="mcpChat">POST /api/chat</button>
+        </div>
+        <div class="conn-scan">
+          <h3 class="panel-sub">Connection scan</h3>
+          <p class="muted small conn-scan-desc">Sends connection payloads to <code>POST /api/connection_scan/stream</code> (NDJSON). Local heuristic or Morpheus HTTP sidecar — see MCP README.</p>
+          <div class="conn-scan-stats" aria-live="polite">
+            <span class="stat stat-ok">OK <strong id="connScanOk">0</strong></span>
+            <span class="stat stat-bad">Malicious <strong id="connScanBad">0</strong></span>
+            <span class="stat stat-run"><strong id="connScanProcessed">0</strong> / <strong id="connScanTotal">0</strong></span>
+            <span class="stat stat-engine muted small" id="connScanEngine"></span>
+          </div>
+          <label for="connScanPayload">Body JSON (<code>connections</code> array)</label>
+          <textarea id="connScanPayload" rows="10" class="conn-scan-json" spellcheck="false"></textarea>
+          <button type="button" id="connScanStream">Stream scan</button>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <div class="layout-right">
+    <section class="panel raw-panel">
+      <h2>Raw request</h2>
+      <div class="raw-form">
+        <div class="inline">
+          <select id="rawMethod">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+          <input type="text" id="rawPath" placeholder="/api/tags" class="path">
+          <button type="button" id="rawSend">Send</button>
+        </div>
+        <label for="rawBody">Body (POST/PUT, JSON)</label>
+        <p id="rawModelHint" class="muted small raw-model-hint"></p>
+        <textarea id="rawBody" rows="6" placeholder='{"name": "…"}'></textarea>
+      </div>
+    </section>
+
+    <section class="panel output-panel">
+      <h2>Response</h2>
+      <div class="output-toolbar">
+        <div class="status-row" role="status" aria-live="polite" aria-atomic="true">
+          <span id="requestStatusBadge" class="status-badge status-badge--idle" title="Idle" aria-hidden="true"></span>
+          <span id="statusLine" class="status-line"></span>
+        </div>
+        <button type="button" id="copyOutput" title="Copy to clipboard">Copy</button>
+      </div>
+      <pre id="output"><span class="muted">Click a button or send a raw request.</span></pre>
+      <div id="imageOutput" class="image-output" hidden></div>
+    </section>
+    </div>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

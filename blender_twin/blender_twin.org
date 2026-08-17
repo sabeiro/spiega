@@ -1,0 +1,277 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: blender_twin
+:END:
+# Local IspellDict: en
+#+title: blender twin
+#+STARTUP: showeverything
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-05-22>
+#+AUTHOR: sabeiro
+#+KEYWORDS: emacs-reveal, howto, HTML, reveal.js, org, Org mode, presentation, slideshow, OER, open educational resource, licensing
+#+DESCRIPTION: digital twins on blender with FEM
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_twin/docs/
+#+BEGIN: clocktable :scope file :block thisweek :maxlevel 2 :step day :stepskip0 t
+#+END:
+#+INCLUDE: "./reveal_config.org"
+# #+REVEAL_TITLE_SLIDE: ./static/title-slide.html
+#+REVEAL_INIT_OPTIONS: width:1200, height:800, controlsLayout: 'edges'
+
+
+* blender twin
+:PROPERTIES:
+:CUSTOM_ID: blender_twin
+:ID: blender_twin-intro
+:ROAM_ALIASES: blender twin intro
+:END:
+
+Blender twin is a project to enable physics calculation with the help of blender. The project is divided into:
+
+- [[../IoT/][IoT]] :: configuration of microcontrollers for the project (arduino, pico, ESP32)
+- [[../computer_vision][computer_vision]] :: applications for training and inference of pose recognition
+- [[../deploy][deploy]] :: series of containers and configuration files for the project
+- [[../docs][docs]] :: shared documentation for the project
+- [[../media][media]] :: media file for training and staging
+- [[../physics][physics]] :: physical engines for the simulations
+
+** plan
+:PROPERTIES:
+:CUSTOM_ID: plan
+:ID: blender_twin-plan
+:ROAM_ALIASES: blender twin plan
+:END:
+#+ATTR_REVEAL: :frag (gray-out shrink grow highlight-red)
+#+ATTR_HTML: :class org-center
+#+BEGIN_leftcol
+- plan
+  - [[file:plan/agent_call.org][agent call create slides knowledge type]]
+  - [[file:plan/plan.org][plan]]
+  - [[file:plan/project_tasks.org][project_tasks]]
+#+END_leftcol
+#+ATTR_REVEAL: :frag appear
+#+BEGIN_rightcol
+- script
+  - [[file:script/slide_presentation.org][Blender CV MCP Server - Slide Presentation Examples]]
+#+END_rightcol
+
+    
+#+BEGIN_NOTES
+These are sample notes
+- Lists can be used here
+- You can time your presentation
+  - Maybe look at [[https://gitlab.com/lechten/talks-2018/blob/master/2018-04-24-Blockchain.org][one]] of my talks to see how to define timing
+#+END_NOTES
+
+# #+INCLUDE: "./f/f_twin/vibe_radar.svg" src emacs-lisp
+
+
+***  Src Block
+#+BEGIN_SRC python
+def factorial(n):
+    if n < 2:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+print(factorial(10))
+#+END_SRC
+
+#+ATTR_REVEAL: :htmlize t
+#+BEGIN_SRC dot :file ../../f/f_twin/simple_graph.png :exports both
+graph {
+  IDE [label="IDE"];
+  LLM [label="LLM"];
+  COD [label="coding assistant"];
+
+  IDE -- LLM;
+  LLM -- COD;
+  COD -- IDE;
+  }
+#+END_SRC
+
+#+RESULTS:
+[[file:../../f/f_twin/simple_graph.png]]
+
+
+
+* blender twin
+:PROPERTIES:
+:ROAM_ALIASES: blender twin
+:ID:  blender_twin-intro
+:END:
+
+Blender twin is a project to enable physics calculation with the help of blender. The project is divided into:
+
+- IoT ::  configuration of microcontrollers for the project (arduino, pico, ESP32)
+- computervision ::  applications for training and inference of pose recognition
+- deploy :: series of containers and configuration files for the project
+- docs :: shared documentation for the project
+- media :: media file for training and staging
+- physics ::  physical engines for the simulations
+    
+* blender twin components
+:PROPERTIES:
+:ROAM_ALIASES: components
+:ID:  project_stack-comp
+:END:
+
+Org file for project definition, planning, task management.
+
+- [[file:agent_call.org][agent call create slides]]
+- [[file:blender_twin.org][blender twin]]
+- [[file:twin_documentation.org][blender twin documentation]]
+- [[file:knowledge_graph.org][knowledge graph knowledge type]]
+- [[file:plan.org][plan]]
+- [[file:project_tasks.org][project_tasks]]
+
+
+* documentation
+:PROPERTIES:
+:ROAM_ALIASES: blender twin docs
+:ID:  project_stack-documentation
+:END:
+
+This is the list of all files in this project
+
+** project 
+:PROPERTIES:
+:ROAM_ALIASES: blender twin desc
+:ID:  project_stack-desc
+:END:
+
+- [[./static/blender_twin.html][blender_twin]] :: project description
+- [[./static/architecture.html][architecture]] :: architectural diagram
+- [[./static/documentation_conversion.html][documentation_conversion]] :: how we create the documentation and websites
+- [[./static/implementation_diagram.html][implementation_diagram]] :: of the project 
+- [[./static/knowledge_graph.html][knowledge_graph]] :: details of the python code for the creation of the knowledge graph
+
+  
+** agentic integration
+:PROPERTIES:
+:ROAM_ALIASES: agentic integration
+:ID:  project_stack-agentic
+:END:
+
+- [[./static/agent_call.html][agent_call]] :: how agents get integrated into the system
+- [[./static/agentic_usage.html][agentic_usage]] :: how to interact with the agents
+- [[../static/blender-mcp.html][blender-mcp]] ::addon to use mcp integration with blender 
+- [[./static/blender_mcp_usage.html][blender_mcp_usage]] :: scheme of the integration with blender-mcp addon
+- [[./static/debug_mode.html][debug_mode]] :: debug mode schematics
+- [[./static/editor_plugins.html][editor_plugins]] :: packages currently used in emacs/schematics
+- [[./static/emacs_configuration.html][emacs_configuration]] :: packages currently used in emacs/description
+- [[./static/emacs_configuration2.html][emacs_configuration2]] :: emacs configuration overview
+- [[./static/emacs_ollama.html][emacs_ollama]] :: how emacs interacts with ollama
+- [[./static/emacs_workflow.html][emacs_workflow]] :: emacs + mcp
+- [[./static/gptel_integration.html][gptel_integration]] :: gptel + mcp
+
+  
+** project details - blueprint
+:PROPERTIES:
+:ROAM_ALIASES: blueprint
+:ID:  project_stack-blueprint
+:END:
+
+
+- [[./static/file_operations.html][file_operations]] :: how files get linked
+
+
+** IoT tech details
+:PROPERTIES:
+:ROAM_ALIASES: IoT
+:ID:  project_stack-IoT
+:END:
+
+- [[./static/esp32-iot-camera.html][esp32-iot-camera]] :: MCU details
+- [[./static/ollama_integration.html][ollama_integration]] ::
+- [[./static/plan.html][plan]] ::
+- [[./static/plan_agent_call.html][plan_agent_call]] ::
+- [[./static/platformio_mode.html][platformio_mode]] ::
+- [[./static/project_details.html][project_details]] ::
+- [[./static/project_packages.html][project_packages]] ::
+- [[./static/project_tasks.html][project_tasks]] ::
+- [[./static/project_topology.html][project_topology]] ::
+- [[./static/reveal_config.html][reveal_config]] ::
+- [[./static/svg_to_3d_blender.html][svg_to_3d_blender]] ::
+- [[./static/title_slide.html][title_slide]] ::
+- [[./static/unified_view.html][unified_view]] ::
+
+
+# #+CALL: file.org:clear-data()
+#+name: generate-slide
+#+begin_src elisp :exports both :results output replace
+(org-reveal-export-to-html-and-browse)
+#+end_src
+
+#+RESULTS: generate-slide
+
+#+name: generate-doc
+#+begin_src bash :exports none :results none
+cd $HOME/lav/src/blender_twin/docs
+bash ./script/convert_slide.sh
+#+end_src
+
+
+#+name: generate-list
+#+begin_src bash :exports none :results output replace
+cd ~/lav/src/blender_twin/docs/
+ls static/*.html | awk -F'/' '{
+     file = $(NF)
+     sub(/\.html$/, "", file)
+     print "- [[./" $0 "][" file "]] ::"
+   }'
+#+end_src
+
+
+
+* blender twin project documentation
+:PROPERTIES:
+:ROAM_ALIASES: documentation
+:ID:  twin_documentation-documentation
+:END:
+
+
+Here is the list of the created knowledge base for this project
+
+- [[./../knowledge_base/agentic_usage.md][agentic_usage.md]] :: how agents are called into the system
+- [[./../knowledge_base/architecture.md][architecture.md]] ::
+- [[./../knowledge_base/blender-mcp.md][blender-mcp.md]] ::
+- [[./../knowledge_base/blender_mcp_usage.md][blender_mcp_usage.md]] ::
+- [[./../knowledge_base/debug_mode.md][debug_mode.md]] ::
+- [[./../knowledge_base/documentation_conversion.md][documentation_conversion.md]] ::
+- [[./../knowledge_base/editor_plugins.md][editor_plugins.md]] ::
+- [[./../knowledge_base/emacs_configuration.md][emacs_configuration.md]] ::
+- [[./../knowledge_base/emacs_configuration2.md][emacs_configuration2.md]] ::
+- [[./../knowledge_base/emacs_ollama.md][emacs_ollama.md]] ::
+- [[./../knowledge_base/emacs_workflow.md][emacs_workflow.md]] ::
+- [[./../knowledge_base/esp32-iot-camera.md][esp32-iot-camera.md]] ::
+- [[./../knowledge_base/file_operations.md][file_operations.md]] ::
+- [[./../knowledge_base/gptel_integration.md][gptel_integration.md]] ::
+- [[./../knowledge_base/implementation_diagram.md][implementation_diagram.md]] ::
+- [[./../knowledge_base/ollama_integration.md][ollama_integration.md]] ::
+- [[./../knowledge_base/platformio_mode.md][platformio_mode.md]] ::
+- [[./../knowledge_base/project_details.md][project_details.md]] ::
+- [[./../knowledge_base/project_packages.md][project_packages.md]] ::
+- [[./../knowledge_base/project_topology.md][project_topology.md]] ::
+- [[./../knowledge_base/svg_to_3d_blender.md][svg_to_3d_blender.md]] ::
+- [[./../knowledge_base/unified_view.md][unified_view.md]] ::
+
+
+#+name: generate-list
+#+begin_src bash :exports both :results output replace
+cd ~/lav/src/blender_twin/docs/plan/
+ls ../knowledge_base/*.md | awk -F'/' '{
+     file = $(NF)
+     sub(/\.html$/, "", file)
+     print "- [[./" $0 "][" file "]] ::"
+   }'
+#+end_src 
+
+#+RESULTS: generate-list
+#+begin_example
+#+end_example

@@ -1,0 +1,29 @@
+reset session
+$Data <<EOD
+# viol0   viol1   viol2   viol3   viol4   viol5
+0.24    -0.24   0.0     0.333   1.299   2.866
+0.48    -0.16   1.0     0.599   0.849   0.600
+0.28    -0.44   0.583   0.599   0.975   1.066
+0.56    -0.28   0.500   0.666   0.799   0.933
+0.52    -0.28   0.749   0.699   0.849   0.866
+0.32    -0.56   0.083   0.566   0.774   0.733
+EOD
+set table $kdensity
+    plot for [i=0:5] $Data u i+1:(1) smooth kdensity bandwidth 0.15
+unset table
+set title 'Overview'
+set border 3
+unset key
+set linetype  9 lc "#800072b2" ps 0.5 pt 5
+set style boxplot nooutliers
+set style fill solid border -1
+set boxwidth 0.075
+set errorbars lt black lw 1
+set xrange [-0.5 :(6-0.5)]
+set xtics nomirror
+set yrange [-1:2]
+set ytics nomirror
+W = 0.025  
+plot for [i=0:5] $kdensity index i u (i + $2*W):1 w filledcurves x=i lt 9,\
+     for [i=0:5]        '' index i u (i - $2*W):1 w filledcurves x=i lt 9,\
+     for [i=0:5]     $Data         u (i):i+1 w boxplot fc "white" lw 2

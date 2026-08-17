@@ -1,0 +1,43 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: second_hand
+:END:
+#+title: second hand
+#+subtitle: benefits in buying second hand
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-05-22>
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_twin/docs/
+#+BEGIN: clocktable :scope file :block thisweek :maxlevel 2 :step day :stepskip0 t
+#+END:
+
+* second hand
+
+Because of multiple hobbies I was largely interested in second hand and here I want to list the reasons why second hand can be really convenient and when instead is to avoid. It is important as well to share the experience and keep track of the expenses done.
+In some cases second hand can be an investment
+
+- depreciation :: some items lose market price after first buy
+- repair :: learning how to repair broken items can be pretty profitable
+- durability :: some items already proven to be durable
+- test :: learn how to evaluate the condition
+- price :: you should have in mind comparable prices
+  
+*** cases
+
+
+- safety :: if the item is safety critical (like climbing) this is not an option if you don't run professional tests before
+
+*** areas
+
+- music :: a non working music instrument is no value, luckily I could always make them working
+- art :: I know too little about it, I just like some cheap old paintings to hang
+- cloth :: you can buy good quality for little money but prices increased a lot recently. Second hand fast fashion is a bad deal
+- furniture :: this requires many skills to be repaired, evaluation is pretty difficult, many items overpriced
+- electronics :: they tend to depreciate pretty much and losing warranty depreciate it even more  
+- cutlery :: good deals

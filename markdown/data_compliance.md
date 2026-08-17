@@ -1,3 +1,17 @@
+---
+title: data compliance
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: data_compliance
+category: #tech
+roam_refs: data compliance
+roam_aliases: ["data compliance"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
 # data compliance
 
 Designing an infrastructure implies the fulfilment of general and specific requirements for security, access, data protection, anonymicity, data retention...

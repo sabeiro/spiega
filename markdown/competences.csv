@@ -1,0 +1,23 @@
+area,competence,tech,project
+ML,"machine learning, regression, fitting, training, data set preparation","py","lernia,deep_lernia,mallink"
+geo,"spatial queries, algebraic transformations, GIS, document databases","py","geomadi"
+sql,"data transformation, data pipelines, data structure, data modeling","sql","lernia"
+nosql,"graph, data structures, query optimization","py","geomadi"
+NN,"keras, tensorflow, pytorch, theano, RNN, CNN, transformers","py","deep_lernia,antani"
+GPU,"cuda, cudnn, tensorrt",py,blender_cv
+AI,"agents, LLMs, MCP server, skills, RAG",py,kotoba
+analytics,"feature engineering, exploratory data analysis, statistics",py,lernia
+statistics,"multivariate analysis, testing, confidence","py,R","lernia,albio"
+signal,"information theory, signal decomposition","py,R,cpp","lernia,albio,allink"
+physics,"equations, dynamics, complex systems, modeling, trends","cpp,h,py","allink,mallink,blender_cv"
+mecanics,"heat, dynamics, deformation, shear, navier stokes, fluid","cpp,h,py","allink,mallink,blender_cv"
+math,"calculus, differential equations, numeric solutions","cpp,h,py","allink,mallink,blender_cv"
+calculus,"BLAS, CGAL, algebraic transformations, quaternions, matrix and tensor operations","cpp,h,py","allink,mallink,blender_cv"
+web,"websites, backend, databases, UI, UX, style","js,html","intertino,dauvi"
+backend,"auth, security, efficiency, extensiveness","go,py","intertino,dauvi"
+devops,"architecture, backend, data pipelines, scheduling, monitoring","py","intertino,sawmill"
+BI,"data visualization, monitoring, alerting, dashboard","py,js","anticolo"
+frontend,"interactive, responsive, indexed for search, lightweight, efficient","js,html","intertino,dauvi"
+modeling,"stocastics, optimization, regression, natural laws","py,R","lernia,deep_lernia"
+project,"project scoping, requirement collection, system mapping, technology saivy","md","spiega"
+business,"use case, prioritization, mapping of customer needs and resources","md","spiega"

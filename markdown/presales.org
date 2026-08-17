@@ -1,0 +1,32 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: presales_strategies
+:END:
+#+TITLE: presales strategies
+#+SUBTITLE: wishes vs reality
+#+DATE: 14-05-2026
+#+KEYWORDS: Data science, language models, LLMs
+#+description:
+# #+INCLUDE: ~/lav/src/spiega/template/header.org
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+OPTIONS: body-only:t
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: buisness(b) dev(t) science(s) management(m) data_science(d) admin(a) consultancy(c) art(r)
+#+STARTUP: showall
+
+* presales strategies
+
+A tech lead has a central role in negotiating with the client and your sales organization a reasonable service which will bring value for the client and revenue for your company.
+
+* client relationship
+
+The relationship and the trust you build with the client is essential for the success of the project
+
+*** stakeholding
+
+*** client orga mapping

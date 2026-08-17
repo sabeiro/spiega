@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"name": "test_map",
+"features": [
+{ "type": "Feature", "properties": { "id": "POLY_0001" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 0.0, 0.0 ], [ 0.0, 1229.0 ], [ 1754.0, 1229.0 ], [ 1754.0, 0.0 ], [ 0.0, 0.0 ] ] ] } }
+]
+}

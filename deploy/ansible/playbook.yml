@@ -1,0 +1,236 @@
+---
+# Basic Docker Compose operations for webui (nginx, ollama, mcp).
+#
+# Usage:
+#   Rebuild one service (build image + recreate container):
+#     ansible-playbook -i inventory.yml playbook.yml -e "action=rebuild" -e "service=mcp"
+#   Rebuild all:
+#     ansible-playbook -i inventory.yml playbook.yml -e "action=rebuild"
+#   Restart one service:
+#     ansible-playbook -i inventory.yml playbook.yml -e "action=restart" -e "service=nginx"
+#   Start stack (or one service):
+#     ansible-playbook -i inventory.yml playbook.yml -e "action=start"
+#   Stop stack (or one service):
+#     ansible-playbook -i inventory.yml playbook.yml -e "action=stop"
+#
+# Optional: -e "service=nginx" | "ollama" | "mcp" (omit for all).
+# Optional: -e "no_cache=false" for rebuild without cache (default: use cache).
+# Optional: action=logs — fetch mcp container logs (use -e "service=mcp" for mcp only). -e "logs_tail=200" -e "logs_follow=false".
+# Optional: action=test — only test https://ollama.jetson/mcp/api/screenshot (and /mcp/api/health). Use after restart nginx.
+# Optional: action=vision — fetch /mcp/api/screenshot and /mcp/api/describe_vision; save to vision_output/ for comparison.
+#
+- name: Webui Docker Compose operations
+  hosts: all
+  gather_facts: true
+  vars:
+    action: "rebuild"   # rebuild | restart | start | stop | logs | test | vision
+    service: ""         # empty = all; else nginx | ollama | mcp
+    no_cache: false
+    logs_tail: "200"    # for action=logs: number of lines (default 200)
+    logs_follow: false  # for action=logs: follow (tail -f)
+  tasks:
+    - name: Check project path exists on target
+      ansible.builtin.stat:
+        path: "{{ webui_project_path }}"
+      register: project_dir
+
+    - name: Fail if project path missing or not a directory
+      ansible.builtin.assert:
+        that:
+          - project_dir.stat.exists | default(false) | bool
+          - project_dir.stat.isdir | default(false) | bool
+        fail_msg: "Project path '{{ webui_project_path }}' does not exist or is not a directory on {{ inventory_hostname }}. Set webui_project_path in group_vars/all.yml to the path where docker-compose.yml lives on the target."
+
+    - name: Set service list for shell (empty = all)
+      ansible.builtin.set_fact:
+        service_args: "{{ service if service else '' }}"
+
+    # --- Rebuild: build then up -d (optionally --no-cache) ---
+    - name: Rebuild service(s) – build images
+      ansible.builtin.shell: |
+        {{ docker_compose_cmd }} build {{ '--no-cache' if no_cache else '' }} {{ service_args }}
+      args:
+        chdir: "{{ webui_project_path }}"
+        executable: /bin/bash
+      when: action == 'rebuild'
+
+    - name: Rebuild service(s) – up -d
+      ansible.builtin.shell: |
+        {{ docker_compose_cmd }} up -d {{ service_args }}
+      args:
+        chdir: "{{ webui_project_path }}"
+        executable: /bin/bash
+      when: action == 'rebuild'
+
+    # --- Restart ---
+    - name: Restart service(s)
+      ansible.builtin.shell: |
+        {{ docker_compose_cmd }} restart {{ service_args }}
+      args:
+        chdir: "{{ webui_project_path }}"
+        executable: /bin/bash
+      when: action == 'restart'
+
+    - name: Reload nginx config inside container (after nginx restart)
+      ansible.builtin.shell: |
+        {{ docker_compose_cmd }} exec -T nginx nginx -t && {{ docker_compose_cmd }} exec -T nginx nginx -s reload
+      args:
+        chdir: "{{ webui_project_path }}"
+        executable: /bin/bash
+      when: action == 'restart' and (service == 'nginx' or service == '')
+
+    # --- Test ollama.jetson API (after nginx restart or standalone). Use 127.0.0.1 + Host header so target needs no DNS. ---
+    - name: Test https://{{ ollama_api_host_header }}/mcp/api/health
+      ansible.builtin.uri:
+        url: "{{ ollama_api_base }}/mcp/api/health"
+        method: GET
+        validate_certs: false
+        status_code: [200, 503]
+        timeout: 10
+        headers:
+          Host: "{{ ollama_api_host_header }}"
+      register: api_health_test
+      when: action == 'test' or (action == 'restart' and (service == 'nginx' or service == ''))
+
+    - name: Test https://{{ ollama_api_host_header }}/mcp/api/screenshot
+      ansible.builtin.uri:
+        url: "{{ ollama_api_base }}/mcp/api/screenshot"
+        method: GET
+        validate_certs: false
+        status_code: [200, 400, 405, 404, 502, 503]
+        timeout: 10
+        headers:
+          Host: "{{ ollama_api_host_header }}"
+      register: api_screenshot_test
+      failed_when: false
+      when: action == 'test' or (action == 'restart' and (service == 'nginx' or service == ''))
+
+    - name: Test https://{{ ollama_api_host_header }}/mcp/api/describe_vision
+      ansible.builtin.uri:
+        url: "{{ ollama_api_base }}/mcp/api/describe_vision"
+        method: GET
+        validate_certs: false
+        status_code: [200, 400, 405, 404, 502, 503]
+        timeout: 90
+        headers:
+          Host: "{{ ollama_api_host_header }}"
+      register: api_describe_vision_test
+      failed_when: false
+      when: action == 'test' or (action == 'restart' and (service == 'nginx' or service == ''))
+
+    - name: Assert API screenshot endpoint reachable
+      ansible.builtin.assert:
+        that: api_screenshot_test.status in [200, 400, 405]
+        fail_msg: "Endpoint https://{{ ollama_api_host_header }}/mcp/api/screenshot returned {{ api_screenshot_test.status | default('connection failed') }} (expected 200/400/405). Check nginx routing and mcp container."
+      when: action == 'test' or (action == 'restart' and (service == 'nginx' or service == ''))
+
+    - name: Assert API describe_vision endpoint reachable
+      ansible.builtin.assert:
+        that: api_describe_vision_test.status in [200, 400, 405]
+        fail_msg: "Endpoint https://{{ ollama_api_host_header }}/mcp/api/describe_vision returned {{ api_describe_vision_test.status | default('connection failed') }} (expected 200/400/405). Check nginx routing and mcp container."
+      when: action == 'test' or (action == 'restart' and (service == 'nginx' or service == ''))
+
+    - name: Print API test result
+      ansible.builtin.debug:
+        msg:
+          - "health: {{ api_health_test.status | default('skipped') }}"
+          - "screenshot: {{ api_screenshot_test.status | default('skipped') }}"
+          - "describe_vision: {{ api_describe_vision_test.status | default('skipped') }}"
+      when: (action == 'test' or (action == 'restart' and (service == 'nginx' or service == ''))) and (api_health_test is defined or api_screenshot_test is defined or api_describe_vision_test is defined)
+
+    # --- Vision: fetch screenshot + describe_vision for YOLO vs human comparison ---
+    # Saves to vision_output_dest on control node (default project dir; use -e vision_output_dest=/tmp/vision_output if project is on WebDAV).
+    - name: Create vision_output dir on control node
+      ansible.builtin.file:
+        path: "{{ vision_output_dest }}"
+        state: directory
+      delegate_to: localhost
+      run_once: true
+      when: action == 'vision'
+
+    - name: Fetch screenshot on target (from camera)
+      ansible.builtin.shell: |
+        curl -k -s -H "Host: {{ ollama_api_host_header }}" "{{ ollama_api_base }}/mcp/api/screenshot" -o /tmp/screenshot.png
+      when: action == 'vision'
+
+    - name: Fetch describe_vision response on target
+      ansible.builtin.uri:
+        url: "{{ ollama_api_base }}/mcp/api/describe_vision"
+        method: GET
+        validate_certs: false
+        headers:
+          Host: "{{ ollama_api_host_header }}"
+        return_content: true
+        status_code: [200, 400, 405]
+        timeout: 90
+      register: vision_desc
+      when: action == 'vision'
+
+    - name: Fetch screenshot from target to vision_output
+      ansible.builtin.fetch:
+        src: /tmp/screenshot.png
+        dest: "{{ vision_output_dest }}/"
+        flat: true
+      when: action == 'vision'
+
+    - name: Save describe_vision response to vision_output
+      ansible.builtin.copy:
+        content: "{{ (vision_desc.json | to_nice_json) if (vision_desc.json is defined) else (vision_desc.content | default('')) }}"
+        dest: "{{ vision_output_dest }}/describe_vision.txt"
+      delegate_to: localhost
+      run_once: true
+      when: action == 'vision'
+
+    - name: Print vision output and YOLO description
+      ansible.builtin.debug:
+        msg:
+          - "Screenshot saved: {{ vision_output_dest }}/screenshot.png"
+          - "describe_vision saved: {{ vision_output_dest }}/describe_vision.txt"
+          - "YOLO/vision said: {{ (vision_desc.json.description | default(vision_desc.json) | default(vision_desc.content) | default('')) if (vision_desc is defined and vision_desc is succeeded) else 'N/A' }}"
+      when: action == 'vision'
+
+    # --- Start ---
+    - name: Start service(s)
+      ansible.builtin.shell: |
+        {{ docker_compose_cmd }} up -d {{ service_args }}
+      args:
+        chdir: "{{ webui_project_path }}"
+        executable: /bin/bash
+      when: action == 'start'
+
+    # --- Stop ---
+    - name: Stop service(s)
+      ansible.builtin.shell: |
+        {{ docker_compose_cmd }} stop {{ service_args }}
+      args:
+        chdir: "{{ webui_project_path }}"
+        executable: /bin/bash
+      when: action == 'stop'
+
+    # --- Logs: fetch container logs (e.g. mcp for latency debugging) ---
+    - name: Fetch container logs
+      ansible.builtin.shell: |
+        {{ docker_compose_cmd }} logs {{ '--tail=' + logs_tail | string }} {{ '--follow' if logs_follow | bool else '' }} {{ service if service else 'mcp' }}
+      args:
+        chdir: "{{ webui_project_path }}"
+        executable: /bin/bash
+      register: logs_out
+      when: action == 'logs'
+
+    - name: Print logs
+      ansible.builtin.debug:
+        var: logs_out.stdout_lines
+      when: action == 'logs' and logs_out is defined and logs_out.stdout_lines is defined
+
+    - name: Show status
+      ansible.builtin.shell: |
+        {{ docker_compose_cmd }} ps
+      args:
+        chdir: "{{ webui_project_path }}"
+        executable: /bin/bash
+      register: ps_out
+      changed_when: false
+
+    - name: Print status
+      ansible.builtin.debug:
+        var: ps_out.stdout_lines

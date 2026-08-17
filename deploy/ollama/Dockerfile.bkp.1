@@ -1,0 +1,6 @@
+FROM ollama/ollama
+
+RUN apt update 
+RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git npm curl
+RUN curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash -s -- --no-prompt --no-onboard
+

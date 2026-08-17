@@ -1,0 +1,420 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: personal_finance
+:END:
+#+title: personal finance
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-05-22>
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_twin/docs/
+#+BEGIN: clocktable :scope file :block thisweek :maxlevel 2 :step day :stepskip0 t
+#+END:
+
+* personal finance
+
+Personal finance is made of incomes and expenses. Here we want to understand how can balance cost optimization vs growth.
+
+We categorize expenses in this way:
+- cash :: money to spend for small expenses (<50) in small shops (bakery, stores), restaurants and concerts
+- [[travel]] :: trips, holidays
+- [[living]] :: daily expenses (rent, commuting, bills)
+- [[income]] :: the net yearly income (salary, freelancing, prizes) 
+- [[free-time]] :: events, concerts, music, hobbies
+- [[sport]] :: and healthcare
+- [[savings]] :: what remains at the end of the month
+We use the script [[~/lav/src/albio/example/personal_finance.py][personal_finance.py]] 
+
+#+caption: expense type over time
+#+NAME:   fig:expense_trend
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_trend.png]]
+
+
+*** expansion vs contraction
+
+There are as well many expense types:
+
+- fixed :: I try to avoid them as much as possible, just cell phone and server
+  - subscription :: the expense you can't optimized
+  - insurance :: growing trend of buying lawyer insurances
+  - bills :: cell phone, server, electricity, gas
+- living :: to sustain a life: rent, grocery
+  - food :: a lot to optimize here
+  - rent :: a lot to optimize
+  - sport :: a lot to optimize
+  - transportation :: when you live far from your working place
+- maintenance :: when you have properties
+  - car :: simple cars have simple maintenance
+  - house :: in your own property you can save a lot of costs learning carpentry 
+- expansion :: the money you spend to expand yourself or to increase the value of assets
+  - workshop :: the gears you might need to save cost in maintenance work
+  - upskilling :: your experience can provide additional services and build a new career 
+  - producing :: you can start producing your own services and if not for selling for reducing costs
+- investments :: money you park for multiple years to add some interests on your earnings
+  - passive :: long range investment, you occasionally re-balance 2/3 times a year
+  - active :: you frequently control your positions on the stock market
+
+#+caption: incomplete data mid17/mid18
+#+NAME:   fig:finance_year
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_year.png]]
+
+*** products
+
+It's hard to keep track of the value of our skills, gears and assets. We decide to up-skill, buy assets and spend time investing in learning capabilities which can increase our wealth or reach.
+Most of those decisions are gut feeling and it's hard to track what really contributed to our overall improvement.
+The goal is challenging but it doesn't mean it's not worth trying it. 
+
+To help understanding personal finances a couple of products could be developed. 
+
+- asset management :: an app making pictures of a gear, writing the description, checking the price online, sending an alert when it is convenient to buy
+- asset optimization :: life time and usage of an object
+- asset return :: the share of lifetime per project and estimated return
+- project cost :: estimated cost of each project and overall value
+- market benchmark :: what would be the cost for a professional service and the value gap
+
+#+caption: yearly expense per good
+#+NAME:   fig:finance_group
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_group.png]]
+
+*** savings
+
+Differentiate your savings 
+
+- emergency :: liquid money you can use for emergencies (repair, help...)
+- passive investment :: money you shouldn't touch for a long time (pension, kids)
+- active investment :: require dedicated education and time
+
+#+caption: some hobbies are pretty expensive
+#+NAME:   fig:finance_project
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_project.png]]
+
+
+
+
+*** year by year
+
+Every year conditions might change: job, housing, emergencies and our personal finance should adapt to it.
+Changes:
+- job :: some industries are really precarious, it's hard to keep working in IT for more than 2y for example. Salaries can change and some unemployment time comes along
+- productivity loss :: health issues
+- emergencies :: sometimes the focus gets shifted pretty quickly
+  - catastrophe :: earthquake was a reality for us, weather will become more and more relevant
+  - health issues :: among family members
+- expansion :: I want to invest in assets, hobbies or education
+- exploit :: I want to use part of my savings for my personal growth
+
+#+caption: expense distribution per year
+#+NAME:   fig:expense_year1
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_expense_year.png]]
+
+*** growth
+
+Growth is an important part of our life, we want to be wise with expenses but that shouldn't compromise our personal life. Here we see what we pay but it's not possible to clearly quantify the return. It is important that everyone understands the importance of each point
+
+- friends and family :: are important and we don't need to discuss how important is to be generous but even if one thinks to save money being cautious with gifts and time the expenses definitely balance out.
+- lifestyle :: that's the biggest trap, thinking we need to dramatically change our lifestyle as we earn more. That's a big fault which consumes most of our savings. Flat, cars, restaurants and events are the most relevant examples
+- travel :: get into the life of different cultures and way of living, change your way of thinking. This shouldn't be just visiting touristic places
+- education :: a good balance between skills you gain and the usage you do of that skills. Often it's hard to monetize
+  - languages :: in some cases they open you a career, understand the clients in the local language is a plus. In many other cases either the earned level is not sufficient or your company doesn't value it
+  - culture :: understand each specific feature of a culture, in some cases you are compatible, in others not. This is a plus for negotiation
+  - skills :: nowadays it is hard to learn a skill and capitalize it straight away. Competition is tough and the level is high. You need to come to a specific niche where your quality/price/customization comes to the right point
+- assets :: the gears you need to grow an activity or learn new skills
+  - hardware :: I invested a lot in hardware to eventually save cost in maintenance
+    - wood :: the cost is increasing a lot, being able to work on wood can save a lot of money. Being able to work on it in the forest can save you a lot of logistic costs
+    - metal :: many constructions can be done with scrape metal, welding is pretty cheap
+    - carpentry :: that saves a lot of costs
+- hobbies :: they might start with a simple time filler but can become source of income
+  - music :: it's really hard to make serious income with it but why not keep trying?
+  - acting :: super important for professional life
+  - tailoring :: textile is pretty expensive but can be a source of income
+  - nightlife :: depends a lot on your type of friends, mine definitely are owls. Cutting expenses to meet friends, going to their concerts or their events is not an option for my taste
+
+
+#+caption: expense density
+#+NAME:   fig:finance_density
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_density.png]]
+
+
+
+
+#+caption: relative expense evolution
+#+NAME:   fig:expense_year1
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_focus.png]]
+
+
+
+*** travel
+
+Of course cutting on travel is an obvious choice for improving personal finances but if travel is a life experience the money spent is worth it. Spending the money wisely while traveling is important but sometimes difficult. The most flexibility comes from accommodation where you have more room to save
+
+- business trips :: mostly refunded
+- trips :: one shot movements for visiting family or friends
+- holidays :: trying to select meaningful destinations and make the travel as an experience rather than a tick box list
+
+#+caption: travel destinations are something to consider wisely
+#+NAME:   fig:finance_group
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_travel.png]]
+
+
+*** transportation 
+
+When you live far from your working place
+- bike :: my favorite, best deal and good for health (hearth, eyes, lungs). I count 300km/month
+- public :: in few cities worth the money, mostly less efficient than a bike
+- car :: in some places the only option, you can optimize a lot
+  - renting :: works in city centers, on demand cost. Some companies provide you the car as less taxed compensation
+  - owning :: I want to bet on cars that can last at least 20k km and 20y lifespan
+
+#+caption: overall expenses over time
+#+NAME:   fig:expense_year1
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_class.png]]
+
+
+*** living
+
+Living costs can be highly tweaked
+
+- rent :: monthly cost for a flat/room/house
+- grocery :: supermarket
+- cloth :: cloths
+- transportation :: bike is the best choice
+- gift :: some gifts
+- bill :: recurrent expenses
+  - cell phone :: hard to cut but every optimization count
+  - internet :: my demand lowers overtime and can be optimized
+  - gas :: I recently opted to buy bottles so I control when I buy it
+  - electricity :: there are many cases where you can produce part of your needs
+  - server :: I still have hosted services and domains to pay
+  - subscriptions :: none in my case, they are the hardest to optimize
+- fines :: sometimes they come
+- theft :: at least 4 in my case with significant losses 
+
+#+caption: rent paid since 2002
+#+NAME:   fig:finance_rent
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_rent.png]]
+
+*** income
+
+Without income no optimization is possible. Earning more or increase sources of income helps of course a lot. Capitalize the savings is something we can add on top
+
+- salary :: from a company
+- service :: from a client
+- prize :: funds
+- fines :: to detract
+- lawyer :: to detract
+- tax :: to detract
+- investment :: earnings
+- bank :: commissions 
+
+#+caption: salary since 1997
+#+NAME:   fig:finance_salary
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_salary.png]]
+
+
+
+*** free-time
+
+Free time is a big part of our personal growth. It impacts our well-being and increase our chances as well to be overall more proficient in life
+
+- book :: reading or watching documentaries 
+  - essay :: to understand a topic in depth
+  - novel :: gain inspiration and motivation
+  - comics :: a pretty big expense
+- events ::
+  - museums :: mainly painting and archaeology
+  - concerts :: music
+  - exhibition :: temporary exhibitions
+- hobby :: free time to spend with people motivated by the same passions
+  - dance :: couple or group dances
+  - acting :: theater
+  - sawing :: tailored costumes ~1k
+- lessons :: learning new skills
+  - music :: occasionally
+- music :: musical instruments and gears can be quite expensive and usually don't lose their value
+  - gears :: synth, mixer, microphones
+  - instruments :: violins, sax, clarinet, guitar
+- gaming :: luckily I'm still stuck in finishing 8bit games so I didn't update spending
+- writing :: a critical item in money/time optimization, it is really hard to find a topic you can cover which still has some niche to cover. It is difficult to quantify the return but I think that nowadays with AI is the most important skill to master. 
+  - blog :: technical and personal articles
+  - websites :: graphics for your passions
+- art :: pencil, papers, colors, canvas
+- bar :: this goes along with staying with your friends
+- restaurants :: most are overrated, despite being a waiter for over 10y I think optimize on restaurants harms not
+
+#+caption: free-time evolution. GAS (gear acquisition syndrom) in 2023
+#+NAME:   fig:finance_joint
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_joint.png]]
+
+
+*** sport
+
+Sport is an essential part of our lives. We can optimize a lot but knowing it's bad if we cut too much.
+I opted for buying gears as an initial investment and keep using them for a long time range
+
+- outdoor :: passion for outdoor 
+  - sailing :: something simple shared ~1k
+  - water :: kayak, swimming ~1k
+  - diving :: license pretty expensive ~1k
+  - hiking :: medium initial investment (tent, shoes) ~1k
+  - biking :: can get really expensive, I tried to be moderate ~2k
+  - skiing :: big initial investment ~2k
+  - climbing :: big initial investment ~2k
+- courses ::
+  - rugby ::
+  - acrobatics ::
+  - parkour ::
+  - water-polo ::
+- dance ::
+  - lindy hop ::
+  - forrò ::
+  - folk :: 
+- health :: I put medical expenses in this category because sport can prevent many further expenses
+  - prevention :: usually it pays of
+
+#+caption: expenses per prospect
+#+NAME:   fig:finance_prospect
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_prospect.png]]
+
+#+caption: expenses for the future are more concentrated
+#+NAME:   fig:finance_violin
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_violin.png]]
+
+
+#+NAME:   fig:finance_boxplot
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_boxplot.png]]
+
+#+caption: in ageing you invest more in the future
+#+NAME:   fig:finance_regression
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_regression.png]]
+
+
+
+#+caption: luckley lifestyle doesn't grow too much with savings
+#+NAME:   fig:finance_regression
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_correlation.png]]
+
+
+#+caption: more income increases lifestyle
+#+NAME:   fig:finance_regression
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_heatmap.png]]
+
+
+#+caption: trying to find a good regression
+#+NAME:   fig:finance_fit
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_fit.png]]
+
+
+
+
+* analytics
+
+We categorize all expense types marking each entry as an expense group
+
+#+caption: distribution of expenses
+#+NAME:   fig:finance_box
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_box.png]]
+
+
+#+caption: expenses are correlated
+#+NAME:   fig:finance_box
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_scatter.png]]
+
+#+caption: expenses evolution
+#+NAME:   fig:finance_growth
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_growth.png]]
+
+
+
+#+caption: some missing data need to be interpolated
+#+NAME:   fig:finance_box
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/finance_quality.png]]
+
+
+#+name: categorie_spese
+#+begin_src python :export both :results output replace
+import os, sys, re, json
+import pandas as pd
+baseDir = os.environ['HOME'] + "/lav/cios/erp/bank/"
+uniD = pd.read_csv(baseDir + "finance_history.csv")
+print(set(uniD['group']))
+#+end_src
+
+#+RESULTS: categorie_spese
+: {'cloth', 'lawyer', 'art', 'hardware', 'price', 'garden', 'house', 'cash', 'electronics', 'bar', 'restaurant', 'sport', 'phone', 'tax', 'bank', 'invest', 'fine', 'bike', 'charity', 'book', 'music', 'travel', 'car', 'rent', 'bill', 'event', 'health', 'boat', 'grocery', 'gift', 'salary'}
+
+
+* real estate
+
+We need to be able to parse all the official pdf to create a dataframe.
+We use the official cadastrial documents and create a parser for the pdf files.
+
+#+caption: official documents
+#+NAME:   fig:catasto
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/catasto.png]]
+
+
+
+#+caption: official maps
+#+NAME:   fig:catasto_map
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_cios/catasto_map.png]]
+
+
+
+*** categorize expenses
+
+I manually and automatically processed the expenses from my history
+
+[x] [[~/lav/cios/erp/bank/uni/uni_18.csv][uni_18]]
+[x] [[~/lav/cios/erp/bank/uni/uni_19.csv][uni_19]]
+[x] [[~/lav/cios/erp/bank/uni/uni_20.csv][uni_20]]
+[x] [[~/lav/cios/erp/bank/uni/uni_21.csv][uni_21]]
+[x] [[~/lav/cios/erp/bank/uni/uni_22.csv][uni_22]]
+[x] [[~/lav/cios/erp/bank/uni/uni_23.csv][uni_23]]
+[x] [[~/lav/cios/erp/bank/uni/uni_24.csv][uni_24]]
+[x] [[~/lav/cios/erp/bank/uni/uni_25.csv][uni_25]]
+[x] [[~/lav/cios/erp/bank/uni/uni_26_1.csv][uni_26]]
+[x] [[~/lav/cios/erp/bank/vals/vals_15.csv][vals_15]]
+[x] [[~/lav/cios/erp/bank/vals/vals_16.csv][vals_16]]
+[x] [[~/lav/cios/erp/bank/vals/vals_17.csv][vals_17]]
+[x] [[~/lav/cios/erp/bank/vals/vals_19.csv][vals_19]]
+[x] [[~/lav/cios/erp/bank/vals/vals_20.csv][vals_20]]
+
+
+
+
+#+name estratto_conti
+#+begin_src bash :export none :results output replace
+cd ~/lav/cios/erp/bank/
+ls uni/uni*csv
+ls vals/vals*csv
+#+end_src

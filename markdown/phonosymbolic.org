@@ -1,0 +1,132 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: spiega_tech
+:END:
+#+TITLE: spiega tech
+#+SUBTITLE: shared documentation across projects
+#+DATE: 14-05-2026
+#+STARTUP: showall
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+BIBLIOGRAPHY: bibliography.bib
+#+KEYWORDS: Data science, language models, LLMs
+#+description:
+#+OPTIONS: body-only:t
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: { @COMPLETED(c) @INPROGRESS(p) } LEGACY(l) REVIEW(r) GENERATED(g)
+#+STARTUP: latexpreview
+
+* Phonosymbolic language
+
+Phonosymbolic words are composed of sounds that give symbolic meaning through cultural and linguistic conventions.
+More on [[https://www.omniglot.com/conscripts/abdpa.htm][omniglot]]. 
+
+Each phonosymbolic word is designed to evoke certain emotions, ideas, or cultural associations rather than directly translating into physical descriptions. This approach allows for a more abstract and flexible form of communication.
+
+A great example is soffice/duro (soft/hard) where soffice has soft sounds like `s`, `f` and `ci` and harsh sounds like duro `d` and `r`. `r` is a really interesting consonants since it has completely different sound and phonosymbolic meaning across countries. The most common example is lingua (language) because across many cultures the language is connected with the tongue and there is no better consonant than `l` to represent it.
+On top we have the onomatopoeic words like tintinnare (clink) but the vocabulary has really few words replicating sounds.
+
+During high school I was fascinated about creating a language where sounds represent basic concepts and words are just the literal composition of those.
+The idea was to divide the sounds into consonant and vowels and diacritics as in natural languages.
+Vowels, consonants and diacritics should belong to different realms of meaning where each word is the composition of those.
+Basically if `t` and `d` are both plosive but `d` is the alveolar version. Let's imagine now we have a sign for t which will represent a subject and a diacritic which will represent an attribute.
+In phonosymbolic languages, these distinctions might be used to convey different meanings or nuances. For instance, in some hypothetical language system, "t" and "d" could represent different symbolic concepts based on their subtle differences in articulation.
+
+The language will then have a sign for t and a diacritic to move to d.
+Back then I had no idea on how to assign sounds to meaning but after 10y of physics and 15y in ML I guess LLM, clustering and embeddings can help a lot.
+
+* Alphabet
+
+We now need to decide on an approximate basis (that would be natural language specific) what are the basic sound and diacritic to use. The phonetic alphabet is not precise because a single natural language won't need the complexity of phonetical extensiveness. 
+We start with Italian.
+
+We start picking Italian as natural language and we have then selected the basic sounds: t, p, ci, n, f... and created the softer version.
+
+|hard|soft|
+|---|---|
+|t|d|
+|s|s|
+|f|v|
+|p|b|
+|ci|gi|
+|ch|gh|
+|n|m|
+|sc|j|
+
+We will then use a diacritic sound to move between the two, same for the vowels.
+
+|closed|open|soft|
+|---|---|---|
+|à|á| |
+|è|é| |
+|ò|ó|ö|
+|ì| | |
+|ù| |ü|
+
+We need then to find 8 consonant signs, 5 vowels and 1 diacritic and we start with simple signs like \ or /.
+The mark should represent the sound as well so `t` and `k` will use segments like `\` and `<` while soft sounds like `s` and `f` will use curves.
+
+
+* Font
+
+We firstly use [[https://github.com/fontforge/fontforge][fontforge]] to create the font to visualize the main features and I will decide a fixed mapping to ease typing on the keyboard like:
+
+|key|sound|
+|---|---|
+|k|ch|
+|c|ci|
+|g|gh|
+|j|gi|
+|ś|sc|
+|ź|j|
+
+
+#+ATTR_HTML: :align center
+#+ATTR_ORG: :align center
+#+CAPTION: representation of the alphabet
+#+NAME:   fig:SED-HR4049
+[[../../f/f_lang/alphabet.png]]
+
+
+The written form allow the connection of diacritics into a single sign and the union with vowels.
+Without knowing the basic rule about the crosses it would be really hard to decipher the language since you wouldn't know how many basic characters are and the same word can look pretty different. 
+
+#+ATTR_HTML: :align center
+#+ATTR_ORG: :align center
+#+CAPTION: example of writing
+#+NAME:   fig:SED-HR4049
+[[../../f/f_lang/writing.png]]
+
+
+* embeddings
+
+Basically every word would need to be preprocesses this way:
+
+- phonetic: aggregated sounds like `scia` should be replaced by `śa`
+- embeddings: the phonetic sounds need to be represented into a 3d space where every vector represents in boolean consonants, diacritics or vowels
+
+#+begin_ascii
+sciogliere -> śioµiere -> [[0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1...
+#+end_ascii
+
+* clustering
+
+The vocabulary will be projected into the embedding space and words should be clustered per meaning. The closest sign to that meaning will be its representative.
+A transformer will be trained to perform this encoder-decoder architecture to create a machine translating utility
+
+* output
+
+The transformer will be capable of translating Italian into the new language and speak it out.
+
+* results
+
+The output should be exposed to native speakers to report their perception of the language. 
+
+* tokenizer
+
+How do we token? Can we use this function: [[https://pypi.org/project/tokenizers/][tokenizer]]
+

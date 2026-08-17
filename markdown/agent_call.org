@@ -1,0 +1,805 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: agent_call
+:END:
+#+title: agent calling
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-05-22>
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_twin/docs/
+#+BEGIN: clocktable :scope file :block thisweek :maxlevel 2 :step day :stepskip0 t
+#+END:
+
+* active agent assistant                                  :executive:present:
+DEADLINE: <2026-06-17 Wed>
+:PROPERTIES:
+:HTML_CONTAINER_CLASS: highlight
+:ID:       agent_call-assistant
+:ROAM_ALIASES: agent assistant
+:END:
+
+We are looking for local agents to support our development. We need to create a simple system to make sure:
+
+- productivity boost :: end-to-end we improve your productivity
+- interface :: [[http://localhost:8000][chat with your model]] 
+
+
+*** motivation
+
+Agents support with multiple tasks but can get quickly out of control. The setting we build here has the following features:
+
+- local :: all the knowledge sits inside this network and internet is hardly required [[id:admin-tool_docker][docker]]
+- litte resources :: the network is nothing but a [[id:main_laptop][laptop]]  and [[id:jetson use-cases][jetson]]
+- automation :: the creation of the knowledge base and graphs is automated [[id:knowledge_graph-knowledge][knowledge base]]
+- human tasks :: to ideate and break down tasks, the tools do the rest 
+- interconnection :: knowledge base is connected with task description, connected with effort estimate, connected with action plan, connected with agenda
+- few dependencies :: the project rely on few software: an IDE, python and LLM serving software
+- safety :: the LLMs don't have access to confidential information, the coding agent can see only restricted folders [[id:data_sovereignty][data sovereignty]]
+- cheap :: use the power of your local hardware, no subscription, no fees
+- structure :: start thinking at planning first, execution is the least effort
+- document :: the single source of truth create a vast documentation to further define tasks
+- present :: the same files used for planning create slides and technical documentation
+- organized :: access easily all the important configurations in your project
+
+*** setup
+
+Following is a visual representation of the differences between two extremes:
+- vibe+public :: you use a software like cursor and you pay a subscription to a public mode
+- emacs@local :: you have full control of the deployment and you know exactly what the models can see and edit 
+v
+The estimate comes from the following considerations:
+- public models :: are much more advanced than local, open-source models
+- client IDE :: access all your files
+- agents :: it's really hard to give precise instructions and make sure they respect the boundaries
+- coding agent :: each one has different policies but often they overdo and it's time consuming to get maintainable code
+- integration :: the ease of adding tools and capabilities which of course is in favor of open-source
+- enhancement :: is the difference between boost in productivity and overview work, sometimes the balance is negative
+
+# C-c " g
+#+PLOT: file:"../../f/f_twin/vibe_radar.svg" title:"advantages" transpose:yes type:radar min:0 max:5
+| conf          |consistency   | control |privacy |proficiency| integration  | overview | versatility |
+|---------------+--------------+---------+--------+-----------+--------------+----------+-------------|
+| vibe+public   |          3.7 |      2.5|    0.5 |        5.0|           3.7|       2.7|          2.5|
+| emacs@local   |          4.7 |      4.9|    5.0 |        3.7|           4.8|       4.8|          5.0|
+
+
+*** local tools
+
+Single tools can improve some features but make other less effective:
+- agents :: provide added knowledge but can develop the project in a direction where is difficult to gain control
+- coding assistant :: can write useful code and add unknown libraries but can break everything
+- skills :: can be dangerous without proper control
+- knowledge base :: is essential to maintain consistency but files need to be updated and linked
+- [[https://en.wikipedia.org/wiki/Read-eval-print_loop][REPL]] :: test on the fly is the best option to avoid never ending testing
+
+#+CAPTION: Evaluation of local vs cloud alternatives
+#+NAME:   fig:quadrant_diagram
+#+ATTR_HTML: :max-width 400px :align center
+[[../../f/f_twin/vibe_radar.svg]]
+
+Contribution of single tools 
+# C-c " g
+#+PLOT: file:"../../f/f_twin/tool_radar.svg" title:"tool contribution" transpose:yes type:radar min:-1 max:1
+| conf     |consistency   | control |safety  |boost      | integration  | overview | enhancement |
+|----------+--------------+---------+--------+-----------+--------------+----------+-------------|
+| +gptel   |            0 |    -0.2 |   -0.2 |       0.4 |          0.3 |      0.8 |          0.2|
+| +ellama  |            0 |    -0.2 |   -0.2 |       0.3 |          0.2 |      0.3 |          0.3|
+| +mcp     |            0 |    -0.2 |   -0.2 |       0.2 |          1.0 |        0 |          0.5|
+| +org     |           1.0|     0.3 |      0 |       0.4 |          0.4 |      1.0 |          0.4|
+| +repl    |           1.0|     0.3 |      0 |       0.2 |          0.7 |      0.3 |          0.6|
+| +pi-code |            0 |    -0.5 |   -0.4 |       0.5 |          0.2 |     -0.2 |          0.3|
+
+
+#+CAPTION: Contribution of the single tools to the project
+#+NAME:   fig:quadrant_diagram
+#+ATTR_HTML: :max-width 400px :align center
+#+RESULTS: quadrant_diagram
+[[../../f/f_twin/tool_radar.svg]]
+
+
+#+name: quadrant_diagram
+#+BEGIN_SRC mermaid :file ../../f/f_twin/quadrant_diagram.svg :export none
+quadrantChart
+    title implementation benefits
+    x-axis Low help --> High assistance
+    y-axis Low control --> High ownership
+    quadrant-1 control and productivity 
+    quadrant-2 control but useless
+    quadrant-3 unpredictable
+    quadrant-4 high costs/low ownership
+    current setup: [0.6, 0.7]
+    public models: [0.9, 0.23]
+    no coding agent: [0.30, 0.69]
+    no docker: [0.6, 0.34]
+    no .org file: [0.40, 0.34]
+#+END_SRC
+
+#+CAPTION: Quadrant representation of the project and its goals
+#+NAME:   fig:quadrant_diagram
+#+ATTR_HTML: :max-width 350px :align center
+#+RESULTS: quadrant_diagram
+[[file:../../f/f_twin/quadrant_diagram.svg]]
+
+* agentic components                                              :executive:
+:PROPERTIES:
+:ID:       agent_call-components
+:ROAM_ALIASES: agentic components
+:END:
+
+Agents can fulfill many tasks. The work has shifted from the paradigm of executing tasks (and often not document them) to document first what you want to do and plan (or let plan) the agents to execute.
+The most important task is to test and quality check the results which means to own the pipeline and put enough logs and monitoring tools to allow traceability (know what agent did what).
+
+We need an interface which is usually an IDE or a terminal to plan and orchestrate everything.
+
+Here the choice is:
+
+- IDE :: emacs because you focus on typing and don't get distracted by useless information
+- plan :: .org files: they contain agenda, trees, graphs, attributes, source code... you can basically write a complete software within a file
+- LLM :: ollama because it's important to own the processes and limit spending
+- coding agent :: currently on [[https://pi.dev/][pi-agent]], [[https://opencode.ai/][opencode]] and [[https://aider.chat/][aider]] where not efficient with local models. Aider UX is limited (no autocompletion, messed up my repo)
+- MCP :: language models work at best with tools, I keep building MCP servers to ease LLM tasks
+- graphs :: all the results are outputted in nodes and links to be visualized and navigated. I use [[https://neo4j.com/][neo4j]] to store the data
+- programming :: mainly in python using REPL functionalities in emacs to test and execute every single line of code and check the data results
+- deploy :: all the resources with [[id:admin-tool_docker][docker]] so I can easily move them around
+- hardware :: local: [[https://www.acer.com/us-en/laptops/nitro/nitro-v-16-ai-amd][laptop]] and [[https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/nano-super-developer-kit/][jetson]] (desc: [[id:jetson_orin][jetson]])
+
+Here is a sketch of the project 
+
+#+name: flow_diagram
+#+BEGIN_SRC mermaid :file ../../f/f_twin/flow_diagram.svg :export none
+---
+title: implementation sketch
+---
+flowchart LR
+KN["`
+script
+knowledge
+agenda
+links
+tasks
+`"]
+DOC@{ shape: docs, label: "Knowledge"}
+MC@{ shape: procs, label: "mcp server"}
+DT@{ shape: lin-cyl, label: "storage" }
+EL@{ shape: notch-pent, label: "ellama" }
+GP@{ shape: notch-pent, label: "gptel" }
+PI@{ img: "/home/sabeiro/lav/src/spiega/icon/dev.svg", label: "pi-coding", pos: "c", w: 60, h: 60, constraint: "off" }
+%%A@{ icon: "fa:user", form: "square", label: "User Icon", pos: "t", h: 60 }
+
+E(emacs) --> GP
+E --> EL
+E -- ask --> EL
+EL -- connect --> OL[\ollama\]
+OL -- answer --> EL
+EL -- insert --> E
+GP -- connects --> MC
+MC -- summarize --> DOC
+GP -- decide --> JT[\vllm\]
+JT -- elaborate --> GP
+GP -- insert --> E
+E -- debug --> PI
+PI -- write --> DT
+PI -- edit --> E
+E -- edit --> OR[org-file]
+OR -- contain --> KN
+#+END_SRC
+
+#+CAPTION: diagram of the implementation
+#+NAME:   fig:flow_diagram
+#+ATTR_HTML: :align center
+#+RESULTS: flow_diagram
+[[file:../../f/f_twin/flow_diagram.svg]]
+
+The documentation is generated inside this [[generate-doc][.org file snippet]]
+
+* active plan                                                    :management:
+
+
+#+begin_export html
+<pre class="mermaid">
+graph LR
+A[emacs] --> B[gptel]
+A[emacs] --> C[ellama]
+</pre>
+#+end_export 
+
+Code for generating the documentation.
+
+*** slide generation from .org and .md
+
+emacs has a lot of publishing options but in some cases I need a really custom design and therefore I strip header and footer from the html and append my own. We have a bash file for that [[~/lav/src/blender_twin/docs/script/convert_slide.sh][convert_slide.sh]].
+I need as well to convert the mermaid svg graph into a format blender can import which means first of all to convert the plain text into path which is accomplished by [[~/lav/src/blender_twin/docs/script/text2svg.py][text2svg]]. This script tries as well to rename path ids to allow easier grouping into blender. 
+
+#+name: generate-doc
+#+begin_src bash :exports both :results output replace
+cd $HOME/lav/src/blender_twin/docs/
+#bash ./script/convert_slide.sh
+bash ./script/convert_single.sh ./plan/agent_call.org
+#bash ./script/text2svg.sh
+#+end_src
+
+#+RESULTS: generate-doc
+: static/agent_call.html
+
+*** gantt for the project
+
+A Gantt representation of the project
+
+#+name: gantt_diagram
+#+BEGIN_SRC mermaid :file ../../f/f_twin/gantt.svg :export none
+---
+displayMode: compact
+title: Ignored if specified in chart
+config:
+  gantt:
+      useWidth: 800
+      rightPadding: 0
+      topAxis: true  #false
+      numberSectionStyles: 2
+---
+gantt
+    dateFormat  <YYYY-MM-DD>
+    title  Knowledge base action plan
+    excludes  weekends
+
+    review : vert, v1, <2026-06-22>, 1d
+
+    section local models
+        deploy LLMs          :done,  deploy, <2026-05-20>, 7d
+        coding agent         :done,  deploy, <2026-05-27>, 14d
+
+    section list & summarize
+        parse knowledge         :done,  dev, <2026-06-01>, 5d
+        create graphs           :done,  dev, <2026-06-07>, 7d
+
+    section hierarchy
+        hierarchy     :done, distil, <2026-06-16>, 9d
+        visualization :crit, distil, <2026-06-20>, 4d
+
+    section video
+        sceencast    :active, create, <2026-06-12>, 5d
+        animate text :active, create, <2026-06-17>, 9d
+
+    section publish
+        content     :active, share, <2026-06-22>, 10d
+        publication :milestone, share, <2026-06-27>, 5d
+#+END_SRC
+
+#+CAPTION: Gantt representation of the project
+#+NAME:   fig:mermaid_gantt
+#+ATTR_HTML: :align center
+#+RESULTS: gantt_diagram
+[[file:../../f/f_twin/gantt.svg]]
+
+* Kanban
+
+We can as well integrate our workflow into a Kanban
+
+#+name: kanban_diagram
+#+BEGIN_SRC mermaid :file ../../f/f_twin/kanban.svg :export none
+---
+config:
+  kanban:
+    ticketBaseUrl: 'https://mermaidchart.atlassian.net/browse/#TICKET#'
+---
+kanban
+  Todo
+    [compare model serve]
+    docs[benchmark vllm, llama.cpp and ollama]
+  [In progress]
+    id6[blog posts about the local implementation ]
+  id9[Ready for deploy]
+    id8[cloud webdav]@{ assigned: 'bot1' }
+  id10[Ready for test]
+    id4[Create parsing tests]@{ ticket: MC-2038, assigned: 'K.Sveidqvist', priority: 'High' }
+    id66[last item]@{ priority: 'Very Low', assigned: 'knsv' }
+  id11[Done]
+    id5[agent confs, org files]
+    id2[local deployment]@{ ticket: MC-2036, priority: 'Very High'}
+    id3[graph integration]@{ ticket: MC-2037, assigned: bot1, priority: 'High' }
+#+end_src
+#+CAPTION: Gantt representation of the project
+#+NAME:   fig:mermaid_kanban
+#+ATTR_HTML: :align center
+#+RESULTS: kanban_diagram
+[[file:../../f/f_twin/kanban.svg]]
+
+
+* sankey
+
+We can show sankey diagrams too
+
+#+name: sankey_diagram
+#+BEGIN_SRC mermaid :file ../../f/f_twin/sankey.svg :export none
+---
+config:
+  sankey:
+    showValues: false
+---
+sankey
+
+LLM cloud,LLM local,95
+cursor,pi-coding,60
+cursor,aider,20
+cursor,open-code,20
+
+#+end_src
+#+CAPTION: Sankey representation of the project
+#+NAME:   fig:mermaid_sankey
+#+ATTR_HTML: :align center
+#+RESULTS: sankey_diagram
+[[file:../../f/f_twin/sankey.svg]]
+
+
+* timeline
+
+We can present as well a timeline regarding the development of this project
+
+#+name: timeline_diagram
+#+BEGIN_SRC mermaid :file ../../f/f_twin/timeline.svg :export none
+timeline
+    title blender twin development
+    2025-12-12 : nvidia jetson CV application
+    2026-01-12 : camera controller with pose estimate
+    2026-02-12 : physics optimization engine in js
+    2026-03-12 : moving from cloud to local LLMs
+    2026-04-12 : new laptop to run local + jetson
+    2026-05-12 : .org files and productivity workflow
+    2026-06-12 : knowledge graph
+#+end_src
+
+
+#+CAPTION: Timeline
+#+NAME:   fig:mermaid_timeline
+#+ATTR_HTML: :align center
+#+RESULTS: timeline_diagram
+[[file:../../f/f_twin/timeline.svg]]
+
+
+* done architecture                                            :architecture:
+:PROPERTIES:
+:ID:       agent_call-architecture
+:ROAM_ALIASES: agentic architecture
+:END:
+
+Architectural diagram for the project:
+
+#+name: arch_diagram
+#+BEGIN_SRC mermaid :file ../../f/f_twin/arch_diagram.svg :export none
+flowchart TD
+    subgraph Sensors ["IoT Sensor Layer"]
+        A[Temperature Sensors] -->|MQTT| B[Messaging Bus]
+        C[Humidity Sensors] -->|MQTT| B
+        D[Pressure Sensors] -->|MQTT| B
+    end
+
+    subgraph Processing ["Processing Layer"]
+        B -->|Ingest| E[Data Stream Processor]
+        E -->|Normalize| F[Time Series DB]
+        E -->|Transform| G[Feature Extractor]
+        G -->|Analyze| H[Anomaly Detector]
+    end
+
+    subgraph Intelligence ["Intelligence Layer"]
+        H -->|Alerts| I[Predictive ML Model]
+        I -->|Predictions| J[Decision Engine]
+        F -->|Historical Data| K[Knowledge Graph]
+    end
+
+    subgraph Visualization ["Visualization Layer"]
+        J -->|Commands| L[Control Actions]
+        K -->|Entity Relations| M[Graph Database]
+        E -->|State Updates| Q[3D WebGL Viewer]
+        Q -->|Render| R[Blender Scene]
+    end
+
+    subgraph Twin ["Digital Twin Model"]
+        R -->|Sync| V[Physics Simulation]
+        V -->|Thermal Analysis| W[Heat FEM Solver]
+        W -->|Results| Q
+    end
+
+    style Sensors fill:#e1f5fe
+    style Processing fill:#fff3e0
+    style Intelligence fill:#e8f5e9
+    style Visualization fill:#f3e5f5
+    style Twin fill:#ffe0b2
+    linkStyle default stroke:#333,stroke-width:2px
+#+END_SRC
+
+#+CAPTION: result of mermaid plot
+#+NAME:   fig:mermaid_gantt
+#+ATTR_HTML: :align center
+#+RESULTS: arch_diagram
+[[file:../../f/f_twin/arch_diagram.svg]]
+
+
+
+* done models                                                           :dev:
+:PROPERTIES:
+:HTML_CONTAINER_CLASS: img-wrapper
+:ID:       agent_call-models
+:ROAM_ALIASES: agentic models
+:END:
+
+
+Using mainly [[https://ollama.com/][ollama]] (with [[https://llama.app/][llama cpp]] took a lot of time for configuration) to serve LLMs.
+Ollama has a nice interface for python which basically removed all my external dependencies from langchain and llamaindex (which keeps on changing APIs and packaging and my code needs to be re-written over and over).
+I currently manage to run:
+- `qwen2.5-coder:3b` :: I use it a lot for summarization tasks, it's quick but sometimes output trivial content
+- `qwen3.5:9b` :: The least thinking model I can use
+- `qwen3.6:latest` :: At the hardware limits of my local setup, it is not worth it the waiting, few tokens per second
+- `llama3.2:latest` :: 
+- `codegemma:7b` ::
+- `deepseek-coder:6.7b` ::
+- `gemma4:latest` ::
+- `dolphin-mistral` :: 
+
+We tested as well other LLM serving toos:
+The current LLM serving tools tested
+- [[https://ollama.com/][ollama]] :: criticized as professional tool but really easy to implement. It integrates nicely with pi-coding and I completely removed my langchain dependencies thanks to the API completeness especially regarding the json formatted output
+- [[https://lmstudio.ai/docs/python][lm_studio]] :: UI is pretty useless but the token/s speed is really high and I need to find a headless alternative
+- [[https://pypi.org/project/vllama/][vllama]] :: still hitting VRAM limitation
+- [[https://github.com/ggml-org/llama.cpp][llama.cpp]] :: pretty hard to deploy especially on ARM on the jetson but should be pretty efficient. I find really frustrating the experience of downloading models from [[https://huggingface.co/][hugginface]] where search is pretty useless, it's hard to navigate between models and hard to download the correct version of the model. Ollama made it really easy
+
+* done coding assistant                                         :present:dev:
+:PROPERTIES:
+:ID: agent_call-coding
+:END:
+
+The current coding assistant is on [[https://pi.dev/][pi-agent]] while [[https://opencode.ai/][opencode]], [[https://aider.chat/][aider]] and [[https://cursor.com/][cursor]] where also tested.
+- [[https://pi.dev/docs/latest/extensions][pi-agent]] :: currently the running options because it's more efficient for local models. It reduces the load and unload of files and the number of tokens. 
+- [[https://cursor.com/][cursor]] ::  is not opensource and I can't integrated in my workflow. Cursor itself said that with using python REPL emacs it's the best option
+- [[https://aider.chat/][aider]] :: I find it less invasive than opencode but struggles to perform simple operations and creates a lot of junk in the folder
+- [[https://opencode.ai/][opecode]] :: a bit too invasive for my taste, it takes too many autonomous decisions making it difficult to control 
+
+The current configuration uses pi-coding and the configuration is specified in:
+- [[~/lav/src/blender_twin/deploy/ollama/pi_config/.rules][rules]] :: how the agent should behave in this project
+- [[~/lav/src/blender_twin/deploy/ollama/pi_config/agent/AGENTS.md][AGENTS.md]] :: what types of agents we need
+- [[~/lav/src/blender_twin/deploy/ollama/pi_config/SYSTEM.md][SYSTEM.md]] :: what is the system configuration
+- [[~/lav/src/blender_twin/deploy/ollama/pi_config/SYSTEM_APPEND.md][SYSTEM_APPEND.md]] :: further agent defitions
+- [[~/lav/src/blender_twin/deploy/ollama/pi_config/SKILLS.md][SKILLS.md]] :: skillset for agents
+- commands :: ESC to stop the current operation, /q to quit
+- security :: pi runs inside the same container as ollama with the same user as the host system. Mounted is only the /src/ directory so pi cannot access critical information like passwords, keys... and cannot run any docker command which can easily get to sudo rights
+
+* done emacs                                                          :present:
+:PROPERTIES:
+:ID:       agent_call-emacs
+:ROAM_ALIASES: agent_call-emacs
+:END:
+
+Emacs is omnipresent in my developments [[id:emacs intro][emacs intro]].
+Emacs integrates bash commands with macros and program outputs, I can connect language models with mcp servers.
+I currently use [[~/lav/src/blender_twin/deploy/emacs/emacs.el][emacs.el]]
+as current init file and  [[~/lav/src/blender_twin/deploy/emacs/.emacs.d/gptel_tools.el][gptel_tools.el]] for connecting with mcp.  [[~/lav/src/blender_twin/deploy/emacs/.emacs.d/gptel_allowed_commands.txt][gptel_tools_allowed commands]] is an additional list of bash commands which the tool allows
+
+Features:
+- LLMs :: I use different packages to interact with the local models
+  - [[https://github.com/s-kostyaev/ellama][ellama]] :: for reasoning and structuring the project and for code examples in any buffer
+  - [[https://github.com/karthink/gptel][gptel]] :: for the integration with mcp
+    - [[https://github.com/karthink/gptel?tab=readme-ov-file#model-context-protocol-mcp-integration][gptel base]] :: base package
+    - [[https://github.com/lizqwerscott/mcp.el][mcp.el]] :: start the hub
+    - [[../../deploy/emacs/.emacs.d][custom gptel tools]] :: user defined tools
+    - [[https://github.com/lizqwerscott/gptel-mcp.el/blob/master/gptel-mcp.el][gptel-mcp]] :: integration between the packages
+  - [[https://github.com/lizqwerscott/mcp.el][mcp]] :: for adding my own tools and external mcp
+  - [[https://github.com/MatthewZMD/aidermacs][aideremacs]] :: connect aider with emacs but was creating too much trash in the repository
+  - [[https://github.com/dnouri/pi-coding-agent][pi agent]] :: connect pi-agent with emacs 
+
+The most efficient way to integrate LLMs into the workflow is having a [[id:agent_call-org_mode][org_mode]] integration with all the available tools.
+
+#+property: class mermaid
+#+name: sequence_diagram
+#+begin_src mermaid :file ../../f/f_twin/sequence_diagram.svg :class mermaid :exports none
+sequenceDiagram
+ emacs-->ellama: prompt
+ emacs-->gptel: tools
+ emacs-->pi_agent : instruction
+ pi_agent-->ollama: prompt
+ gptel-->mcp_server: prompt
+ mcp_server-->llama.cpp: instruction
+ gptel-->emacs: code
+ pi_agent-->emacs: code
+#+end_src
+
+#+CAPTION: result of mermaid plot
+#+ATTR_HTML: :alt cat/spider image :title Action! :class img-wrapper
+#+NAME:   fig:org_plot
+#+ATTR_HTML: :align center
+#+RESULTS: sequence_diagram
+[[file:../../f/f_twin/sequence_diagram.svg]]
+
+* .org files LLM integration
+:LOGBOOK:
+CLOCK: [2026-06-19 Fri 11:04]--[2026-06-19 Fri 11:39] =>  0:35
+:END:
+
+The most efficient way to integrate LLMs is to use [[id:knowledge_graph-org_mode][.org files]] and their capabilities.
+Org files contain many different tags which are interpreted as multiple entities.
+
+- dates :: <2026-06-19> as agenda entries
+- clock :: [C-c C-x TAB] to start logging the start of an activity
+- nodes :: ID and ROAM_ALIASES to tag any section or file
+- agenda :: to schedule a task or to set an alert [C-c a]
+- tags :: to specify meta information for that section [C-c C-q]
+- status :: whether an action is done or pending [Space - left/right arrow]
+- trees :: explain hierarchical structures [::]
+- code :: define code to execute `#+begin_src bash` `#+end_src`
+- plots :: plot data with gnuplot
+- link :: link to anything: files, websites, buffers, images...
+- [[shell:ls *org][local org files]] :: open new buffers from shell
+
+LLMs should be able to correctly find and update those tags and automate the work of logging what the user is doing. 
+
+
+* active mcp for code dev                                       :present:dev:
+
+
+I currently have the following mcp servers:
+
+- [[https://github.com/ahujasid/blender-mcp][blender-mcp]] :: to use blender from emacs
+- [[https://www.blender.org/lab/mcp-server/?utm_source=blender-5.1.1][proj desc]] :: alternative
+- [[https://projects.blender.org/lab/blender_mcp][proj desc 2]] :: alternative
+- [[https://blender-mcp.org/][proj desc 3]] :: alternative
+- [[https://projects.blender.org/lab/blender_mcp][blender mcp with client]] :: alternative
+- [[https://projects.blender.org/lab/blender_mcp/wiki/Llama.cpp][integration llama.cpp]]  :: alternative
+     
+- jetson-mcp :: a custom mcp server running on a [[https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/nano-super-developer-kit/][nvidia jetson]] using computer vision capabilities with pytorch
+- [[../../deploy/deploy/][bottino-mcp]] :: a custom mcp server running locally on this laptop
+- mcp-hub :: additional gptel tools administrated by [[~/lav/src/blender_twin/deploy/mcp_server/][mcp_server]]
+
+* active microcontroller                                           :embedded:
+
+The microcontollers are the eyes and ears of the LLMs. We need to extend our MCP network to access and link the different devices so we can enhance our capabilities to the physical world.
+Here is the list of the [[id:microcontroller_agentic][microcontroller]] we use.
+For that we need:
+
+- microcontrollers :: ESP32, arduino, teensy
+- sensors :: motion, temperature
+- camera :: ESP32, jetson raspy HD
+- webserver :: ESP32 to expose an endpoint our MCP server can call
+- interface :: BLE midi is really versative
+
+
+* knwoledge ellama                                                      :dev:
+CLOSED: [2026-06-17 Wed 15:38]
+
+Ellama is an Emacs frontend for chatting with large language models via ~llm-ollama~.  Models run locally through Ollama – no cloud API needed.
+
+- jdormit/emacs-opencode (https://github.com/jdormit/emacs-opencode) — native client: M-x opencode for sessions, opencode-ask for prompts, session management, and deep Emacs integration via emacs-mcp-server (read buffers, eval elisp, run compile commands)
+- colobas/opencode.el (https://github.com/colobas/opencode.el) — port of my tools into gptel with LSP integration, diagnostics, symbol navigation, and agent presets
+- rogs/opencode.el (https://git.rogs.me/rogs/opencode.el) — lightweight terminal-based integration using vterm or shell-mode with a transient menu
+- xenodium/agent-shell (https://github.com/xenodium/agent-shell) — ACP-based native Emacs buffer for LLM agents, supports OpenCode as a backend
+- tninja/ai-code-interface.el (https://github.com/tninja/ai-code-interface.el) — unified interface wrapping multiple CLI agents including OpenCode
+
+*** Ellama connects *directly* to Ollama
+
+(~http://127.0.0.1:11434~).  Unlike gptel, it does *not* route through the MCP server (the ~bottino/mcp~ FastAPI agent), so it has no access to the MCP tools (~ollama_list_models~, ~camera_describe_scene~, etc.) or the MCP tool-call loop.
+
+However, ~emacs.el~ now discovers models *dynamically* by querying Ollama's ~/api/tags~ endpoint (through the same nginx that proxies MCP).Set ~MY_OLLAMA_URL~ env var to route discovery through the MCP server, e.g. ~http://bottino:11434~.  No more hardcoded model list — when you pull a new model in Ollama, it appears in ~M-x ellama-switch-provider~ automatically
+(after a 3-second idle delay at startup, or instantly via ~M-x my-ellama-refresh-providers~).
+
+*** Key bindings
+
+| Key   | Command                      | Description                     |
+|-------+------------------------------+---------------------------------|
+| ~C-c e~ | ~ellama~                       | Start a new chat session        |
+| ~C-c C-c~ | ~ellama-chat-send-last-message~ | Send last message in chat buffer |
+
+*** Providers (models)
+
+Defined in =emacs.el= lines 332-404:
+
+Default chat provider (~ellama-provider~)
+
+- Model: ~qwen2.5:3b~
+- Embedding: ~nomic-embed-text~
+- Context: 8192 tokens
+- Used for: general conversation, questions
+
+Coding provider (~ellama-coding-provider~)
+
+- Model: ~qwen2.5-coder:3b~
+- Context: 32768 tokens
+- Used for: code generation, debugging, refactoring
+- Activated via ~ellama-code~ or ~C-c e c~
+
+Summarization provider (~ellama-summarization-provider~)
+
+- Model: ~qwen2.5:3b~
+- Context: 32768 tokens
+- Used for: summarizing regions, buffers, or files
+
+Translation provider (~ellama-translation-provider~)
+
+- Model: ~qwen2.5:3b~
+- Context: 32768 tokens
+
+Extraction provider (~ellama-extraction-provider~)
+
+- Model: ~qwen2.5-coder:7b-instruct-q8_0~
+- Context: 32768 tokens
+- Used for: structured data extraction from text
+
+Naming provider (~ellama-naming-provider~)
+
+- Model: ~qwen2.5:3b~
+- Used for: auto-naming new chat sessions (via ~ellama-generate-name-by-llm~)
+
+Predefined providers for interactive switching
+
+| Provider  | Chat model                     | Embedding model                 |
+|-----------+--------------------------------+---------------------------------|
+| ~zephyr~   | ~zephyr:7b-beta-q6_K~           | ~zephyr:7b-beta-q6_K~           |
+| ~mistral~  | ~mistral:7b-instruct-v0.2-q6_K~ | ~mistral:7b-instruct-v0.2-q6_K~ |
+| ~mixtral~  | ~mixtral:8x7b-instruct-v0.1-q3_K_M-4k~ | ~mixtral:8x7b-instruct-v0.1-q3_K_M-4k~ |
+
+*** interaction
+
+Switch interactively with ~M-x ellama-switch-provider~.
+
+
+Start a chat
+
+  ~C-c e~ or ~M-x ellama~
+
+This opens a chat buffer in full frame.  Type your message, then ~C-c C-c~
+to send.
+
+ Coding assistant
+
+  ~M-x ellama-code~ or select the coding provider interactively.
+
+Ask for code, refactoring, or debugging help.  The coding provider uses
+~qwen2.5-coder:3b~ with 32K context – suitable for whole functions or
+small files.
+
+Summarize text
+
+Select a region, then ~M-x ellama-summarize~ or ~M-x ellama-summarize-region~.
+Ellama will summarize the selected text using the summarization provider.
+
+Translate text
+
+  ~M-x ellama-translate~ – prompts for target language, then translates the
+current region or buffer.
+
+Extract structured data
+
+  ~M-x ellama-extract~ – extracts structured information from text (e.g.
+names, dates, quantities from free-form text).
+
+Use a different model
+
+  ~M-x ellama-switch-provider~ – pick from ~zephyr~, ~mistral~, ~mixtral~,
+or any other provider you define.
+
+Display behaviour
+
+- Chat buffer opens in full frame (~display-buffer-full-frame~).
+- Instant (inline) responses appear at the bottom (~display-buffer-at-bottom~).
+- Header line shows ellama context and session ID in all buffers
+  (~ellama-context-header-line-global-mode~,
+  ~ellama-session-header-line-global-mode~).
+
+Requirements
+
+- Emacs ≥ 30 (checked via ~emacs-major-version~ in emacs.el)
+- Ollama running locally (default: ~http://127.0.0.1:11434~)
+- Models pulled (check with ~ollama list~):
+  - ~qwen2.5:3b~
+  - ~qwen2.5-coder:3b~
+  - ~qwen2.5-coder:7b-instruct-q8_0~
+  - ~nomic-embed-text~
+- Optional: ~zephyr:7b-beta-q6_K~, ~mistral:7b-instruct-v0.2-q6_K~,
+  ~mixtral:8x7b-instruct-v0.1-q3_K_M-4k~
+
+* Troubleshooting
+
+| Symptom                                  | Likely cause                           | Fix                                              |
+|------------------------------------------+----------------------------------------+--------------------------------------------------|
+| ~No provider available~                   | Ollama not running                      | ~systemctl start ollama~                          |
+| ~Connection refused~                      | Wrong host/port                        | Check ~OLLAMA_HOST~ env or ~ollama serve~         |
+| Model not found                           | Model not pulled                       | ~ollama pull qwen2.5:3b~                          |
+| Model exists in Ollama but not in ellama  | Need to refresh provider list          | ~M-x my-ellama-refresh-providers~ or wait for idle timer |
+| Slow responses                            | Model too large for hardware           | Use ~qwen2.5:3b~ instead of 7B variants           |
+| Context truncated                         | ~num_ctx~ too small                    | Increase ~num_ctx~ in provider config             |
+
+** Syncing models with Ollama                                           :dev:
+
+Ellama now discovers models *dynamically* at startup (with a 3-second idle
+delay so init isn't blocked).  When you pull a new model in Ollama, it
+appears automatically after restarting Emacs, or you can refresh on demand:
+
+  ~M-x my-ellama-refresh-providers~
+
+This queries Ollama's ~/api/tags~ endpoint, filters out embedding-only
+models (~nomic-embed-text~, ~all-minilm~), and rebuilds the
+~ellama-providers~ alist with a ~make-llm-ollama~ entry per model.
+
+** Check which models are actually available
+
+  ~ollama list~
+
+or from Emacs:
+
+  ~M-x shell-command ollama list~
+
+** Change the Ollama endpoint
+
+By default, discovery hits ~http://127.0.0.1:11434/api/tags~. To route
+through the MCP server's nginx instead, set:
+
+  ~MY_OLLAMA_URL=http://bottino:11434~
+
+or in Emacs:
+
+  ~M-x set-variable my-ollama-url "http://bottino:11434"~
+  ~M-x my-ellama-refresh-providers~
+
+** Refresh on pulling a new model
+
+  #+begin_src shell
+  ollama pull deepseek-coder:6.7b
+  #+end_src
+
+Then in Emacs:
+
+  ~M-x my-ellama-refresh-providers~
+  ~M-x ellama-switch-provider~ → select ~deepseek-coder:6.7b~
+
+
+* aider assistant
+
+Useful commands
+
+- /add :: <files> *	Add files to the chat (Aider can edit them).
+- /drop :: [files] *	Remove files from the chat. No args drops everything.
+- /ls	:: List files currently in the chat.
+- /read-only :: <files> *	Add files for reference but block edits.
+- /clear	:: Clear the visible chat history.
+- /reset	:: Drop all files and clear history.
+- /tokens :: *	Print token usage for the current chat.
+- /cost	:: Show the running session cost.
+- /code :: *	Switch to code mode (or run one prompt in code mode).
+- /architect :: *	Switch to architect mode.
+- /ask :: *	Switch to ask mode (read-only).
+- /chat-mode :: <name>	Generic mode switcher.
+- /context	:: Enter context mode.
+- /model :: <name> *	Switch the main model on the fly.
+- /models :: <query>	Search the available models list.
+- /editor-model :: <name>	Switch the editor model.
+- /weak-model :: <name>	Switch the weak model.
+- /think-tokens :: N	Set thinking-token budget per turn.
+- /reasoning-effort :: LEVEL	Set reasoning effort for compatible models.
+- /diff :: *	Show the diff Aider just wrote.
+- /undo :: *	Revert the last commit Aider made.
+- /git :: <cmd>	Run a git command without leaving the agent.
+- /commit :: [msg]	Commit dirty changes manually.
+- /run :: <cmd> *	Run a shell command and feed the output into the chat. Alias: !.
+- /test :: [cmd]	Run the configured test command. Aider sees the output.
+- /lint	:: Run the configured lint command.
+- /web :: <url>	Fetch a URL and add the rendered text to the chat.
+- /voice	:: Voice input via Whisper. Requires portaudio.
+- /paste	:: Paste image or text from the clipboard.
+- /copy	:: Copy the last assistant reply to the clipboard.
+- /copy-context	:: Copy chat context as markdown.
+- /load :: PATH	Run a saved /command script.
+- /save :: PATH	Save the current session as a replayable script.
+- /multiline-mode :: or /ml	Toggle multi-line input.
+- /vim	:: Toggle Vim key bindings.
+- /edit :: or /editor [cmd]	Open $EDITOR for a long prompt.
+- /map	:: Print the current repo map.
+- /map-refresh	:: Force a repo-map refresh now.
+- /settings	:: Print effective settings.
+- /ok	:: Shorthand approval (used in Architect mode).
+- /report	:: Open a pre-filled GitHub issue with anonymised diagnostics.
+- /help	:: Aider answers questions about itself.
+- /quit :: or /exit	Exit cleanly.

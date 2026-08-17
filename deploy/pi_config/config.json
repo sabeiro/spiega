@@ -1,0 +1,8 @@
+{
+  "model": "llama3.2:1b",
+  "keep_alive": 600,
+  "context_length": 8192,
+  "gpu_layers": 35,
+  "num_parallel": 2,
+  "num_gpu": 10
+}

@@ -1,0 +1,56 @@
+# Ollama Service with GPU/CPU Auto-Switching (llama.cpp backend)
+# Automatically switches between GPU (fast) and CPU (system RAM) based on VRAM
+
+services:
+  ollama:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    runtime: "nvidia"
+    ports:
+      - "127.0.0.1:11434:11434"
+      - "127.0.0.1:18789:18789"
+    restart: unless-stopped
+    volumes:
+      - ${HOME}/Downloads/llm_model/:${HOME}/.ollama
+      - ${HOME}/Downloads/llm_cache/git/:${HOME}/.pi/agent/git/
+      - ${HOME}/Downloads/llm_cache/npm/:${HOME}/.pi/agent/npm/
+      - ${HOME}/Downloads/llm_cache/sessions/:${HOME}/.pi/agent/sessions/
+      - ${HOME}/Downloads/llm_cache/node_modules/:${HOME}/.config/opencode/node_modules/
+      - ../pi_config/:${HOME}/.pi
+      - .profile:${HOME}/.profile
+      - .bashrc:${HOME}/.bashrc
+      - ../opencode:${HOME}/.config/opencode/
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/lav/src/:${HOME}/lav/src/
+    environment:
+      # Ollama exposes both GPU and CPU
+      - OLLAMA_API_BASE=http://localhost:11434/api
+      - OLLAMA_HOST=0.0.0.0
+      # -1 = use optimal GPU + CPU
+      - OLLAMA_NUM_GPU=-1
+      # Limit VRAM to avoid OOM on Jetson (6.5GB = ~3-4 small models)
+      - OLLAMA_MAX_VRAM_BYTES=6985673728
+      # Vulkan for faster GPU inference
+      - OLLAMA_VULKAN=1
+      # Larger context window
+      - OLLAMA_CONTEXT_LENGTH=16384
+      # Auto-unload unused models
+      - OLLAMA_KEEP_ALIVE=0
+      - OLLAMA_MAX_LOADED_MODELS=1
+    networks:
+      - webserver-net
+
+networks:
+  webserver-net:
+    name: webserver_webserver-net
+    driver: bridge
+    external: true

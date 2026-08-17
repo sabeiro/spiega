@@ -1,0 +1,59 @@
+# ========== Dockerfile for Acer Laptop (NVIDIA RTX 5060) ========================
+# GPU: NVIDIA GeForce RTX 5060
+# RAM: 32GB
+# Host: ~/lav/src/ (shared path between host and container)
+# Config: ~/lav/src/pi_config/ (mounted to container)
+# ====================================================================================
+
+FROM unsloth/unsloth
+
+# Install dependencies
+USER root
+RUN apt update && apt install -y --no-install-recommends \
+    git curl vim wget ca-certificates emacs python3 python3-pip
+
+RUN pip3 install httpx --break-system-packages
+#RUN wget https://bootstrap.pypa.io/get-pip.py
+#RUN python3 get-pip.py  --break-system-packages
+RUN apt clean && rm -rf /var/lib/apt/lists/*
+ENV PATH="$PATH:~/.local/bin/"
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
+
+# Create directory for seamless host↔guest integration
+RUN mkdir -p /root/lav/src /root/.pi \
+    && chmod -R 755 /root/lav/src /root/.pi
+
+# Symlink home directory for convenience
+RUN ln -s /root/lav/src /home/lav/src 2>/dev/null || true
+# Install pi-coding-agent
+RUN curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-prompt --no-onboard
+RUN curl -fsSL https://pi.dev/install.sh |  bash -s -- --no-prompt --no-onboard
+RUN curl -fsSL https://opencode.ai/install | bash -s -- --no-prompt --no-onboard
+RUN curl -LsSf https://aider.chat/install.sh | bash -s -- 
+# python -m pip install aider-install
+# aider-install
+
+# Environment
+ENV PATH="/root/.local/bin:$PATH"
+
+# Ports
+#EXPOSE 11434 18789
+
+#HEALTHCHECK CMD curl -f http://localhost:11434/api/tags || exit 1
+
+
+ARG UID=1000
+ARG GID=1000
+#RUN usermod -l sabeiro ubuntu
+#RUN usermod -d /home/sabeiro/ sabeiro
+#RUN usermod -s /bin/bash sabeiro
+#RUN groupadd sabeiro
+#RUN usermod -aG ubuntu sabeiro
+#RUN usermod -aG sabeiro sabeiro
+#USER sabeiro
+#WORKDIR /home/sabeiro/
+
+USER unsloth
+
+# Start Ollama
+#CMD ["ollama", "serve"]

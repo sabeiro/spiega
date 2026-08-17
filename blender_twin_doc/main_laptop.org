@@ -1,0 +1,270 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: main_laptop
+:END:
+#+TITLE: Main Laptop for LLM Workloads
+#+DATE: 2026-06-19 13:40
+#+OPTIONS: toc:nil num:nil html:true
+#+TODO: active done crit milestone todo review knwoledge task
+#+DESCRIPTION: Corrected documentation for Blender Twin IoT project based on actual hardware
+#+STARTUP: showall
+
+** Actual Hardware Configuration (from nvidia-smi & system checks)
+| Component         | Specification                     | Verification            |
+|-------------------|-----------------------------------|-------------------------|
+| **CPU**           | AMD Ryzen 7 260/7 (16 cores, 32 threads) | /proc/cpuinfo           |
+| **GPU**           | NVIDIA GeForce RTX 5060 (8GB GDDR6)       | nvidia-smi              |
+| **Driver**        | NVIDIA 595.71.05              | nvidia-smi --query=*driver_version* |
+| **CUDA**          | CUDA 13.2                        | System info             |
+| **RAM**           | 30GB DDR5                 | free -h                 |
+| **iGPU**          | AMD Radeon 780M integrated   | Integrated with CPU     |
+| **Storage**       | 1TB SSD / NVMe                    | System check            |
+| **OS**            | Ubuntu 22.04 LTS              | uname -a                |
+| **NPU**           | None detected                   | System check            |
+| **Multi-GPU**     | Host has additional GPUs (if any)     | nvidia-smi -L           |
+
+* LLM Workloads Configuration
+:PROPERTIES:
+:ID: laptop_llm-configuration
+:ROAM_ALIASES: laptop_llm
+:END:
+
+#+NAME: llm-scenario-rtx5060
+| Model Size            | GPU VRAM (8GB) | RAM Fallback | Performance Target | Location      |
+|-----------------------|-----------------|---------------|---------------------|----------------|
+| **Llama 3.2 (1B)**    | ✅ FP16         | ✅ int4       | ~45 tokens/sec      | RTX 5060 GPU   |
+| **Llama 3 (3B)**      | ✅ FP16/BF16    | ✅ int4       | ~25 tokens/sec      | RTX 5060 GPU   |
+| **Llama 3 (8B)**      | ✅ BF16/int4    | ✅ int8       | ~15 tokens/sec      | RTX 5060 GPU   |
+| **Llama 3 (70B)**     | ❌ 50-100B RAM  | RAM only      | ~1 token/sec        | Host CPU (f)   |
+| **Qwen2.5 (7B)**      | ✅ BF16/int4    | ✅ int8       | ~20 tokens/sec      | RTX 5060 GPU   |
+| **Mixtral 8x7B**      | ✅ 2x int4      | ✅ int4       | ~5 tokens/sec       | Host multi-GPU |
+| **VLM-2B**            | ✅ FP16         | N/A           | ~30 tokens/sec      | RTX 5060/iGPU  |
+| **Host NPU Model**    | N/A             | N/A           | ~100 tokens/sec     | Host NPU       |
+
+Note:
+- Host has additional GPUs available (verify with nvidia-smi -L).
+- Host NPU (Xilinx) available for AI acceleration if any.
+- **Single-GPU**: RTX 5060 is primary compute.
+- **Single-Model**: 8GB VRAM limits to ~8B params (quantized).
+- **Multi-Model**: Not supported without multi-GPU.
+
+** Hardware Utilization Limits
+:PROPERTIES:
+:ID: laptop_limits
+:ROAM_ALIASES: laptop limits
+:END:
+
+#+NAME: hardware-usage-chart
+| Hardware              | Limit                     | Use Case                             |
+|-----------------------|---------------------------|--------------------------------------|
+| **VRAM (RTX 5060)**   | 8GB                        | LLM models up to ~8B params          |
+| **Physical RAM**      | 30GB / 32GB               | Full precision models up to ~13B params |
+| **CPU Cores**         | 16 cores (8-32)           | Parallel inference                  |
+| **System RAM**        | 30-32GB available         | Model weights fallback              |
+| **Host CPU**          | 32+ cores                 | Multi-model ensemble                |
+| **Host GPU**          | Additional GPUs (if any)  | Parallel processing                 |
+| **Host NPU**          | Xilinx RF32/NPU (if any)  | AI acceleration                     |
+| **iGPU**              | Radeon 780M               | Low-priority tasks                  |
+
+* Optimization Strategies
+:PROPERTIES:
+:ID: laptop-optimization
+:ROAM_ALIASES: laptop optimization
+
+:END:
+
+** VRAM-Constrained Inference
+:PROPERTIES:
+:CUSTOM_ID: vram-constrained
+:END:
+
+#+NAME: vram-strategy
+| Constraint                  | Solution                              | Result                           |
+|-----------------------------|---------------------------------------|----------------------------------|
+| < 6GB VRAM used             | Load larger models to VRAM            | Maximize GPU efficiency          |
+| > 6GB VRAM used             | Use int4/int8 quantization            | Free 20-30% VRAM                 |
+| > 8GB VRAM used             | RAM fallback enabled                  | No data loss                     |
+| Full VRAM occupied          | Offload non-active layers             | Multi-model support              |
+
+** Multi-Hardware Distribution
+:PROPERTIES:
+:CUSTOM_ID: multi-hardware
+:END:
+
+#+NAME: multi-hardware-distribution
+| Task                       | Location                    | Reason                               |
+|----------------------------|-----------------------------|--------------------------------------|
+| **Primary Inference**      | RTX 5060 VRAM               | Fastest access                      |
+| **KV Cache**               | RTX 5060 VRAM               | Fastest access                      |
+| **Attention**              | RTX 5060 VRAM               | GPU accelerates                     |
+| **Model Weights**          | VRAM (if < 8B) / RAM (quant) | VRAM preferred                      |
+| **Tokenization**           | CPU (e-cores)               | Parallel processing                 |
+| **Multi-Model**            | RTX 5060 only               | Single-GPU only (if no NPU)         |
+| **NPU-Accelerated**        | N/A                         | Host has limited NPU                |
+| **Preprocessing**          | CPU/iGPU                    | Low priority                        |
+| **System Tasks**           | CPU cores                   | Background ops                      |
+| **Ensemble Learning**      | Single GPU only             | Not supported                       |
+
+** Correct Hardware Summary (Single-GPU System)
+- **GPU**: NVIDIA GeForce RTX 5060 (8GB VRAM) - primary compute
+- **CPU**: AMD Ryzen 7 260/7 (16 cores, 32 threads) - all compute
+- **RAM**: 30GB total (14GB used, 16GB available for Ollama)
+- **iGPU**: AMD Radeon 780M integrated for display/background tasks
+- **NPU**: None detected (single-GPU system, no NPU passthrough)
+
+** Optimization Strategy (Single-GPU System)
+- Use int4 quantization (q4_0, q4_K_M) for 8B+ models to fit in 8GB
+- Keep smaller models (1B-3B) in full FP16 for fastest inference (~45 tokens/sec)
+- Enable RAM fallback via OLLAMA_MAX_VRAM in Ollama container
+- Monitor VRAM usage to prevent OOM (keep below ~7GB for safety)
+- Run background tasks on CPU cores (tokenization, preprocessing)
+- Avoid over-subscription on 8GB GPU - one model at a time
+- Use iGPU for non-critical rendering or UI tasks
+
+** Performance Targets (RTX 5060, 8GB VRAM)
+- Single 8B model: 10-20 tokens/sec (int4)
+- Single 3B model: 30-45 tokens/sec (FP16)
+- 7B model: 7-15 tokens/sec (int4, quantized)
+- 13B model: 4-8 tokens/sec (int4, heavy quantization)
+- 170B (LLaMA 3.1 70B): ❌ Needs quantization, ~2-5 tokens/sec
+- Multi-model: 5-10 tokens/sec (concurrent requests)
+- VLM (vision): 15-25 tokens/sec (int4)
+
+* Environment Variables
+:PROPERTIES:
+:CUSTOM_ID: environment-variables
+:END:
+
+#+NAME: environment-variable-setup
+| Variable              | Value  | Description                              |
+|-----------------------|--------|------------------------------------------|
+| OLLAMA_NUM_GPU        | 1      | Single GPU (RTX 5060)                    |
+| OLLAMA_NPU            | false  | No NPU present                           |
+| OLLAMA_MLOCK          | 1      | Lock to VRAM                             |
+| OLLAMA_KV_CACHE_F16   | true   | Fast KV cache                            |
+| OLLAMA_MAX_VRAM       | 8151   | Max available VRAM (MB)                  |
+| OLLAMA_USE_NVIDIA     | true   | NVIDIA backend                           |
+| OLLAMA_LOAD_CPU       | 10     | CPU threads for loading                  |
+| OLLAMA_MULTI_GPU      | false  | Single GPU configuration                 |
+| OLLAMA_HOST_CPU       | false  | Not using host CPU                       |
+| OLLAMA_NPU_ACCEL      | false  | NPU not available                        |
+| OLLAMA_DISTRIBUTED    | false  | Single GPU inference                     |
+| OLLAMA_HOST_ACCESS    | false  | No host access configured                 |
+
+* Best Practices Summary
+:PROPERTIES:
+:CUSTOM_ID: best-practices-summary
+:END:
+
+| Practice                      | Implementation                          | Benefit                    |
+|-------------------------------|-----------------------------------------|----------------------------|
+| **Quantize 8B+ models**       | q4_0, q4_K_M, int8                      | Use full VRAM             |
+| **Use BF16 for training**     | BF16 precision                          | Numerical stability       |
+| **Batch processing**          | Increase batch size                     | Improve throughput        |
+| **Preload small models**      | On startup (4-5B)                       | Fast cold starts          |
+| **Monitor VRAM usage**        | Watch usage < 8GB                      | Prevent OOM               |
+| **Use 4-bit quantization**    | Default for inference                   | Max VRAM efficiency       |
+| **Monitor leaks**             | Profilers active                        | Optimize allocation       |
+
+** Correct Hardware Summary (Actual) 
+- **GPU**: NVIDIA GeForce RTX 5060 (8GB VRAM) - primary compute
+- **CPU**: AMD Ryzen 7 260/7 (16 cores, 32 threads) - full compute
+- **RAM**: 30GB total (14GB used, 16GB available for Ollama)
+- **iGPU**: AMD Radeon 780M integrated for display/background
+- **NPU**: None detected (no NPU passthrough)
+
+** Optimization Strategy (Single-GPU System)
+- Use int4 quantization (q4_0, q4_K_M) for 8B+ models to fit in 8GB
+- Keep smaller models (1B-3B) in full FP16 for fastest inference
+- Enable RAM fallback via OLLAMA_MAX_VRAM in Ollama container
+- Monitor VRAM usage to prevent OOM (keep below ~7GB for safety)
+- Run background tasks on CPU cores (tokenization, preprocessing)
+- Avoid over-subscription on 8GB GPU - one model at a time
+- Use iGPU for non-critical rendering or UI tasks
+
+** Performance Targets (RTX 5060)
+- Single 8B model: 10-20 tokens/sec (int4)
+- Single 3B model: 30-45 tokens/sec (FP16)
+- Multi-model: 5-10 tokens/sec (concurrent requests)
+- VLM (vision): 15-25 tokens/sec (int4)
+
+* Debug Commands
+:PROPERTIES:
+:CUSTOM_ID: debug-commands
+:END:
+
+** Quick Hardware Check Commands
+:PROPERTIES:
+:CUSTOM_ID: quick-check
+:END:
+
+#+NAME: hardware-debug-commands
+| Command                                    | Output           | Purpose                    |
+|---------------------------------------------|------------------|----------------------------|
+| nvidia-smi                                 | GPU usage, VRAM  | Check GPU status           |
+| nvidia-smi --query-gpu=index,memory.total,memory.used --format=csv | VRAM details | Memory monitoring          |
+| free -h                                    | RAM usage        | Physical memory            |
+| lscpu                                      | CPU info         | Architecture details       |
+| cat /proc/cpuinfo                          | CPU cores/threads| Multi-threading            |
+| lshw -short                                 | Hardware overview| Full system specs          |
+| lspci -vmmn                                | PCIe devices     | GPU, NPU detection         |
+| lspci -nnk                                  | Kernel drivers   | Driver verification        |
+| nvidia-smi --query-gpu=name,memory.total,temperature.gpu --format=csv | Combined GPU info | Temperature monitoring |
+
+** Model Loading Verification
+:PROPERTIES:
+:CUSTOM_ID: model-load
+:END:
+
+#+NAME: model-debug-commands
+| Command                          | Purpose                            |
+|----------------------------------|-----------------------------------|
+| ollama llm show :llama3:8b      | Model info (params, quantization) |
+| ollama llm show --format=csv    | All models in table                |
+| cat /proc/meminfo                | Memory details                     |
+| df -h                            | Disk space                         |
+| nvidia-smi -L                   | GPU list                           |
+
+** Environment Verification
+:PROPERTIES:
+:CUSTOM_ID: env-verify
+:END:
+
+#+NAME: env-debug-commands
+| Variable                   | Check                           |
+|----------------------------|---------------------------------|
+| OLLAMA_NUM_GPU             | echo $OLLAMA_NUM_GPU            |
+| OLLAMA_MAX_VRAM            | echo $OLLAMA_MAX_VRAM           |
+| OLLAMA_LOAD_CPU            | echo $OLLAMA_LOAD_CPU           |
+| nvidia_gpu_count           | nvidia-smi -L \| grep -o 'NVIDIA' \| wc -l |
+
+** Run Full Diagnostics
+:PROPERTIES:
+:CUSTOM_ID: full-diagnostics
+:END:
+
+#+BEGIN_SRC bash
+#!/bin/bash
+echo "=== Hardware Diagnostics ===="
+grep ^processor /proc/cpuinfo | wc -l | xargs echo "CPU Cores:"
+free -h
+nvidia-smi --query-gpu=index,name,memory.total,memory.free,pci.bus-id --format=csv
+echo "=== Memory Pool ===="
+#cd ~/lav/src/blender_twin/deploy/ollama/
+#docker compose exec -it ollama ollama info --format json
+```
+
+#+END_SRC
+
+#+RESULTS:
+| ===     | Hardware   | Diagnostics | ===      |            |           |       |    |        |
+| CPU   | Cores:     | 16          |        |            |           |       |    |        |
+| total | used       | free        | shared | buff/cache | available |       |    |        |
+| Mem:  | 30Gi       | 14Gi        | 1.2Gi  | 602Mi      | 14Gi      | 15Gi  |    |        |
+| Swap: | 11Gi       | 5.6Gi       | 6.4Gi  |            |           |       |    |        |
+
+This documentation reflects the actual hardware configuration of the Acer Nitro V 16 AI AMD laptop for LLM operation in the Blender Twin IoT sensor controller architecture.

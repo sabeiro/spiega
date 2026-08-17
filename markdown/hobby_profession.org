@@ -1,0 +1,311 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: hobby_profession
+:END:
+#+title: hobbies into profession
+#+subtitle: can hobbies become something more than expenses
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-07-22>
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_twin/docs/
+#+BEGIN: clocktable :scope file :block thisweek :maxlevel 2 :step day :stepskip0 t
+#+END:
+
+* hobbies into profession
+
+When I had the chance I expanded a lot in learning new skills and in buying gears which could help me generate additional income. The professional career [[id:spiega_business][spiega business]] helped me to invest in upskilling. Now I feel I need to understand whether those passions could into a more professional level where I can have some return of the investment (CapEx).
+
+- [[media]] :: video making, sound, music, recording, 3d, photography
+- [[network]] :: contacts, social, marketing, branding
+- [[languages]] :: conferences, client visits, mediation
+- [[handcraft]] :: carpentry, metal, wood
+- [[electronics]] :: design and solder 
+- [[performance]] :: art, dancing and acting
+- [[writing]] :: stories, blog posts, essays, history
+- [[food]] :: cooking and beverage
+- [[outdoor]] :: sail, hike, climb, paddle, ski
+
+#+CAPTION: Enhance your skills
+#+NAME:   fig:radar_plot
+#+ATTR_HTML: :max-width 400px :align center
+[[../../f/f_stage/radar_plot.png]]
+
+*** retail
+
+Hobbies comes along with a passion for retail. I visit many physical stores and their products, I compare prices, ask questions and watch tons of reviews. I want to be able to judge the quality and utility of goods which helps me in many occasion to transfer these learning to devices I couldn't be judging otherwise.
+
+- quality :: decide what is the bare minimum for the output otherwise (cameras, mics) will be completely useless
+- release :: it's hard to know whether a new release is worth buying. The difference between insta360 x3 and x5 are immense and I felt I needed to upgrade. In many other cases it was not necessary
+
+#+CAPTION: Enhance your skills
+#+NAME:   fig:radar_plot
+#+ATTR_HTML: :max-width 400px :align center
+[[../../f/f_stage/gear_acquisition_syndrom.png]]
+
+
+*** procurement 
+
+I highly underestimated the effort of knowing what to buy. I often had to interrupt a work I was doing to run to a shop and buy what was missing and have less flexibility on the price. With proper planning I could buy in advance items which I thought they could be useful and which where indeed necessary later on. In that way I could save a lot in expenses.
+I bought as well items I could never use which I regret buying.
+
+- electronics :: I buy it for particular *hardware* specs but then the *software* makes it useless, I hope I can hack them one day with vibe coding
+- technology :: you can always buy a more advanced gear but it's important to set a limit. For me for example was clear I never wanted 4k nor 10bit colors
+
+
+
+* media
+
+Media are essential to promote themselves and to brand services. Learning how to create professional content helps to increase reach.
+
+- [[video making]] :: cameras, lights tripods
+- [[sound]] :: microphones, tripods, sound cards, mixer
+- [[music]] :: instruments, gears, synths, daw
+- [[graphics]] :: digital art, painting
+
+#+caption: media library
+#+NAME:   fig:media_lib
+#+ATTR_HTML: :max-height 300px :align center
+[[../../f/f_media/color_cor01.png]]
+
+
+
+*** video making
+
+Video making is an essential skill to promote an activity
+
+- camera :: [[https://www.youtube.com/watch?v=8ejiJZKFPNA][360]], [[https://www.youtube.com/watch?v=kOHMwrJnp4g][macro]], [[https://www.youtube.com/watch?v=Krvwx34QTBs][bokeh]],
+- drones :: [[https://www.youtube.com/watch?v=u-t9Zsk-PlM][fpv]], [[https://www.youtube.com/watch?v=c4kKUYR3ebs][acro]]
+- lenses :: [[https://www.youtube.com/watch?v=w8cpNJK_xho][lenses]]
+- edit :: [[id:multimedia_utils][multimedia utils]]
+- CGI :: [[https://www.youtube.com/watch?v=4Q5eMv4iQKY][acrobatics]], [[https://www.youtube.com/watch?v=yxMT6G6bACw][video to 3d]], 
+- lights ::
+- tripods ::
+- reflector ::
+
+#+caption: media library
+#+NAME:   fig:media_lib
+#+ATTR_HTML: :max-height 300px :align center
+[[../../f/f_media/color_cor01.png]]
+
+
+
+*** sound
+
+- microphone :: [[https://www.youtube.com/watch?v=kia4hugp58Y][binaural]], 
+- tripods ::
+- sound card ::
+- mixer ::
+- voice over :: enrich your videos with explanations
+
+*** photography
+
+- travels :: [[https://intertino.it/viaggi/][geomadi]]
+- shooting :: [[https://intertino.it/foto/][foto]]
+- raw :: darkroom, darktable
+
+#+caption: media library
+#+NAME:   fig:media_lib
+#+ATTR_HTML: :max-height 300px :align center
+[[../../f/f_stage/site_foto.png]]
+
+
+*** graphics
+
+- logos :: [[~/lav/viudi/graphic/][vector design]]
+- cnc :: [[~/lav/viudi/graphic/logo_cnc][vector design]]
+- laser :: [[~/lav/viudi/graphic/][vector design]]
+- websites :: styling, [[~/lav/siti/f/icon/][icon]]
+- stamps :: [[https://www.youtube.com/watch?v=JYZqbYFDqzQ][stamp]]
+- print :: [[https://www.youtube.com/watch?v=RyGH6AfPaxA][gelli print]]
+- miniatures :: [[~/VideoProd/publicati/miniature/minuatura.xcf][miniatura]]
+
+  
+*** music
+
+Main [[https://viudi.it/music/][article]]. 
+
+- composition :: [[https://viudi.it/article/music_composition.html][bolla]]
+- folk :: [[https://www.youtube.com/watch?v=rQj_1n4544A][donna lombarda]], [[https://intertino.it/wiki/][real folk]]
+- electronic :: [[https://www.youtube.com/watch?v=Z1AF2NS9xjw][vhs]], 
+- loudspeakers :: [[https://www.youtube.com/watch?v=camNdWhXdD0][loudspeaker]], [[https://www.youtube.com/watch?v=bElx3mxcP5g][subwoofer]], [[https://www.youtube.com/watch?v=e2quA4DPuI0][loudspeaker]], [[https://www.youtube.com/watch?v=VYHdH72I0rc][loudpspeaker]], 
+- techno synth :: [[https://www.youtube.com/watch?v=GCJKNCrzYTM][katamaran]], [[https://www.youtube.com/watch?v=2Y7QR9jL98I][volkspark]], [[https://www.youtube.com/watch?v=W7e_pnwcF90][pandino]], 
+- repair :: [[https://www.youtube.com/watch?v=0dPxuOyOnr8][violin]], [[https://www.youtube.com/watch?v=fxQdOzKHaNM][bass]], [[https://www.youtube.com/watch?v=mWW1G5QOy6s][clarinet]], [[https://www.youtube.com/watch?v=etBexz4ljuQ][sax]], 
+- soundtracks :: [[https://www.youtube.com/watch?v=vfFN6dH74x0][retina]], [[https://www.youtube.com/watch?v=wmdYn70-b30][scream]]
+- ambient :: [[https://www.youtube.com/watch?v=opXFn4MzuUc][funtanel]], [[https://www.youtube.com/watch?v=hH0jNLyX-M0][creek]], [[https://www.youtube.com/watch?v=e8vWfnxW1e4][brook]], [[https://www.youtube.com/watch?v=mTnTHOaUCuY][luina]], [[https://www.youtube.com/watch?v=PypkSz-c78c][oneiric]], 
+- instruments :: [[https://studio.youtube.com/video/FDcrTQ7pgHk/edit][violins]] 
+- dj :: [[https://www.youtube.com/watch?v=r7c41Eoi7tU][viudi mix]]
+- DAW :: [[https://www.youtube.com/watch?v=D-LQhKyOmec][soundfont]]
+- DIY ::
+
+#+caption: media library
+#+NAME:   fig:media_lib
+#+ATTR_HTML: :max-height 300px :align center
+[[../../f/f_stage/site_viudi.png]]
+
+
+
+* network
+
+Once you produce your content you need to publish it and make it visible
+
+- contacts :: you personal contacts made in working or casual context
+- [[social]] :: social platforms
+- marketing :: where you make your content visible
+- branding :: what is the awareness of your brand
+- advertising :: do you need additional channels for increasing the reach?
+
+#+caption: media library
+#+NAME:   fig:media_lib
+#+ATTR_HTML: :max-height 300px :align center
+[[../../f/f_stage/targeting_burst.png]]
+
+
+
+*** social
+
+What I tried so far:
+
+- instagram :: two channels, good initial boost but then conversions decreased and demotivated me
+  - [[https://www.instagram.com/viudi.music/][viudi]] :: self made violins
+  - [[https://www.instagram.com/geo.madi/][geo.madi]] :: travel pictures
+- youtube :: started in 2015 but nowadays is really crowded 
+  - [[https://www.youtube.com/@viudi_music][viudi]] :: music channel [[id:youtube-intro][youtube]] [[id:viudi_channel][viudi channel]] [[id:viudi_channel_shorts][viudi channel shorts]]
+  - [[https://www.youtube.com/@dauvi-datavisualisationai532][dauvi]] :: professional services
+- facebook :: [[https://www.facebook.com/viudi.music/][viudi]] good traction at the beginning but then the platform decided to show the posts to maybe 10% of my followers and I stopped 
+- pinterest :: [[https://fr.pinterest.com/viudi_music/][viudi]] used for a month or so
+- instructable :: [[https://www.instructables.com/member/viudi/][viudi]] detailed presentation of the projects. Where most of the traffic for the project comes from
+- soundcloud :: [[https://soundcloud.com/viudi/aere][viudi]] low traffic
+- linkedin :: [[https://www.linkedin.com/company/54283228][dauvi]] professional services, it never worked out
+- twitter :: [[https://x.com/sabeiro_][sab]] but never got interested
+
+#+caption: media library
+#+NAME:   fig:media_lib
+#+ATTR_HTML: :max-height 300px :align center
+[[../../f/f_stage/viz_sunburst.png]]
+
+
+
+* handcraft
+
+Project [[https://intertino.it/cios/][link]]
+
+- sawing :: [[https://www.youtube.com/watch?v=YCxWm0SmxHY][costumes for shooting]], 
+- [[wood]] :: restore and build
+- carpentry :: walls,
+- foundry :: cast metal
+- fablab :: 3d print, cnc
+- electrics ::
+- paint ::
+- metal :: welding, cut
+- gardening :: [[https://www.youtube.com/watch?v=Raw_lW-Q_4s][log storage]], 
+- leather :: [[https://www.youtube.com/watch?v=PANfqF_e1tM][sandals]]
+- perfumes :: [[https://www.youtube.com/watch?v=g3tw4iE08Co][flowers]]
+- mechanics :: [[https://www.youtube.com/watch?v=X2thsbKx7Bg][bike repair]], vespa
+  
+*** wood
+
+- restore :: [[https://www.youtube.com/watch?v=hHN_6rVZ8g0][wood]], 
+- saw :: circular, band, chain
+- lathe ::
+- turn table ::
+- cut :: knives
+- pyrography :: [[https://www.youtube.com/watch?v=HqHTkxA6Ctw][pirografia]]
+  
+*** metal
+
+- welding :: [[https://www.youtube.com/watch?v=hGv9OAUeDT0][wheel barrow]] 
+- grinding :: [[https://www.youtube.com/watch?v=wFXlOW0dZCQ][garden tools]] 
+- repair ::
+
+* performance
+
+- acting :: wg-gesucht, fairy shake, bubbles
+- dance :: folk, forrò, lindy hop
+- art :: prints
+
+* electronics
+
+- circuit design :: [[https://www.youtube.com/watch?v=B5DMflQo4Xw][preamp]]
+- PCB ::
+- soldering :: 
+
+* writing
+
+Story telling and blog posts
+
+- tales :: [[https://www.youtube.com/watch?v=E30ce6rSPFQ][a brief history]], [[https://www.youtube.com/watch?v=HqHTkxA6Ctw][pirografia]]
+- humor :: [[https://www.youtube.com/watch?v=m_oUQ5Xn90o][tigre e il roncolone]], [[https://www.youtube.com/watch?v=m_WiwAsvTQQ][kakitui]], [[https://intertino.it/tastal/][tastal]]
+- history :: [[https://www.youtube.com/watch?v=aGIvsM2AsJA][middle-age]], [[https://www.youtube.com/watch?v=y2wmP-etY10][risorgimento]], [[https://www.youtube.com/watch?v=DWTMBkDjF0M][nuraghe]], [[http://intertino.it/storia/][storia]],  [[http://intertino.it/storie/][suggestioni]]
+- travels :: [[https://www.youtube.com/watch?v=2UXOF2hNpF4][japan]], [[https://www.youtube.com/watch?v=3xqbRSXTFrs][himeji]], [[https://www.youtube.com/watch?v=lStWdk6CbNk][nikko]], 
+- feelings :: [[https://intertino.it/scritti/][copiosi]]
+- family :: [[https://intertino.it/wiki/][family]]
+
+#+caption: media library
+#+NAME:   fig:media_lib
+#+ATTR_HTML: :max-height 300px :align center
+[[../../f/f_stage/site_scritti.png]]
+
+
+
+* outdoor
+
+Can you accompany people?
+
+- sea :: [[https://www.youtube.com/watch?v=kg31nWkflJo][marsa alam]], [[https://www.youtube.com/watch?v=kiSOj_L2lfg][krete]]
+- animals :: [[https://www.youtube.com/watch?v=Ld_CpZu-vMc][tierpark]]
+- bike :: [[https://www.youtube.com/watch?v=cTCAWlb4p8Y][grünwald]]
+- boat :: [[https://www.youtube.com/watch?v=WGr1e4iAgXg][cyclades]], [[https://www.youtube.com/watch?v=9E-XLwkIxu4][eolie]], [[https://www.youtube.com/watch?v=rQj_1n4544A][golfo]]. [[https://www.youtube.com/watch?v=1XEyS74u-cg][wing]], [[https://www.youtube.com/watch?v=4lPg_jjsDY8][kayak]], [[https://www.youtube.com/watch?v=41mcUgNp2pA][villasimius]], [[https://www.youtube.com/watch?v=TdWX3lC3zLE][ice]], [[https://www.youtube.com/watch?v=IDkv1bgAhsI][rudder repair]], 
+- hiking :: [[https://www.youtube.com/watch?v=EW7EOZDhocE][segala]], [[https://www.youtube.com/watch?v=ED2p_O76k1g][brenta]], [[https://www.youtube.com/watch?v=F00ySeffe8Y][foliage]], [[https://www.youtube.com/watch?v=RVcpgfgAbNE][altissimo]], [[https://www.youtube.com/watch?v=HRNUc3BTUKA][winter colors]], [[https://www.youtube.com/watch?v=DEN7zU7v0E8][pizzocolo]], [[https://www.youtube.com/watch?v=muRykbgy5IA][dorizzo]], 
+- climbing :: [[https://www.youtube.com/watch?v=RmSg3191HG4][baldo]],
+- urbex :: [[https://www.youtube.com/watch?v=tHcSMUAGXcA][obi one]],
+- diving :: [[https://www.youtube.com/watch?v=UexIE0iuTXk][nordhusia]],
+- ski :: [[https://www.youtube.com/watch?v=hXoem9UiZqQ][gaver]], [[https://www.youtube.com/watch?v=fZSSbAZNQJk][albedo]], 
+
+#+caption: media library
+#+NAME:   fig:media_lib
+#+ATTR_HTML: :max-height 300px :align center
+[[../../f/f_stage/site_viaggi1.png]]
+
+
+
+* languages
+
+I learned languages for free, mainly talking in the evenings with friends. The language I definitely monetized is German which allows me to reach multiple clients. For the rest I'm not sure what would be worth the investment
+
+- English :: necessary
+- German :: surely a plus for career
+- Italian :: I could cover a larger customer base
+- Spanish :: helped a lot with traveling and some business context
+- Portuguese :: limited business context
+- French :: limited business context
+
+I tried to learn other languages but those will require a strong investment and I'm not sure it will pay off
+
+- Chinese :: some basic conversation
+- Swahili :: basic conversation
+- Esperanto :: long track in writing
+- Japanese :: basic grammar
+- Arabic :: basic grammar
+- Russian :: basic conversation
+
+* food
+
+Transform ingredients from the garden:
+
+- chutney :: like salty marmalade
+- syrup :: [[https://www.youtube.com/watch?v=g3tw4iE08Co][flowers]]
+- roast :: coffee like roasting for tahini
+- labna :: dense yogurt with flavor
+- essences :: extract flavors with oil
+
+#+caption: media_cios
+#+NAME:   fig:media_cios
+#+ATTR_HTML: :max-height 300px :align center
+[[../../f/f_stage/site_cios.png]]
+

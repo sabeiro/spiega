@@ -1,4 +1,16 @@
 ---
+title: agent compensation
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: agent_compensation
+category: #tech
+roam_refs: agent_compensation
+roam_aliases: ["agent compensation"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
 theme: spiega_pres
 _class: lead
 paginate: true
@@ -15,7 +27,7 @@ style: |
 
 Agents compensation is a crucial stimulus for improving individual and company objectives. 
 
-![title_stage](../f/f_intertino/title_stage.svg)
+![title_stage](../../f/f_intertino/title_stage.svg)
 _compensation models_
 
 # save rate
@@ -24,17 +36,17 @@ code: [target_rateCard](src/target_rateCard.py)
 
 The usual agent target is the save rate
 
-![saveRate](../f/f_intertino/saveRate_overall.png)
+![saveRate](../../f/f_intertino/saveRate_overall.png)
 _overall save rate_
 
 We actually know that there are many factors influencing the save rate
 
-![saveRate](../f/f_intertino/saveRate_tenure.png)
+![saveRate](../../f/f_intertino/saveRate_tenure.png)
 _save rate depending on customer tenure_
 
 The problem can be extended to multidimension
 
-![saveRate](../f/f_intertino/saveRate_3d.png)
+![saveRate](../../f/f_intertino/saveRate_3d.png)
 
 _3d representation of the save rate_
 
@@ -75,32 +87,32 @@ Data are narrow distributed and we don't replace/exclude **outliers** neither pe
 
 We start investigating the customer dimensions
 
-![saveRate](../f/f_intertino/saveRate_bill-tenure.png)
+![saveRate](../../f/f_intertino/saveRate_bill-tenure.png)
 _save rate depending on last bill and tenure_
 
 We see a dependence on call time but we consider it more as an effect than a cause of save rate
 
-![saveRate](../f/f_intertino/saveRate_rev-time.png)
+![saveRate](../../f/f_intertino/saveRate_rev-time.png)
 _save rate depending on call time and customer revenue_
 
 We can narrow down on many different levels and we will always see a feature contribution
 
-![saveRate](../f/f_intertino/saveRate_seg-cat.png)
+![saveRate](../../f/f_intertino/saveRate_seg-cat.png)
 _save rate depending on segments and product categories_
 
 taking into account that low values will be discarded or clamped into larger buckets
 
-![saveRate](../f/f_intertino/saveRate_seg-cat_vol.png)
+![saveRate](../../f/f_intertino/saveRate_seg-cat_vol.png)
 _save rate depending on segments and product categories_
 
 We finally propose the following save rate for the rate card because in connects with the revenue stream and the product development
 
-![saveRate](../f/f_intertino/saveRate_final.png)
+![saveRate](../../f/f_intertino/saveRate_final.png)
 _save rate depending on customer value and product holding_
 
 We see that other variables are implicitely modeled by the rate card
 
-![latent](../f/f_intertino/latent_variable.png)
+![latent](../../f/f_intertino/latent_variable.png)
 _variables implicitely defined by existing variables_
 
 
@@ -109,17 +121,17 @@ _variables implicitely defined by existing variables_
 
 Is there a bias in homemover and no transfer calls where a group of agents gets an un even distribution of user groups? We test it calculating the share of call groups for each agent for each week and calculate the ranking distribution
 
-![shuffling_chi](../f/f_intertino/shuffling_ranking.png)
+![shuffling_chi](../../f/f_intertino/shuffling_ranking.png)
 _ranking from week to week_
 
 The ranking correlation drops after few weeks
 
-![shuffling_autocorrelation](../f/f_intertino/shuffling_autocorrelation.png)
+![shuffling_autocorrelation](../../f/f_intertino/shuffling_autocorrelation.png)
 _decay of autocorrelation over weeks_
 
 We test the chi square for the agent series compared with the average 
 
-![shuffling_chi](../f/f_intertino/shuffling_chi.png)
+![shuffling_chi](../../f/f_intertino/shuffling_chi.png)
 _chi values for agent call distribution_
 
 We see that the chi values are pretty small and the p-values really high
@@ -128,51 +140,51 @@ We see that the chi values are pretty small and the p-values really high
 
 We analyze the distribution of features (normalized) and compare the variances
 
-![feat_boxplot](../f/f_intertino/feat_boxplot.png)
+![feat_boxplot](../../f/f_intertino/feat_boxplot.png)
 _boxplot of normalized features_
 
 Most of the values are discretized
 
-![feat_series](../f/f_intertino/feat_series.png)
+![feat_series](../../f/f_intertino/feat_series.png)
 _time series of features_
 
 ### obvious dependencies
 
 We see that this feature set don't have any internal correlation
 
-![feat_corr](../f/f_intertino/feat_corr.png)
+![feat_corr](../../f/f_intertino/feat_corr.png)
 _correlation of features_
 
 We display a pairplot stressing the different distribution depending on the save rate. We see a clear difference in distribution across all features and especially different regression depending on `last_bill_amount` and `precall_tenure`
 
-![feat_pair](../f/f_intertino/feat_pair.png)
+![feat_pair](../../f/f_intertino/feat_pair.png)
 _pairplot of features depending on success_
 
 A close up explains which features are important for the prediction
 
-![feat_joyplot](../f/f_intertino/feat_joy.png)
+![feat_joyplot](../../f/f_intertino/feat_joy.png)
 _joyplot for the most relevant features_
 
 We can say a slight difference in distribution in the different success subsets
 
-![feat_saved](../f/f_intertino/feat_saved.png)
+![feat_saved](../../f/f_intertino/feat_saved.png)
 _feature on success_
 
 We see that the afiniti engine is slightly increasing the call time
 
-![feat_on](../f/f_intertino/feat_on.png)
+![feat_on](../../f/f_intertino/feat_on.png)
 _feature on afiniti on_
 
 ## prediction
 
 We iterate over different models to calculate the prediction strength of this feature set. We see that performances are not high
 
-![feat_pred](../f/f_intertino/feat_pred.png)
+![feat_pred](../../f/f_intertino/feat_pred.png)
 _prediction of save rate_
 
 We see a larger number of false positive which tell us the difficulty to understand for a customer to cancel the contract
 
-![feat_conf](../f/f_intertino/feat_conf.png)
+![feat_conf](../../f/f_intertino/feat_conf.png)
 _confusion matrix on save rate prediction_
 
 ### agent skills
@@ -181,34 +193,34 @@ We know that agent skill is a really important variable to model but we have few
 
 To assess the relative ability we imagine the agents being on a tournament, the customer is the referee and the game pitch is the area and the product. 
 
-![agent_match](../f/f_intertino/agent_match.svg)
+![agent_match](../../f/f_intertino/agent_match.svg)
 _agent ability simulating a match between agents_
 
 Based on the historical series we run a stan simulation based on a prior ability where we compare the agent performances on the different game pitches
 
-![prior_ability](../f/f_intertino/prior_ability.png)
+![prior_ability](../../f/f_intertino/prior_ability.png)
 _prior of the agent ability on area and product_
 
 Once we get the prior distribution we run a simulation across all the agents over multiple games 
 
-![posterior_ability](../f/f_intertino/posterior_param.png)
+![posterior_ability](../../f/f_intertino/posterior_param.png)
 _posterior of the agent ability on area and product_
 
 and we create a ranking
 
-![posterior_ability](../f/f_intertino/posterior_rank.png)
+![posterior_ability](../../f/f_intertino/posterior_rank.png)
 _posterior of the agent ability on area and product_
 
 We than simulate a series of matches and we finally calculate the posterior agent ability
 
-![posterior_ability](../f/f_intertino/posterior_ability.png)
+![posterior_ability](../../f/f_intertino/posterior_ability.png)
 _posterior of the agent ability on area and product_
 
 ## agent compensation
 
 Following *game theory* for a given set of **rules** the **compensation** implies a **strategy** and therefore the tuning of the compensation is crucial for performances.
 
-![game_theory](../f/f_intertino/game_theory.svg)
+![game_theory](../../f/f_intertino/game_theory.svg)
 _game theory sketch_
 
 We need to balance between the individual and the company compensation:
@@ -243,27 +255,27 @@ Users have a different value depending on their records, the value is weighted b
 
 We have a list of **users**, each defined by the tenure, the bill amount, the product selection and the queue of the call
 
-![user_list](../f/f_intertino/user_list.svg)
+![user_list](../../f/f_intertino/user_list.svg)
 _definition of users based on tenure, bill value, product selection and queue_
 
 We have a list of **agents** defined by the certifications, the tenure, the knowledge of the product and the queue they work in
 
-![agent_list](../f/f_intertino/agent_list.svg)
+![agent_list](../../f/f_intertino/agent_list.svg)
 _specification of agents_
 
 We can estimate the **probability of success** of the call based on few information, we actually see that the retention of the customer is easier for high value customers
 
-![call_probability](../f/f_intertino/call_probability.svg)
+![call_probability](../../f/f_intertino/call_probability.svg)
 _the success of the call depends on few features_
 
 Once a user calls the success probability depends on the type of agent joining the call
 
-![user_agent](../f/f_intertino/user_agent.svg)
+![user_agent](../../f/f_intertino/user_agent.svg)
 _user/agent success probability_
 
 We predict the value of the customer in case of a successful call based on historical data
 
-![call_success](../f/f_intertino/call_success.svg)
+![call_success](../../f/f_intertino/call_success.svg)
 _estimated customer value after retention_
 
 
@@ -271,7 +283,7 @@ _estimated customer value after retention_
 
 We propose parallel simulations where the agent is incentivised on different compensations which will imply different strategies and different achivements of company and personal goals
 
-![agent_strategy](../f/f_intertino/agent_strategy.svg)
+![agent_strategy](../../f/f_intertino/agent_strategy.svg)
 _agent strategey based on compensation_
 
 ## simulation 
@@ -286,7 +298,7 @@ We create a simulation where we:
 * pick a call success based on prior probability
 * add a reward depending on the user value outlook
 
-![simulation_detail](../f/f_intertino/simulation_detail.svg)
+![simulation_detail](../../f/f_intertino/simulation_detail.svg)
 _simulation details_
 
 The compensations are:
@@ -304,17 +316,17 @@ Plus we simulate the effect of the afiniti engine on pairing users and agents:
 
 We suppose each agent has persuasive skills which can influence the outcome of the call. We give to the agent the same **persuasive strength** independent on the compensation but **proportional to the compensation**
 
-![call_display](../f/f_intertino/call_display.svg)
+![call_display](../../f/f_intertino/call_display.svg)
 _Display during the call with prediction box and compensation in case of success_
 
 We create a set of users and agents following empirical distributions:
 
-![bill_dis](../f/f_intertino/bill_dis.png)
+![bill_dis](../../f/f_intertino/bill_dis.png)
 _empirical and simulated distribution of last bill_
 
 For last bill, tenure, and save rate
 
-![bill_dis](../f/f_intertino/saveRate_dis.png)
+![bill_dis](../../f/f_intertino/saveRate_dis.png)
 _empirical and simulated distribution of save rate_
 
 
@@ -322,32 +334,32 @@ _empirical and simulated distribution of save rate_
 
 We see comparing to different strategies how the company revenue increases
 
-![sim_revCmp](../f/f_intertino/sim_revCmp.png)
+![sim_revCmp](../../f/f_intertino/sim_revCmp.png)
 _revenue company in different scenarios_
 
 We have a close up on the revenue uplift for the average across all simulations
 
-![sim_liftCmp](../f/f_intertino/sim_liftCmp.png)
+![sim_liftCmp](../../f/f_intertino/sim_liftCmp.png)
 _uplift due to the different strategies_
 
 We want to make sure that the agent compensation is fairly distributed across all agents, and we see a clear increase in agent compensation depending on the strategy
 
-![sim_boxAgn](../f/f_intertino/sim_revAgn.png)
+![sim_boxAgn](../../f/f_intertino/sim_revAgn.png)
 _compensation distribution across all agents_
 
 We see that the company uplift is fairly distributed
 
-![sim_joyAgn](../f/f_intertino/sim_joyAgn.png)
+![sim_joyAgn](../../f/f_intertino/sim_joyAgn.png)
 _distributions are not broader_
 
 Finally we can show that the proposed compensation scheme still incentivize the individual ability
 
-![sim_ability](../f/f_intertino/sim_ability.png)
+![sim_ability](../../f/f_intertino/sim_ability.png)
 _all the proposed methods increase the compensation together with the agent ability_
 
 We show that the rank correlation on save rate is good across the different compensation, the pairing eingine is increasing the shuffling between agents. The compensation scheme increases shuffling between agents ranking
 
-![sim_corr](../f/f_intertino/sim_corr.png)
+![sim_corr](../../f/f_intertino/sim_corr.png)
 _rank correlation across different compensation models_
 
 # tuning
@@ -361,14 +373,14 @@ What is a **boost** and how can we quantify the **influenceability** vs **motiva
 We can set a benchmark with completely unmotivated agents and use it as a baseline for modelling the commission scheme.
 We see that the agent compensation delta compared to save rate steadly increases 
 
-![commission_uplift](../f/f_intertino/commission_uplift.png)
+![commission_uplift](../../f/f_intertino/commission_uplift.png)
 _uplift in commission compared from the current scheme_
 
 ## targets
 
 Using different methods we can define the targets modifying the save rate by the weighted save rate and maintain a similar reward process
 
-![sim_saveRate](../f/f_intertino/sim_saveRate.png)
+![sim_saveRate](../../f/f_intertino/sim_saveRate.png)
 _save rate across differente compensation schemes_
 
 # summary

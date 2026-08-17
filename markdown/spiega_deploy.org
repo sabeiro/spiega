@@ -1,0 +1,214 @@
+:PROPERTIES:
+:GPTEL_MODEL: qwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model living in Emacs and a helpful assistant. Respond concisely. gptel loaded
+:GPTEL_TOOLS: Agent Skill TodoWrite Grep Read Glob Write Insert Edit Mkdir Diagnostics YouTube WebFetch WebSearch Eval Bash blender_interface send_to_blender read_buffer echo_message append_to_buffer read_file create_file make_directory list_directory run_shell_command
+:ID: spiega_deploy
+:GPTEL_BOUNDS: ((response (2472 2904)))
+:END:
+#+title: spiega deploy
+#+STARTUP: showall
+#+OPTIONS: tex:t
+#+TODO: active done crit milestone todo review knwoledge task
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-07-22>
+
+
+* spiega deploy
+
+This documentation project needs some software to be able to produce rich documentation out of text files. Here we list the software and the configuration used. We don't want to use public models to avoid information leak but optimize the output for tiny local models.
+
+How we deploy this project
+
+- LLMs :: covered in [[id:agent_call][agent calling]]
+- [[LLM serving]] :: we test and benchmark different LLM serving tools
+- [[coding assistant]] :: LLM with coding tools
+- present :: covered in [[id:documentation_present][present documentation]]
+
+*** container
+
+Everything here is containerized:
+
+- safe :: I exactly know what the agents can see
+- scale :: I can reproduce easily the same configuration on other hardware
+- performant :: I decide how many resources I want to allocate
+- admin :: I can kill a container anytime
+- storage :: I sacrifice a bit of storage but gain a lot in control
+- image :: it took a lot of time to find the best image to serve multiple services on nvidia, amd and arm
+
+*** hardware
+
+We want to use a simple configuration, we have models hosted on a simple gaming [[id:main_laptop][laptop]] and an IoT device [[id:jetson use-cases][jetson]].
+What we use should work with AMD and ARM.
+ARM is particularly tricky since the compatibility between cuda-toolkit and pytorch requires a lot of trials between versions and compiling from source.
+ARM lacks a lot of deb packages and I tried to install blender 5 from source for example but didn't succeeded.
+
+*** architecture
+
+The host has few tools, the idea is that the client side is minimal and the heavy calculation will be performed on the containers which can be easily moved. Decreasing the context and tools for the coding assistants increases security and improves productivity.
+
+#+name: spiega_architecture
+#+BEGIN_SRC mermaid :file ../../f/f_twin/spiega_architecture.svg :export results :output replace
+---
+title: knowledge parsing
+fontSize: 10
+darkMode: True
+theme: neo-dark
+---
+flowchart LR
+KN["`
+source code
+knowledge
+personal
+`"]
+DOC@{ shape: docs, label: "Knowledge"}
+LLM@{ shape: procs, label: "LLMs"}
+EM@{ shape: lin-cyl, label: "emacs" }
+
+EM -- writes --> DOC
+LLM -- reads --> DOC
+LLM -- writes --> KN
+#+END_SRC
+
+
+
+*** LLM serving
+
+What we have tested so far [fn:1: [x] means that the service is in use] :
+
+- [x] [[https://ollama.com/][ollama]] :: fully featured and integrated it is really easy to bind it to software like editors or coding assistants but performances are pretty poor and it's the token/s are not enough
+- [x] [[https://unsloth.ai/docs/new/studio][unsloth studio]] :: really performant (llama_cpp level), fully featured but still in beta. It needs a lot of work around with endpoints
+- [ ] [[https://github.com/ggml-org/llama.cpp][llama_cpp]] :: performant but not user friendly. It requires a lot of configuration, even finding and downloading a useful model is painful
+- [ ] [[https://docs.vllm.ai/en/latest/][vllm]] :: provided a configuration but I still couldn't test it
+- [ ] [[https://lmstudio.ai/][lm studio]] :: good performances but I want to simplify the stack 
+
+
+[fn:1] [x] means that the service is in use
+
+
+*** coding assistant support
+
+In order for LLM to be helpful we need the functionalities of coding assistants so they can indeed test what they claim and reduce hallucinations.
+
+- IDE tools :: they include IDE tools like syntax checks, linters, unit tests so the model can test the output of the produced code before exiting
+- search :: web search for specific API documentation (which I cache)
+
+Coding assistants can be really dangerous
+
+- rules :: nothing grants they get followed, coding agents often overcome them
+- filesystem :: they can access the entire filesystem and they often start looking at files outside of the context
+- sensitive information :: they can access passwords, keys and sensitive data
+- delete :: they can delete a single file or the entire project without backuping the data
+- execute :: they execute commands outside of the context and rules
+- super user :: access to docker is really dangerous
+- computing :: they get stuck in loops and keep consuming resources
+
+*** coding assistant types
+
+We worked and tested different coding assistants
+
+- [x] [[https://pi.dev/][pi coding]] :: pi coding, nicely integrated with ollama. Less tools and more productive
+- [x] [[https://opencode.ai/][opencode]] :: over featured, not too efficient
+- [ ] [[https://aider.chat/][aider]] :: UI not really useful 
+- [ ] [[https://cursor.com/][cursor]] :: not a real assistant, produces code which you can't edit without explaining what you did and why and hoping it understands the context 
+
+* implementation
+
+We currently have the following services which we can deploy locally or on server
+
+- [ ]  [[~/lav/src/intertino/webserver/][webserver]] :: nginx, php, mariadb, certbot
+
+*** docker containers
+
+After many many trials I tested different images to be able to select a good configuration for LLM serving and coding agent. Ollama has a simple configuration but is not performant so I had to create new containers to link the other services. It is pretty straightforward to launch a standalone service but to integrate them it gets pretty complicated. I tried agentic supports but they were always find non integrated solutions which make portability hard.
+
+*** docker user
+
+The tricky part is to let an user inside docker modify the local files on the host without changing the permissions.
+This costed me a lot of time to configure and I still find the setup not optimal.
+Docker decided to create a non root user as ~ubuntu~ which makes difficult to replicate the same permissions. 
+The workaround I found uses a conf in Dockerfile and to link the ~ubuntu~ user to ~username~ to match my host user and add a bunch of groups and permissions.
+The ~/home~ directory is still mounted as root so the user struggles to create conf files in ~home~.
+I don't want to mount the entire home directory but only the folder containing the source code. 
+
+#+begin_example
+RUN usermod -l username ubuntu
+RUN usermod -d /home/username/ username
+RUN usermod -s /bin/bash username
+RUN groupadd username
+RUN usermod -aG ubuntu username
+RUN usermod -aG username username
+#+end_example
+
+
+#+begin_src bash
+export DOCKER_USER="$(id -u):$(id -g)"
+#+end_src
+
+and in docker-compose.yml to mount the folder as current user
+
+#+begin_example
+    user: "${UID-1000}:${GID-1000}"
+#+end_example
+
+* further development
+
+*** dictation
+
+In case we don't want to type, we can use dictation software to transpose our voice into text.
+Here we test different dictation tools.
+
+*Voxtype*
+
+#+begin_src bash
+sudo apt install cargo libasound2-dev libclang-dev cmake pkg-config
+cargo build --release
+sudo apt install wtype
+./target/release/voxtype setup --download
+./target/release/voxtype
+#+END_SRC
+
+#+BEGIN_EXAMPLE
+Hyprland (~/.config/hypr/hyprland.conf):
+bind = SUPER, V, exec, voxtype record start
+bindr = SUPER, V, exec, voxtype record stop
+#+END_EXAMPLE
+
+*speedofsound*
+
+#+begin_src bash
+#sudo apt install voxtype
+#flatpak install flathub net.mkiol.SpeechNote
+sudo snap install speedofsound
+#+end_src
+
+#+begin_src elisp
+(keymap-global-set "s-z" #'speedofsound)
+#+end_src
+
+#+RESULTS:
+: speedofsound
+
+[[https://github.com/ideasman42/nerd-dictation][nerd dictation]]
+
+#+begin_src bash
+pip3 install vosk
+git clone https://github.com/ideasman42/nerd-dictation.git
+cd nerd-dictation
+wget https://alphacephei.com/kaldi/models/vosk-model-small-en-us-0.15.zip
+unzip vosk-model-small-en-us-0.15.zip
+mv vosk-model-small-en-us-0.15 model
+#+end_src
+
+*whisper* model
+
+#+begin_src bash
+pip install -U openai-whisper
+#+end_src
+
+*** TODO training
+
+Unsloth was originally developed as tool for training. Here we want
+
+- custom :: a custom model that learns from my way of programming while I use a coding agent

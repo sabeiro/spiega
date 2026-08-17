@@ -1,3 +1,18 @@
+---
+title: offer segmentation
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: offer_segmentation
+category: #tech
+roam_refs: offer segmentation
+roam_aliases: ["offer segmentation"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
 # Customer profiling
 
 ### Idea
@@ -8,7 +23,7 @@ Pretargeting, offer optimization, data structure, segmentation.
 ## Learning segment performancees
 
 During a web session the parameters, $p_i$, which can be used for segmenting the audience are:
-![ancillary](../f/f_intertino/AncillarySketch.png "ancillary sketch")
+![ancillary](../../f/f_intertino/AncillarySketch.png "ancillary sketch")
 _Environement parameters and ancillary offers._
 
 * **behaviour**: returning, history, speed
@@ -35,7 +50,7 @@ Second, some parameters shold be more influent in changing the teaser response a
 Offer performances should be tracked over different touchpoints to understand which options is the customer considering throughout his journey.
 Negative offer performances are as well really important to gain information about the customer. 
 
-![customer_journey](../f/f_intertino/CustomerJourney.png "")
+![customer_journey](../../f/f_intertino/CustomerJourney.png "")
 _Customer journey, in red are listed offered product, in orange potential product, in black alternative decisions._
 
 
@@ -65,7 +80,7 @@ All the masks, histograms and functions are normalized.
 A set of semantic labels or categories (around 20) $\{l_1,\ldots,l_{N_l}\}$ that represent a target audience.
 Labels concern audience whishes/interests and product properties, categories might be: amusement, trend, luxus, tech, use \ldots
 At the beginning each ad is tagged with a percentage of each label according to the opinion of the marketer. 
-![prelude](../f/f_intertino/Prelude.png "")
+![prelude](../../f/f_intertino/Prelude.png "")
 _Up) representation of a label on the 2d plane. Down) collection of all labels for ads and web sites and interpolated figure._
 
 $$
@@ -91,7 +106,7 @@ $$
 $$
 We represent all the masks as points on a 2d plane and perform a Delauney triangulation (no need to calculate correlation matrices, highly parallel) to isolate clusters. 
 Clusters can be detected via expectation-maximization algorithm.
-![harmony](../f/f_intertino/HarmonyCluster.png "harmony cluster")
+![harmony](../../f/f_intertino/HarmonyCluster.png "harmony cluster")
 _Representation of a mask on a 2d plane and consequent clustering analysis on the data on the graph. Each cluster is separated by a hull and for each cluster the average mask is calculated._
 
 For each cluster we calculate the average mask and a list of web pages or ads that belong to that cluster.
@@ -99,7 +114,7 @@ For each cluster we calculate the average mask and a list of web pages or ads th
 # Peripherical (parallel)
 
 From each cookie we read the information about the web sites and the ads clicked and create a user experience mask obtained by the sum of all web and ad masks.
-![melody](../f/f_intertino/MelodyUserExp.png "melody")
+![melody](../../f/f_intertino/MelodyUserExp.png "melody")
 _Creation of the user experience mask as sum of ad and web relevance._
 
 We perform a convolution with the cluster masks and select the best fitting opportunities.
@@ -115,7 +130,7 @@ Each separated computing unit communicates the user experience matrix and the th
 ]}
 ```
 
-![melody](../f/f_intertino/MelodyConvolution.png "melody convolution")
+![melody](../../f/f_intertino/MelodyConvolution.png "melody convolution")
 _melody convolution_
 
 The computer unit stores information about the user
@@ -152,7 +167,7 @@ Each cluster can be separately processed.
 ## Infrastructure
 
 Each external unit process the information about a single user with no communication required among different units.
-!["orchestra"](../f/f_intertino/Orchestra.png "orchestra")
+!["orchestra"](../../f/f_intertino/Orchestra.png "orchestra")
 _Structure of the different computing units and the period segmentation. In the graph are shown the information during the map and the reduce phase._
 
 The central unit computes the masks and communicate the new values to each of the external unit in an asynchronous time.
@@ -166,7 +181,7 @@ $r_{CPO}$ 10\euro{}/order $r_{CPC}$ 1\euro{}/click $r_{CPM}$ 1\euro{}/1000views
 calc time 20ms, 50k calc/s.
 The calculations are meant to be performed on the native machine via python or c++ code. The cookies are text analysed after the last update, the masks relative to the visited web site or ad are added to the user experience mask.
 During the update phase the new user's mask is mapped into the central unit and the new information are updated in the graph. 
-![users](../f/f_intertino/MUsers.png "users")
+![users](../../f/f_intertino/MUsers.png "users")
 _Typical graph database per 1M users (ref: [pet project](http://mypetprojects.blogspot.it/2012/06/social-network-analysis-with-neo4j.html)._
 
 According to the performances of Neo4j there should be no large computing time required to precess 50M nodes but different levels of coarse-graining might be introduced in the graph to improve performances. 
@@ -175,7 +190,7 @@ That means that different databases might be used to compute different magnifica
 ## Revenue/bidding
 
 We know the ad visibility, the page visited and the ad selection.
-![revenue](../f/f_intertino/Revenue.png "revenue")
+![revenue](../../f/f_intertino/Revenue.png "revenue")
 _revenue figures_
 
 We construct the cumulative probability of the revenue summing up each single revenue
@@ -198,7 +213,7 @@ Where $u$ is a random uniform number.
 ## Interest filtering
 
 User grouping can be used to let new user filter information about complex content in a web site.
-!["dash"](../f/f_intertino/Dash.png "dash")
+!["dash"](../../f/f_intertino/Dash.png "dash")
 _Filtering dash based on user grouping_
 
 The dash represents the same categories calculated by user grouping and let the user filter the information by populating the dash.
@@ -209,7 +224,7 @@ One of the scoring parameter for a customer is the analysis of the feedbacks he 
 
 Specific customer feeedbacks were used to train dictionaries for the association of some keywords to specific arguments of sentiments.
 
-![cloud](../f/f_intertino/Cloud.png "cloud sentiment")
+![cloud](../../f/f_intertino/Cloud.png "cloud sentiment")
 _Training of dictionary for topic and sentiment recognition._
 
 The training of the dictionaries is really important for understanding the sentiment of the customer and extract the most relevant words. Those words can be connected to a particular sentiment.  
@@ -217,13 +232,13 @@ The customers were asked to choose a category and rate their satisfaction to eac
 We had then the chance to create topic and sentiment specific dictionaries to be able to automatic guess by user input the most probable reason of his feedback.
 We run an emotion recognition to understand which words are more common to different topics.
 
-![comment](../f/f_intertino/Comment.png "cloud sentiment")
+![comment](../../f/f_intertino/Comment.png "cloud sentiment")
 _Distribution of sentence length, statistical communality between months._
 
 We have analyzed as well the clustering and the correlation between words to see whether it was necessary to clamp words together or to assign a cluster number to the words.
 It is as well important to read general statistical properties of the comment to recognize whether they are formally similar.
 
-![sentence](../f/f_intertino/Sentence.png "sentence")
+![sentence](../../f/f_intertino/Sentence.png "sentence")
 _Distribution of sentence length, communality between months, distribution of sentence length, statistical communality between months._
 
 In this case we can correlate time periods together to understand which topic are more interesting in particular time of the year.

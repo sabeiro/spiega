@@ -1,0 +1,60 @@
+services:
+  lm_studio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lm_studio_server
+    #image: lm_studio_llama:latest
+    #image: lm-studio-novnc
+    shm_size: "8g"
+    ulimits:
+      memlock: -1
+    ports:
+      - "8080:8080"
+      - "1234:1234"
+    environment:
+      - CONTEXT_LENGTH=${CONTEXT_LENGTH:-131072}
+      - MODEL_PATH=${MODEL_PATH:-bartowski/Meta-Llama-3.1-8B-Instruct-GGUF}
+      - MODEL_IDENTIFIER=${MODEL_IDENTIFIER:-Meta-Llama-3.1-8B-Instruct-GGUF}
+      - PORT=1234
+      - HOST=0.0.0.0
+      - NUM_THREADS=-1
+      - NUM_GPU_LAYERS=-1
+      - MAIN_GPU=-1
+      - MAX_JOBS=4
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - capabilities: [gpu]
+    # command: ["/entrypoint.sh"]
+    stdin_open: true
+    tty: true
+    volumes:
+      - ${HOME}/Downloads/llm_model/:/app/models/
+      - ${HOME}/Downloads/llm_cache/:/app/cache/
+      - ${HOME}/Downloads/logs/:/app/logs/
+      - "$HOME/Downloads/llm_model/data:/root/.cache/lm-studio/models"
+
+    networks:
+      - webserver-net
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    
+
+networks:
+  webserver-net:
+    name: webserver-net
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+      com.docker.network.bridge.name: "webserver_net"
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

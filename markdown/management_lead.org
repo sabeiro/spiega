@@ -1,0 +1,94 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: management_lead
+:END:
+# Local IspellDict: en
+#+title: management and lead
+#+subtitle: experience in handling clients, projects, finances
+#+STARTUP: showeverything
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-05-22>
+#+AUTHOR: sabeiro
+#+KEYWORDS: emacs-reveal, howto, HTML, reveal.js, org, Org mode, presentation, slideshow, OER, open educational resource, licensing
+# #+INCLUDE: ~/lav/src/spiega/template/header.org
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+DESCRIPTION: digital twins on blender with FEM
+#+property: header-args:bash :result output replace :export none 
+
+* management and lead 
+
+This is an overview of my management experience with the links from the blog [[id:spiega_overview][spiega overview]] published in [[id:spiega_index][spiega index.html]].
+
+
+#+NAME: fig:skill_radar_diagram
+#+ATTR_HTML: :height 300px :max-height 300px :align center
+[[../../f/f_media/skill_radar.svg]]
+
+*** team management                                              :management:
+
+Team management
+
+- 13-2?] [[./team_composition.org][team composition]] :: how to set up a team, SoW, WBS [[id:team_composition][team composition]] [[id:agenda][current agenda]]
+- 13-2?] [[./team_productivity.org][team productivity]] :: what makes a team productive [[id:team_productivity][team productivity]]
+- 13-2?] [[./product_design.org][product design]] :: the important questions for building a product [[id:product_design][product design]]
+- 13-2?] [[./presales.org][presales]] :: make sure you can deliver [[id:presales_strategies][presales strategies]]
+- 13-2?] [[./client_relationship.org][client relationship]] :: promise, deliver, tell [[id:client_relationship][client relationship]]
+- 13-2?] [[./corporate_organization.org][corporate organization]] :: managers, politics, career progression [[id:corporate_organization][corporate organization]]
+- 13-2?] [[./well_being.org][well being]] :: body health for productivity [[id:well_being][well being]] 
+
+
+#+caption: module library
+#+NAME:   fig:module_lib
+#+ATTR_HTML: :max-height 300px :height 300px :align center
+[[../../f/f_stage/workflow_conversion.png]]
+
+
+*** professional growth
+
+Career is a long run, is made out of many investments in time and money. It needs planning and occasions, promotion and networking
+
+- 13-26] [[./bio.org][bio]] :: overview on the main achievements [[id:bio_professional][professional bio]]
+- 26-2?] [[./personal_finance.org][personal finance]] :: manage your savings and investments [[id:personal_finance][personal finance]] [[id:geo_admin][geo admin]]
+- 26-2?] [[./documentation_present.org][documentation present]] :: learn how to create presentations [[id:documentation_present][present documentation]]
+- 26-2?] [[./manim_animations.org][video animations]] :: to build a portfolio [[id:manim_animations][manim,]]
+- 26-2?] [[./hobby_profession.org][hobby profession]] :: when your hobbies turn into real jobs [[id:hobby_profession][turn hobbies into profession]]
+- 26-2?] [[./second_hand.org][second hand]] :: when your career change make sense of your old tools [[id:second_hand][second hand]]
+- 26-2?] [[./youtube_channel.org][youtube channel]] :: communicate with videos [[id:youtube-intro][youtube]] [[id:youtube-intro][youtube channel]]
+
+#+caption: manage your income
+#+NAME:   fig:finance_year
+#+ATTR_HTML: :height 300px :align center :height 300pt
+[[../../f/f_cios/finance_year.png]]
+
+
+
+*** media production                                                    :art:
+
+Mastering media libraries is really important to create powerful presentations
+
+- 13-15] [[./creative_coding.md][creative coding]] :: openCV, openFrameworks, processing [[id:creative_coding][creative coding]]
+- 26-2?] [[./blender_animation.org][blender animation]] :: language models and 3d modeling [[id:blender_animation-2d][blender 2d animations]]
+- 26-2?] [[./blender_tricks.org][blender tricks]] :: best settings for blender [[id:blender_tricks][blender tricks]]
+- 15-2?] [[./youtube_channel.org][youtube channel]] :: manage a channel#+RESULTS: video-summary [[id:youtube-intro][youtube channel]]
+- 15-2?] [[./viudi_channel.org][viudi channel]] :: current channel [[id:viudi_channel][viudi channel]]
+- 10-2?] [[./video_production.md][video production]] :: create songs with musical gears [[id:video_production][video production]]
+- 06-2?] [[./websites.md][websites]] :: creation of websites [[id:websites][websites]] [[id:imprint][imprint]] [[id:privacy][privacy]] [[id:web_admin][web admin]]  [[id:spiega_sitemap][spiega sitemap]] [[id:portfolio-creation-intro][portfolio creation]]
+
+#+caption: media library
+#+NAME:   fig:media_lib
+#+ATTR_HTML: :height 300px :max-height 300px :align center
+[[../../f/f_media/color_cor01.png]]
+
+*** tech governance
+
+As a tech lead it is important to think beyond the project and have a view on a bigger picture which includes platform and data governance 
+
+- [[./llm_governance.org][llm governance]] :: [[id:llm_governanace][LLM governance]]
+- [[./storage_governance.org][storage governance]]  :: [[id:storage_governance-intro][storage governance]

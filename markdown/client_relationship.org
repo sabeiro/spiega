@@ -1,0 +1,47 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: client_relationship
+:END:
+#+TITLE: client relationship
+#+SUBTITLE: promise, deliver, tell
+#+DATE: 14-05-2026
+#+KEYWORDS: Data science, language models, LLMs
+#+description:
+# #+INCLUDE: ~/lav/src/spiega/template/header.org
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+OPTIONS: body-only:t
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: buisness(b) dev(t) science(s) management(m) data_science(d) admin(a) consultancy(c) art(r)
+#+STARTUP: showall
+
+* client relationship
+
+The most essential steps for a successful client relationship are:
+
+- listen :: what are client needs and expectations
+- stake-holding :: understand who knows, who decides and what conflicts exist between departments
+- discover :: check client infrastructure and spot critical issues, often what the client describes is far from best practices
+- return :: estimate the return for that project and define success metrics
+- propose :: propose a service for the mentioned budget
+- test :: test the progresses of your product and the delivery of the team
+- tell :: keep the client updated and discuss possible adaptations
+- involve :: involve the client in product tests, make sure the client won't be surprised at the time of delivery
+- measure :: measure the quality of the metrics and make sure the client is satisfied
+- deliver :: make sure at the delivery date there are no surprises
+- update :: ask the client if everything works fine and if they need some adjustments
+- upsell :: ask the client if they want to expand on other business cases capitalizing the investment for the first product
+- network :: ask the client if they can promote your services to their partners of to the press
+
+*** stake-holding
+
+There are some tricky situations to handle:
+
+- budget owners :: don't have the technical capabilities to understand what they need
+- procurement :: they don't know what they buy but use many tricks to cut on price
+- tech teams :: they don't like external providers and they feel questioned when you ask
+

@@ -1,0 +1,41 @@
+- topic: languages
+  skill: 'Native: Italian. Fluent: English, German, Spanish Intermediate: French,
+    Portuguese'
+- topic: programming
+  skill: python, js, c++, c, R, spark, go (viz) openGL, Qt, GTK+
+- topic: machine learning
+  skill: tensorflow, keras, sklearn, scipy, caret, pytorch
+- topic: AI
+  skill: gan, reinforcement learning, forecasts, predictions, classifications
+- topic: web
+  skill: html5, css3, js, d3, react, angular
+- topic: server
+  skill: "fastapi, celery, redis, nginx, traefik, nodejs, php"
+- topic: databases
+  skill: ' SQL, postgresql, cassandra, mongodb, neo4j, elastic (fs) hdfs, s3'
+- topic: development
+  skill: ' git, gitlab, svn, CI/CD, pytest, docker'
+- topic: production
+  skill: ' docker swarm, kubernetes, airflow, kafka, presto, terraform'
+- topic: visualization
+  skill: ' kibana, grafana, metabase, powerBI, tableau'
+- topic: IoT
+  skill: ' mqtt, mosquitto, arduino, esp32, teensy, seeed, reaspberry pi, jetson'
+- topic: perception
+  skill: ' computer vision, 3d modeling, reinforcement learning, embedded programming'
+- topic: numeric
+  skill: ' numpy, gsl, CGAL, matlab, octave, maple, root (grid) MPI, openMP'
+- topic: software
+  skill: ' (GIS) qgis (viz) mayavi, povray (CAD/3D) rhino, blender, cura'
+- topic: LLM
+  skill: ' RAG, graphRAG, lanchain, langsmith, llamaindex'
+- topic: aws
+  skill: ' s3, iam, ec2, sagemaker, bedrock, ecs, cloudfront, lambda, athena'
+- topic: gcp
+  skill: ' bigquery, kubernetes, pubsub, gemini'
+- topic: azure
+  skill: ' factory, kusto, ml studio, synapse, databricks, cosmos'
+- topic: nvidia
+  skill: ' cuda, ominverse, morpheus, nemo, nim, tensorrt, triton'
+- topic: cisco
+  skill: ' UCS, meraki, splunk'

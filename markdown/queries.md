@@ -1,3 +1,18 @@
+---
+title: collection of queries
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: query_collection
+category: #tech
+roam_refs: query_collection
+roam_aliases: ["query collection"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
 # Query collection
 
 ## SQL

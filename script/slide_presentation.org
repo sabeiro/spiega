@@ -1,0 +1,128 @@
+#+TITLE: Blender CV MCP Server - Slide Presentation Examples
+#+AUTHOR: Blender CV
+#+DATE: 2026-06-05
+#+PROPERTY_HEADER: :PROPERTIES:
+#:ID: slide-show-demo
+#:EXPORT_HTML: test_slides.html
+#:END:
+
+#+LAYOUT: default
+
+* Welcome to Blender CV Slide Show
+
+This collection demonstrates slide presentations and interactive features for the Blender CV MCP Server.
+
+** Quick Navigation**
+
+- Press ← → or Enter to navigate slides
+- Press T to toggle side navigation menu
+- Press X or Escape to close
+- Press ? for help
+
+* Python Example: Visualization Code
+
+#+BEGIN_SRC python :name :results output
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
+# Sample data
+np.random.seed(42)
+n = 100
+tips = sns.load_dataset('tips')
+
+# Box plot
+plt.figure(figsize=(10, 6))
+plt.boxplot(tips['total_bill'], notch=True, patch_artist=True,
+             boxprops=dict(facecolor='steelblue', alpha=0.7))
+plt.xticks(np.arange(1, 6), ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'])
+plt.title('Daily Box Plot of Total Bill')
+plt.xlabel('Day of Week')
+plt.ylabel('Bill ($)')
+plt.grid(True, alpha=0.3)
+
+# Save to HTML (would appear inline in presentation)
+# plt.savefig('tips_boxplot.png')
+
+print("Sample visualization code loaded successfully")
+#+END_SRC
+
+* Features List
+
+- [ ] Customizable navigation
+- [ ] Auto-slide functionality
+- [ ] Progress bar indicator
+- [ ] Keyboard shortcuts
+- [ ] Responsive design
+- [ ] Accessible (keyboard-friendly)
+  
+* Code Examples
+
+** Python Data Visualization
+
+#+BEGIN_SRC python :results output :eval yes
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 2*np.pi, 100)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+plt.figure(figsize=(8, 4))
+plt.plot(x, y1, label='sin(x)', linewidth=2)
+plt.plot(x, y2, label='cos(x)', linewidth=2)
+plt.legend()
+plt.title('Sine and Cosine')
+plt.grid(True, alpha=0.3)
+#+END_SRC
+
+** Integration Targets
+
+This slide presentation integrates with:
+
+- **FEM simulation**: Heat analysis with FEniCS
+- **Energy optimization**: Graph-based optimization
+- **Computer Vision**: Pose estimation
+- **Knowledge graphs**: Data relationships
+
+* Sample Slide Content
+
+** Slide 1: Welcome
+
+Welcome to the Blender CV presentation!
+
+Use your keyboard to navigate this interactive demonstration.
+
+** Slide 2: Controls
+
+*Navigation:* ← → or Enter  
+*Previous:* Shift + ←  
+*First/Last:* Home/End  
+*TOC menu:* Press T  
+*Close:* X or Escape
+
+** Slide 3: Python Examples
+
+```python
+import matplotlib.pyplot as plt
+x = np.linspace(0, 10)
+y = x**2
+plt.plot(x, y)
+plt.show()
+```
+
+** Slide 4: Capabilities
+
+- Image processing
+- Pose estimation
+- Model training
+- Visualization
+
+*Thank you!*
+
+#+ATTR_HTML: :target ./html/test_slides.html
+[[file:html/test_slides.html]]
+
+#+SETUP_HOOKS: hooks/init.html
+
+#+RESULTS: :target ./html/test_slides.html

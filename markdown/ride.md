@@ -1,9 +1,13 @@
 ---
-title: "rides"
+title: commuter ride behavior
 author: Giovanni Marelli
-date: 2019-09-11
+date: 2019-09-12
 rights:  Creative Commons Non-Commercial Share Alike 3.0
 language: en-US
+id: ride_behavior
+category: #tech
+roam_refs: ride behavior 
+roam_aliases: ["ride behavior"]
 output: 
 	md_document:
 		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
@@ -19,7 +23,7 @@ We group the redundant information organizing the time variant information into 
 
 We can than cluster user behaviour
 
-![user_ride](../f/f_ride/user_state.png "user ride")
+![user_ride](../../f/f_ride/user_state.png "user ride")
 _user behaviour on status_
 
 # ride
@@ -36,25 +40,25 @@ tx = [x,y,timestamp,energy,milage,speed,speed_limit]
 
 We can than calculate the rides over two months
 
-![ride_map](../f/f_mov/ride_map.png "ride_map")
+![ride_map](../../f/f_mov/ride_map.png "ride_map")
 _rides on map_
 
-![ride_monitoring](../f/f_mov/ride_monitoring.png "ride_monitoring")
+![ride_monitoring](../../f/f_mov/ride_monitoring.png "ride_monitoring")
 _rides monitoring_
 
 We can sum up rides per geohash
 
-![ride_geohash](../f/f_mov/ride_geohash.png "ride geohash")
+![ride_geohash](../../f/f_mov/ride_geohash.png "ride geohash")
 _rides on geohash_
 
 And calculate the origin/destination matrix
 
-![odm_matrix](../f/f_mov/odm_matrix.png "origin destination matrix")
+![odm_matrix](../../f/f_mov/odm_matrix.png "origin destination matrix")
 _origin destination matrix_
 
 We can than calculate a simplified graph of the customer movements
 
-![graph_customer](../f/f_mov/graph_customer.png "graph_customer")
+![graph_customer](../../f/f_mov/graph_customer.png "graph_customer")
 _customer movements on graph_
 
 # hardware
@@ -134,8 +138,8 @@ def get_val(steps):
     xV = [float(x['y']) for x in steps if not x['y'] == "None"]
     return float(np.average(xV))
 
-ud../f/f_get_val = udf(get_val,FloatType())
-df = df.withColumn("y",ud../f/f_get_val("steps"))
+ud../../f/f_get_val = udf(get_val,FloatType())
+df = df.withColumn("y",ud../../f/f_get_val("steps"))
 ```
 
 joins on the pivoted tables will be faster, even periodic reports
@@ -145,7 +149,7 @@ joins on the pivoted tables will be faster, even periodic reports
 	
 We look at the distribution of revenues:
 
-![rev_revboxplot](../f/f_ride/rev_boxplot.png "revenue boxplot")
+![rev_revboxplot](../../f/f_ride/rev_boxplot.png "revenue boxplot")
 _revenue boxplot_
 
 

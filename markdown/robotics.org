@@ -1,0 +1,162 @@
+:PROPERTIES:
+:GPTEL_MODEL: qwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: robotics_utils 
+:END:
+#+KEYWORDS: Data science, language models, LLMs
+#+description:
+# #+INCLUDE: ~/lav/src/spiega/template/header.org
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+OPTIONS: body-only:t
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: buisness(b) dev(t) science(s) management(m) data_science(d) admin(a) consultancy(c) art(r)
+#+STARTUP: showall
+
+* robotics utils
+
+How do you build robotics applications.
+
+** tools
+
+A list of tools used in robotics applications:
+
+- ros/ros2
+- RGB-D :: colors and depth
+  - structured light :: infrared pattern to estimate the depth (kinect)
+  - time of flight :: diffraction with bouncing light
+  - stereo vision :: using multiple cameras
+  - LiDAR :: 
+- [[https://developer.nvidia.com/isaac/sim][Isaac sim]] :: framework on omniverse for robotics simulations
+- [[https://github.com/bulletphysics/bullet3][bullet]] :: collision libraries
+- [[https://github.com/Genesis-Embodied-AI/genesis-world][genesis]] :: simulation platform for physical AI dev
+- [[https://en.wikipedia.org/wiki/Simultaneous_localization_and_mapping][SLAM]] :: building a map as you explore the environment
+- [[https://moveit.ai/][movelt]] :: A motion planning, manipulation, and kinematics framework for ROS
+- CAD :: computer aided design
+- [[https://www.robotsops.com/tutorial-urdf-unified-robot-description-format-in-robotops/][URFD]] :: unified robots description
+
+
+
+[ CAD Model ] --> [ URDF File (links, joints, sensors) ] --> [ RobotOps CI/CD Pipeline ]
+        |                                                        |
+        v                                                        v
+   [ Meshes (.stl/.dae) ]                            [ Simulators: Gazebo, RViz ]
+                                                     [ Controllers: ROS Control ]
+
+
+ computer-aided design (CAD), Unified Robot Description Format (URDF
+* robotics stack
+
+- [[https://www.zephyrproject.org/][zephyr]] ::
+- [[https://www.freertos.org/][freertos]] ::
+- [[https://docs.ros.org/en/rolling/index.html][ros]] :: 
+
+
+* ros2
+
+We start with a simple example in ROS2 lyrical.
+We have nodes which communicate through ROS like:
+- webserver ::
+- actuators ::
+- sensors ::
+- 
+
+** concepts
+
+We have
+- [[https://wiki.ros.org/Bags][bag files]] :: a file format to store messaging data
+- [[https://wiki.ros.org/rqt_bag][rqt]] :: a gui to display BAG files
+
+We install ros2:
+
+#+name: ros-install
+#+begin_src bash :results output replace :async
+sudo apt install ros-lyrical-desktop
+mkdir -p ~/lav/src/blender_twin/robot_ws/
+#+end_src
+
+Create a sample urfd file
+
+#+name: urfd_file
+#+begin_example
+<robot name="simple_bot">
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="1 1 0.2"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+  </link>
+</robot>
+#+end_example
+
+And launch the model
+
+#+name: ros-launch
+#+begin_src bash :results output replace :async t :var urfd=urfd_file
+cd ~/lav/src/blender_twin/robot_ws/
+echo $urfd > my_robot.urfd
+colcon build
+ros2 launch urdf_tutorial display.launch.py model:=my_robot.urdf
+#+end_src
+
+#+RESULTS: ros-launch
+: 
+: Summary: 0 packages finished [0.15s]
+
+
+** turtle example
+
+We launch the turtle agent
+
+#+name: ros-example
+#+begin_src bash :results output replace :async t
+source /opt/ros/lyrical/setup.bash
+/opt/ros/lyrical/bin/ros2 run turtlesim turtlesim_node
+#+end_src
+
+We launch the turtle remote controller
+
+#+name: ros-example
+#+begin_src bash :results output replace :async t
+source /opt/ros/lyrical/setup.bash
+/opt/ros/lyrical/bin/ros2 run turtlesim turtle_teleop_key
+#+end_src
+
+#+RESULTS: ros-example
+
+Show the graphs connecting nodes
+
+#+name: ros-graph
+#+begin_src bash :results output replace :async t
+source /opt/ros/lyrical/setup.bash
+/opt/ros/lyrical/bin/ros2 run rqt_graph rqt_graph
+#+end_src
+
+#+RESULTS: ros-graph
+
+We look at the qrt_bag which manages and records bag files 
+
+#+name: ros-example
+#+begin_src bash :results output replace :async t
+source /opt/ros/lyrical/setup.bash
+/opt/ros/lyrical/bin/rqt_bag 
+#+end_src
+
+
+#+name: ros-dependencies
+#+begin_src bash :results output replace
+sudo apt install python3-colcon-common-extensions
+source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash
+#+end_src
+
+
+#+name: ros-build
+#+begin_src bash :results output replace
+cd ~/lav/src/blender_cv/camera_esp32/src
+colcon build
+#+end_src

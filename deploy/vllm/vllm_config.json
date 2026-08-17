@@ -1,0 +1,14 @@
+{
+  "model": "TheBloke/Llama-3.1-8B-Instruct-GGUF:Q4_K_M.gguf",
+  "gpu_memory_utilization": 0.9,
+  "max_model_len": 8192,
+  "max_num_seqs": 64,
+  "trust_remote_code": true,
+  "tensor_parallel_size": 1,
+  "disable_log_stats": true,
+  "disable_log_probs": true,
+  "enable_prefix_caching": false,
+  "enforce_eager": false,
+  "use_cached_outputs": false,
+  "worker_timeout": "600:00"
+}

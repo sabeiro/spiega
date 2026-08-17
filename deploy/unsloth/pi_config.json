@@ -1,0 +1,128 @@
+{
+  "$schema": "https://pi.dev/schemas/config-schema.json",
+  "version": "1.0",
+  "name": "unsloth-local-inference",
+  "description": "Local LLM inference service configured for Pi coding agent with Unsloth",
+  
+  "services": {
+    "unsloth-inference": {
+      "type": "local-llm",
+      "address": "http://localhost:8000",
+      "api_version": "v1",
+      "default_model": {
+        "path": "/home/sabeiro/Downloads/llm_model/gemma-4-E4B-it-Q4_K_M.gguf",
+        "quantization": "Q4_K_M"
+      },
+      "fallback_model": {
+        "path": "/home/sabeiro/Downloads/llm_model/gemma-1.5-4B-it-Q4_K_M.gguf",
+        "quantization": "Q4_K_M"
+      },
+      "timeout_seconds": 60
+    },
+    "vscode-extensions": {
+      "type": "mcp-server",
+      "enabled": true,
+      "opencode_path": "/home/sabeiro/.config/opencode",
+      "port": 2222
+    }
+  },
+  
+  "mcp_tools": {
+    "enabled": true,
+    "timeout_seconds": 30,
+    "default_tool": "unsloth-inference",
+    "tools": {
+      "inference": {
+        "name": "unsloth-generate",
+        "description": "Generate text using local LLM via Unsloth REST API",
+        "endpoints": [
+          "/v1/generate",
+          "/v1/chat/completions",
+          "/v1/embeddings"
+        ]
+      },
+      "file_operations": {
+        "name": "file-manager",
+        "description": "File read/write operations",
+        "path": "lav/src"
+      },
+      "bash_shell": {
+        "name": "bash-executor",
+        "description": "Execute bash commands",
+        "timeout_seconds": 300
+      },
+      "web_search": {
+        "name": "web-searcher",
+        "description": "Search the web for real-time info",
+        "api": "web_search"
+      },
+      "web_fetch": {
+        "name": "web-fetcher",
+        "description": "Fetch content from URLs",
+        "api": "web_fetch"
+      }
+    }
+  },
+  
+  "agent_environment": {
+    "working_directory": "/home/sabeiro/lav/src/spiega/deploy/unsloth/work",
+    "git_cache": "/home/sabeiro/Downloads/llm_cache/git",
+    "sessions": "/home/sabeiro/Downloads/llm_cache/sessions",
+    "node_modules_cache": "/home/sabeiro/Downloads/llm_cache/node_modules",
+    "pi_config": "/home/sabeiro/lav/src/pi_config"
+  },
+  
+  "model_settings": {
+    "context_window": 8192,
+    "temperature": 0.7,
+    "max_tokens": 2048,
+    "n_predict": 2048,
+    "n_keep": 1
+  },
+  
+  "volume_mounts": [
+    {
+      "source": "/home/sabeiro/Downloads/llm_model",
+      "target": "/workspace/work",
+      "mode": "rw"
+    },
+    {
+      "source": "/home/sabeiro/Downloads/llm_cache/git",
+      "target": "/home/sabeiro/.pi/agent/git",
+      "mode": "ro"
+    },
+    {
+      "source": "/home/sabeiro/Downloads/llm_cache/sessions",
+      "target": "/home/sabeiro/.pi/agent/sessions",
+      "mode": "rw"
+    },
+    {
+      "source": "/home/sabeiro/lav/src",
+      "target": "/home/sabeiro/lav/src",
+      "mode": "ro"
+    }
+  ],
+  
+  "logging": {
+    "level": "INFO",
+    "format": "json",
+    "files": [
+      "/home/sabeiro/lav/src/spiega/deploy/unsloth/work/inference.log"
+    ]
+  },
+  
+  "health_check": {
+    "enabled": true,
+    "endpoint": "/health",
+    "interval_seconds": 30
+  },
+  
+  "notebooks": {
+    "jupyter": {
+      "enabled": true,
+      "port": 8888,
+      "password": null,
+      "notebooks_path": "/workspace/work/notebooks"
+    }
+  }
+}

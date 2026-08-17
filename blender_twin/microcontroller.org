@@ -1,0 +1,88 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: microcontroller_agentic
+:END:
+#+title: microcontroller agentic
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-06-22>
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_twin/docs/
+#+BEGIN: clocktable :scope file :block thisweek :maxlevel 2 :step day :stepskip0 t
+#+END:
+
+* microcontroller agentic
+DEADLINE: <2026-06-17 Wed>
+:PROPERTIES:
+:ID: microcontroller_intro
+:ROAM_ALIASES: microcontroller agentic
+:END:
+
+The agents should sense the world around them, therefore we have different devices as described in [[id:IoT_controller][IoT Controller - Comprehensive Device Guide]] 
+
+** hardware list
+
+- [[https://www.pjrc.com/teensy/][teensy]] :: audio processing [[id:teensy][Teensy 3.6 - High-Speed Microcontroller]]
+- [[https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html][raspberry pico]] :: audio processing [[id:raspberry_pi_pico-intro][pico]]
+- [[https://store.arduino.cc/pages/uno-r4][arduino R4]] :: synth [[id:Arduino_R4][Arduino R4 - IoT Sensor Controller]]
+- [[https://www.arduino.cc/en/Guide/MKR1000][arduino mk1000]] :: sensor IoT [[id:arduino_mkr1000][Arduino MKR1000 - WiFi IoT Controller]]
+- [[https://www.espressif.com/en/products/socs/esp32][esp32]] :: midi hub [[id:esp32_CAM][ESP32-CAM - Vision Sensor Controller]]
+- [[https://docs.m5stack.com/en/core/core2][M5stack core2]] :: midi BLE controller [[id:m5stack_hardware-specifications][m5stack]]
+- [[https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/][xiao seeed]] :: activators [[id:xiao_esp32s3][Xiao ESP32S3 - Seeed Studio Activators Board]]
+- [[https://electro-smith.com/products/daisy-seed][daisy seed]] :: [[id:daisy_seed][daisy seed :: Electro-Smith Microcontroller Module]]
+- [[https://github.com/axoloti/axoloti][axoloti]] :: and new branch [[https://www.zrna.org/akso][akso]] [[id:axoloti_akso][axoloti :: akso - Open Hardware ESP32 Platform]]
+  
+
+* audio applications
+
+MCU are really useful for audio processing since they don't have the complexity of an operating system and they have low latency and high reliability.
+A typical audio need is a sampling rate of 48kHz 24bit and fast effect processing. Unfortunately most of the DAC/ADC on those devices are limited 
+
+- [[https://sensorium.github.io/Mozzi/][Mozzi]] :: arduino library
+- [[https://github.com/marcel-licence][Marcel]] :: ESP32 library
+- [[https://github.com/axoloti/axoloti][axoloti patcher]] :: patcher for a dsp
+  
+
+* active microcontroller usage                                     :embedded:
+:PROPERTIES:
+:ID:       agent_call-microcontroller
+:ROAM_ALIASES: microcontroller usage
+:END:
+
+The current running projects are:
+
+- [[~/lav/src/blender_twin/IoT/controller_m5stack/README.md][controller M5Stack]] :: a midi BLE controller with the  following pages
+  - midi player :: reads files and send them to the midi BLE
+  - CC slider :: sends control change, you can configure the CC number
+  - note player :: play notes, set the scale
+  - chaos pad :: x-y touch sensitive pad
+  - chord player :: plays a sequence of chords with
+    - arpeggiator :: with 5 different patterns
+    - chords :: for poly instruments
+    - ML :: an machine learning melody generator
+
+** types
+*** arduinoUnoR4
+- Mozzi :: a mozzi synth with midi in
+  
+*** esp32
+- esp32-cam :: a webserver publishing the result of a camera
+
+*** m5stack
+   
+** music
+*** mozzi
+Is there any good usable library for synth?
+*** marcel license
+ESP32
+** video
+*** viudi
+make a video about music on microcontrollers
+*** dauvi
+make a video about tech on microcontrollers
+

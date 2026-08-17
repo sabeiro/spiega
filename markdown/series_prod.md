@@ -1,9 +1,13 @@
 ---
-title: "Forecast delivery pipeline"
+title: time series forecast
 author: Giovanni Marelli
-date: 2019-05-20
+date: 2019-09-12
 rights:  Creative Commons Non-Commercial Share Alike 3.0
 language: en-US
+id: time_series_forecast
+category: #tech
+roam_refs: time series forecast
+roam_aliases: ["time series forecast"]
 output: 
 	md_document:
 		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
@@ -14,7 +18,7 @@ output:
 
 This readme explains the content of the directory and the execution steps to complete the delivery forcasts.
 
-![curves](../f/f_mot/curves.png "delivery_curves")
+![curves](../../f/f_mot/curves.png "delivery_curves")
 _delivery curves_
 
 This project folder does not contain any script to retune or re perform a mapping or a prediction or run sanity checks, it just applies already pretrained models. In case of unconsistency please refer to the author.
@@ -23,7 +27,7 @@ This project folder does not contain any script to retune or re perform a mappin
 
 In the project directory there is an example docker file for creating an ad hoc container. 
 
-![proj_dir](../f/f_mot/proj_dir.png "project directory")
+![proj_dir](../../f/f_mot/proj_dir.png "project directory")
 _project directory_
 
 To install the basic libraries please run [this script](src/setup.py) with python 3.6+. Depending on the required KPIs other graphic libraries might be installed.
@@ -32,7 +36,7 @@ All the scripts consider the variable $LAV_DIR which can be set as the current d
 
 ## tdg/cronon production
 
-![jupyter](../f/f_mot/jupyter.png "jupyter")
+![jupyter](../../f/f_mot/jupyter.png "jupyter")
 _jupyter notebook on Hungarian cluster_
 
 * check data availability for tripEx-act and adjust dates in the [qsm job](/geomadi/blob/master/job/activity/tank/qsm.activity_report.tank_cilac_y19_p11_d40_noChi.json) for activities
@@ -46,7 +50,7 @@ _jupyter notebook on Hungarian cluster_
 
 ## local production
 
-![mapping](../f/f_mot/mapping.png "example of mapping result")
+![mapping](../../f/f_mot/mapping.png "example of mapping result")
 _example of mapping result_
 
 * Complete the date list in [this file](raw/dateList.csv)
@@ -59,12 +63,12 @@ _example of mapping result_
 * apply prediction with [this script](src/regressor_apply.py) on 
   * the prediction will be written in [act_predict](raw/tank/act_predict)
   
-![regression](../f/f_mot/regression.png "results after regression")
+![regression](../../f/f_mot/regression.png "results after regression")
 _results after regression_
   
 ## KPI
 
-![joyplot](../f/f_mot/joyplot.png "joyplot")
+![joyplot](../../f/f_mot/joyplot.png "joyplot")
 _differences wrt previous delivery_
 
 Apply [this script](src/kpi_tank.py) to sum up the results for the customer delivery and check the following KPIs:
@@ -77,12 +81,12 @@ Apply [this script](src/kpi_tank.py) to sum up the results for the customer deli
 * consistency in ranking 
 * comment events that can influence the specific date/location
   
-![sankey](../f/f_mot/sankey.png "sankey")
+![sankey](../../f/f_mot/sankey.png "sankey")
 _t-test feb-mar vs t-test mar-apr, change in ranking_
   
 ## internal meeting
 
-![boxplot](../f/f_mot/boxplot.png "boxplot")
+![boxplot](../../f/f_mot/boxplot.png "boxplot")
 _differences in capture rate between deliveries_
 
 * organize an internal meeting at least two days before the customer delivery
@@ -93,14 +97,14 @@ _differences in capture rate between deliveries_
   * reschedule the analysis (job, processing...
   * reschedule the delivery
   
-![isocalendar](../f/f_mot/isocalendar.png "isocalendar")
+![isocalendar](../../f/f_mot/isocalendar.png "isocalendar")
 _check against isocalender_
 
 ## finalize the delivery
 
 Run the script [tank_delivery](src/tank_delivery.py) adjusting the output file name.
 
-![delivery](../f/f_mot/delivery.png "delivery")
+![delivery](../../f/f_mot/delivery.png "delivery")
 _finalize the delivery_
 
 * manual check the numbers and prepare the excel file like in the [former delivery](delivery/act_direction_19_03.xls) (pivot...)

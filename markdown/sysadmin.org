@@ -1,0 +1,623 @@
+:PROPERTIES:
+:ID: sysadmin
+:END:
+#+title: sysadmin
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge task
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-06-24>
+
+* sysadmin
+
+This article contains the most relevant commands and examples to administrate a linux system and networking
+
+* installation
+
+** fix broken
+
+Fix broken not working
+
+#+name: 
+#+begin_src bash
+sudo dpkg --force-all --configure -a
+sudo dpkg --purge --force-depends libnettle6 
+sudo apt --fix-broken install
+sudo apt-get -f install
+sudo apt update & sudo apt upgrade
+#+end_src
+
+
+* sysadmin linux
+
+#+name: processes_on_port
+#+BEGIN_SRC bash :exports both :results output replace
+lsof -i :8888 | awk 'NR==1 || $9 ~ /PID/' | grep -v "^$" | awk '{print $1}' | xargs -r kill -9
+#+END_SRC
+
+*** current window manager
+
+#+name: win_manager
+#+BEGIN_SRC bash :exports both :results output replace
+printf 'Desktop: %s\nSession: %s\n' "$XDG_CURRENT_DESKTOP" "$GDMSESSION"
+#+END_SRC
+
+#+RESULTS: win_manager
+: Desktop: ubuntu:GNOME
+: Session: ubuntu
+
+*** UI
+
+Add gnome extensions (tiling for example).
+[[https://extensions.gnome.org/#sort=relevance][web browser addon]] can install extensions using the browser
+
+
+#+begin_src bash
+sudo apt install -y gnome-shell-extensions gnome-tweaks
+#+end_src
+
+*** external drivers
+
+#+name: remove old installations
+#+begin_src bash
+sudo apt --simulate remove --purge 'nvidia*' 'libnvidia*'
+sudo apt remove --purge 'nvidia*' 'libnvidia*'
+sudo apt autoremove --dry-run --purge
+sudo apt autoremove --purge
+sudo apt-get remove --purge '^nvidia-.*'
+#+end_src
+
+#+name: find driver type 
+#+begin_src bash
+nvidia-detector
+cat /proc/driver/nvidia/version
+#sudo ubuntu-drivers install nvidia-driver-580
+#sudo ubuntu-drivers install --gpgpu nvidia:580-server
+sudo add-apt-repository restricted multiverse
+sudo add-apt-repository ppa:graphics-drivers/ppa
+#+end_src
+
+#+RESULTS: find driver type
+: nvidia-driver-580
+
+#+name: external drivers
+#+begin_src bash
+sudo apt update
+sudo apt install ubuntu-drivers-common
+ubuntu-drivers devices
+sudo ubuntu-drivers install
+sudo reboot
+#+end_src
+
+
+*** memory
+
+#+name: clean gpu installation
+#+begin_src bash
+
+
+#+end_src
+
+*** GPU
+
+Clean former installations
+
+#+name: external drivers
+#+begin_src bash
+cat /proc/driver/nvidia/version
+nvidia-smi
+sudo apt purge nvidia* libnvidia*
+sudo apt install nvidia-driver-580
+#+end_src
+
+
+
+#+name: clean gpu installation
+#+begin_src bash
+#dpkg -l | grep nvidia
+sudo apt remove --purge nvidia-*
+apt list --installed | grep nvidia
+#+end_src
+
+Get GPU type
+
+#+name: GPU type 
+#+begin_src bash
+lspci | grep -i nvidia
+#gcc --version
+#+end_src
+
+#+RESULTS: GPU type
+: 03:00.0 3D controller: NVIDIA Corporation GM108M [GeForce 940MX] (rev a2)
+
+#+name: computer_spec
+#+begin_src bash
+hostnamectl
+#+end_src
+
+#+RESULTS: computer_spec
+| Static        | hostname: | manestro                         |            |           |    |
+| Icon          | name:     | computer-laptop                  |            |           |    |
+| Chassis:      | laptop    | 💻                               |            |           |    |
+| Machine       | ID:       | 3583b88c842141a28a266189d34b2973 |            |           |    |
+| Boot          | ID:       | 8924f510230e4ba4beba847bc790b592 |            |           |    |
+| Operating     | System:   | Ubuntu                           |    24.04.4 | LTS       |    |
+| Kernel:       | Linux     | 7.0.0-28-generic                 |            |           |    |
+| Architecture: | x86-64    |                                  |            |           |    |
+| Hardware      | Vendor:   | Lenovo                           |            |           |    |
+| Hardware      | Model:    | Lenovo                           |    ideapad | 510-15IKB |    |
+| Firmware      | Version:  | 3JCN30WW                         |            |           |    |
+| Firmware      | Date:     | Mon                              | 2018-04-09 |           |    |
+| Firmware      | Age:      | 8y                               |     3month | 3w        | 6d |
+
+
+#+name: computer_spec
+#+begin_src bash
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt-get update
+sudo apt-get -y install cuda-toolkit-13-0
+#+end_src 
+
+#+name: nvidia running
+#+begin_src bash
+lsmod | grep nvidia
+#+end_src
+
+#+RESULTS: nvidia running
+| nvidia_uvm     |   2080768 |  2 |                                      |
+| nvidia_drm     |    139264 |  2 |                                      |
+| nvidia_modeset |   1683456 |  2 | nvidia_drm                           |
+| nvidia         | 105349120 | 33 | nvidia_uvm,nvidia_drm,nvidia_modeset |
+| drm_ttm_helper |     20480 |  1 | nvidia_drm                           |
+| video          |     77824 |  3 | ideapad_laptop,i915,nvidia_modeset   |
+
+
+#+name: computer_spec
+#+begin_src bash
+#nvidia-firmware-580
+sudo apt-get install -y nvidia-open
+sudo apt-get install -y cuda-drivers
+#+end_src 
+
+** docker install
+
+#+name: docker_install
+#+begin_src bash
+sudo apt update
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl status docker
+sudo systemctl start docker
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+#+end_src 
+
+
+#+name: docker_nvidia
+#+begin_src bash
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends  ca-certificates  curl  gnupg2
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+  && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+    sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+sudo apt-get update
+#+end_src 
+
+#+RESULTS: docker_nvidia
+
+*** process on port
+
+#+name: processes_on_port
+#+BEGIN_SRC bash :exports both :results output replace
+ss -tlnp | grep 9876
+#+END_SRC
+
+#+RESULTS: processes_on_port
+: LISTEN 0      5          127.0.0.1:9876       0.0.0.0:*    users:(("blender",pid=20199,fd=43))
+
+
+#+name: processes
+#+BEGIN_SRC bash :exports both :results output replace
+# View running processes
+ps   aux | head -10
+#ps -ef --sort=-%cpu
+#+BEGIN_SRC shell
+
+#+END_SRC
+
+#+RESULTS: processes
+#+begin_example
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.0  28020 12880 ?        Ss   Jun15   4:08 /usr/lib/systemd/systemd --switched-root --system --deserialize=52 splash
+root           2  0.0  0.0      0     0 ?        S    Jun15   0:01 [kthreadd]
+root           3  0.0  0.0      0     0 ?        S    Jun15   0:00 [pool_workqueue_release]
+root           4  0.0  0.0      0     0 ?        I<   Jun15   0:00 [kworker/R-rcu_gp]
+root           5  0.0  0.0      0     0 ?        I<   Jun15   0:00 [kworker/R-sync_wq]
+root           6  0.0  0.0      0     0 ?        I<   Jun15   0:00 [kworker/R-kvfree_rcu_reclaim]
+root           7  0.0  0.0      0     0 ?        I<   Jun15   0:00 [kworker/R-slub_flushwq]
+root           8  0.0  0.0      0     0 ?        I<   Jun15   0:00 [kworker/R-netns]
+root          10  0.0  0.0      0     0 ?        I<   Jun15   0:00 [kworker/0:0H-kblockd]
+#+end_example
+
+
+#+name: kill processes
+#+BEGIN_SRC bash :exports both :results output replace
+kill -9 <PID>
+pkill -f <process-name>
+sudo systemctl stop <service>
+#+END_SRC
+
+=== User Management ===
+#+BEGIN_SRC bash
+# Add user
+sudo adduser <username>
+# Remove user
+sudo deluser <username>
+sudo userdel -r <username>
+# View users
+sudo cat /etc/passwd
+#+END_SRC
+
+=== File System & Disk ===
+#+BEGIN_SRC shell
+# Check disk space
+df -h
+
+# Check filesystem errors
+sudo fsck -f /dev/<device>
+
+# View inode usage
+sudo du -sh /* | sort -hr
+#+END_SRC
+
+=== Network Diagnostics ===
+#+BEGIN_SRC shell
+# Test connectivity
+ping -c 4 <hostname>
+traceroute <hostname>
+dig <hostname>
+
+# Check open ports
+sudo netstat -tulpn
+sudo ss -tulpn
+#+END_SRC
+
+=== System Logs ===
+#+BEGIN_SRC shell
+# View logs
+sudo journalctl -xe
+sudo tail -f /var/log/syslog
+sudo grep <error> /var/log/syslog | tail -100
+#+END_SRC
+
+=== Package Management ===
+#+BEGIN_SRC shell
+# Update packages
+sudo apt update && sudo apt upgrade -y
+
+# Search packages
+apt search <keyword>
+
+# Remove packages with dependencies
+sudo apt remove <package>
+#+END_SRC
+
+
+#+begin_src org
+#+TITLE: Useful Networking Commands for Ubuntu
+#+AUTHOR: Admin
+#+OPTIONS: toc:t:2
+
+
+**** View running services
+#+BEGIN_SRC bash
+systemctl list-units --type=service --state=running
+#+END_SRC
+
+**** Start/Stop/Restart
+#+BEGIN_SRC bash
+sudo systemctl start ssh
+sudo systemctl stop docker
+sudo systemctl restart network
+#+END_SRC
+
+
+* networking
+
+*** network interfaces
+#+BEGIN_SRC bash
+ip addr show
+ip link show
+#+END_SRC
+
+**** Check IP configuration
+#+BEGIN_SRC bash
+ip -4 addr show
+ip -6 addr show
+#+END_SRC
+
+**** Check DNS resolution
+#+BEGIN_SRC bash
+nslookup intertino.it
+dig intertino.it
+#+END_SRC
+
+**** Test connectivity
+#+BEGIN_SRC bash
+ping -c 4 intertino.it
+traceroute intertino.it
+#+END_SRC
+
+**** Check listening ports
+#+BEGIN_SRC bash
+ss -tlnp
+netstat -tlnp
+#+END_SRC
+
+**** View routing table
+#+BEGIN_SRC bash
+ip route show
+route -n
+#+END_SRC
+
+** firewall
+
+**** List rules
+#+BEGIN_SRC bash
+ufw status verbose
+#+END_SRC
+
+**** Allow/Deny rules
+#+BEGIN_SRC bash
+sudo ufw allow 80/tcp
+sudo ufw deny 22/tcp
+#+END_SRC
+
+**** Reset firewall
+#+BEGIN_SRC bash
+sudo ufw reset
+#+END_SRC
+
+
+** port scanning (nmap)
+
+**** Scan localhost
+#+BEGIN_SRC bash
+nmap -sT localhost
+#+END_SRC
+
+#+RESULTS:
+| Starting | Nmap      | 7.98           | (         | https://nmap.org | )           | at             | 2026-08-11 |   11:12 | 200 |      |         |
+| Nmap     | scan      | report         | for       | localhost        | (127.0.0.1) |                |            |         |     |      |         |
+| Host     | is        | up             | (0.00016s | latency).        |             |                |            |         |     |      |         |
+| Other    | addresses | for            | localhost | (not             | scanned):   | ::1            |            |         |     |      |         |
+| Not      | shown:    | 994            | closed    | tcp              | ports       | (conn-refused) |            |         |     |      |         |
+| PORT     | STATE     | SERVICE        |           |                  |             |                |            |         |     |      |         |
+| 25/tcp   | open      | smtp           |           |                  |             |                |            |         |     |      |         |
+| 80/tcp   | open      | http           |           |                  |             |                |            |         |     |      |         |
+| 443/tcp  | open      | https          |           |                  |             |                |            |         |     |      |         |
+| 631/tcp  | open      | ipp            |           |                  |             |                |            |         |     |      |         |
+| 2222/tcp | open      | EtherNetIP-1   |           |                  |             |                |            |         |     |      |         |
+| 8888/tcp | open      | sun-answerbook |           |                  |             |                |            |         |     |      |         |
+|          |           |                |           |                  |             |                |            |         |     |      |         |
+| Nmap     | done:     | 1              | IP        | address          | (1          | host           |        up) | scanned |  in | 0.06 | seconds |
+
+*** scan host
+
+#+name: install net utils
+#+BEGIN_SRC bash
+sudo apt install net-tools nmap
+sudo apt-get install sane sane-utils
+#+END_SRC
+
+#+name: ifconfig
+#+BEGIN_SRC bash :exports both :results output replace
+ifconfig
+#+END_SRC
+
+#+RESULTS: ifconfig
+#+begin_example
+br-ab370fd94056: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 172.18.0.1  netmask 255.255.0.0  broadcast 172.18.255.255
+        inet6 fe80::887f:43ff:fe59:21cc  prefixlen 64  scopeid 0x20<link>
+        ether 8a:7f:43:59:21:cc  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+docker0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+        inet6 fe80::908d:55ff:fe4d:ac07  prefixlen 64  scopeid 0x20<link>
+        ether 92:8d:55:4d:ac:07  txqueuelen 0  (Ethernet)
+        RX packets 1193889  bytes 72801416 (72.8 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 1413832  bytes 5082435677 (5.0 GB)
+        TX errors 0  dropped 56 overruns 0  carrier 0  collisions 0
+
+enp1s0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether c8:5b:76:52:8b:5b  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 211763  bytes 52940874 (52.9 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 211763  bytes 52940874 (52.9 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+veth1e6183e: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet6 fe80::bcec:18ff:fe13:68db  prefixlen 64  scopeid 0x20<link>
+        ether be:ec:18:13:68:db  txqueuelen 0  (Ethernet)
+        RX packets 3  bytes 126 (126.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 2515  bytes 504353 (504.3 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+veth69e22d2: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet6 fe80::4474:51ff:feef:4fe6  prefixlen 64  scopeid 0x20<link>
+        ether 9e:fd:d2:2a:d5:98  txqueuelen 0  (Ethernet)
+        RX packets 1162372  bytes 87339257 (87.3 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 1369366  bytes 4522875912 (4.5 GB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+vethaa847c2: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet6 fe80::e871:62ff:fe7c:8741  prefixlen 64  scopeid 0x20<link>
+        ether ea:71:62:7c:87:41  txqueuelen 0  (Ethernet)
+        RX packets 1247  bytes 28529933 (28.5 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 3552  bytes 692790 (692.7 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+wlp2s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.68.109  netmask 255.255.252.0  broadcast 192.168.71.255
+        inet6 fe80::da25:ec0d:871:bd2e  prefixlen 64  scopeid 0x20<link>
+        ether cc:b0:da:aa:34:05  txqueuelen 1000  (Ethernet)
+        RX packets 30758975  bytes 43727785545 (43.7 GB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 3388370  bytes 324262462 (324.2 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+#+end_example
+
+#+name: scan devices connected to wifi
+#+BEGIN_SRC bash :exports both :results output replace
+nmap -sn 192.168.68.0/24
+#nmap -sT -p- 192.168.71.255
+#nmap -v -A scanme.nmap.org
+#nmap -v -sn 192.168.0.0/16 10.0.0.0/8
+#nmap -v -iR 10000 -Pn -p 80
+#+END_SRC
+
+#+RESULTS: scan devices connected to wifi
+#+begin_example
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-08-11 12:41 +0200
+Nmap scan report for 192.168.68.1
+Host is up (0.0092s latency).
+Nmap scan report for 192.168.68.102
+Host is up (0.044s latency).
+Nmap scan report for 192.168.68.104
+Host is up (0.092s latency).
+Nmap scan report for 192.168.68.106
+Host is up (0.076s latency).
+Nmap scan report for 192.168.68.109
+Host is up (0.00086s latency).
+Nmap scan report for 192.168.68.247
+Host is up (0.015s latency).
+Nmap scan report for 192.168.68.248
+Host is up (0.051s latency).
+Nmap scan report for 192.168.68.249
+Host is up (0.051s latency).
+Nmap scan report for 192.168.68.250
+Host is up (0.0042s latency).
+Nmap done: 256 IP addresses (9 hosts up) scanned in 15.28 seconds
+#+end_example
+#+RESULTS:
+| Starting | Nmap  | 7.98   | (         | https://nmap.org | )  | at    | 2026-08-11 |   12:40 | 200 |       |         |
+| Nmap     | scan  | report | for       | 192.168.68.1     |    |       |            |         |     |       |         |
+| Host     | is    | up     | (0.011s   | latency).        |    |       |            |         |     |       |         |
+| Nmap     | scan  | report | for       | 192.168.68.102   |    |       |            |         |     |       |         |
+| Host     | is    | up     | (0.044s   | latency).        |    |       |            |         |     |       |         |
+| Nmap     | scan  | report | for       | 192.168.68.109   |    |       |            |         |     |       |         |
+| Host     | is    | up     | (0.00030s | latency).        |    |       |            |         |     |       |         |
+| Nmap     | scan  | report | for       | 192.168.68.247   |    |       |            |         |     |       |         |
+| Host     | is    | up     | (0.013s   | latency).        |    |       |            |         |     |       |         |
+| Nmap     | scan  | report | for       | 192.168.68.248   |    |       |            |         |     |       |         |
+| Host     | is    | up     | (0.015s   | latency).        |    |       |            |         |     |       |         |
+| Nmap     | scan  | report | for       | 192.168.68.249   |    |       |            |         |     |       |         |
+| Host     | is    | up     | (0.032s   | latency).        |    |       |            |         |     |       |         |
+| Nmap     | scan  | report | for       | 192.168.68.250   |    |       |            |         |     |       |         |
+| Host     | is    | up     | (0.042s   | latency).        |    |       |            |         |     |       |         |
+| Nmap     | done: | 256    | IP        | addresses        | (7 | hosts |        up) | scanned |  in | 11.91 | seconds |
+
+**** Check open ports
+#+BEGIN_SRC bash
+lsof -i :80
+ss -tlnp | grep :80
+#+END_SRC
+
+* Interface Statistics
+**** Show interface traffic
+#+BEGIN_SRC bash
+ip -s link show
+#+END_SRC
+
+**** Monitor real-time traffic
+#+BEGIN_SRC bash
+watch -n 1 ip -s link
+#+END_SRC
+#+end_src
+
+* docker 
+
+Here are useful Docker commands for working with =.org= (Org-mode) files:
+
+*Build & Dev:*
+- =docker build -f Dockerfile.dockerfile -t myorg .= - Build from Dockerfile
+- =docker run -it --rm -v $PWD:/workspace myorg org mode :start= - Launch org-mode
+- =docker exec -it myorg bash= - Enter container
+- =docker build -f Dockerfile.dockerfile --build-arg DOCKER_FLAGS="-v $PWD:/workspace" -t myorg .= - Build with volume flags
+
+*Run & Manage:*
+- =docker run -it --rm -v $PWD:/workspace -w /workspace myorg org mode --no-user-info= - Run org without user info
+- =docker run --rm -v $PWD:/workspace myorg org mode :source_block_quote: "hello"= - Process org block
+- =docker run --rm myorg org mode :clear_properties= - Clear properties
+- =docker run --rm myorg org mode :close_all= - Close all buffers
+
+*Network & Logs:*
+- =docker run --rm -v $PWD:/workspace myorg org mode :start_export "latex"= - Export to LaTeX
+- =docker logs myorg= - View logs
+- =docker ps -a= - List all containers
+
+*Useful for Org workflows:*
+- =docker cp myorg:/workspace/src/*.org $PWD/= - Copy files out
+- =docker cp $PWD/*.org myorg:/workspace/src/= - Copy files in
+- =docker commit myorg myorg:latest= - Save image
+- =docker stop myorg && docker rm myorg= - Stop and remove
+
+
+#https://blog.alexellis.io/docker-stacks-attachable-networks/
+SWARM_NAME=malestro
+SWARM_NODE=malestro
+NET_NAME=webserver-net
+SERVICE_NAME=db
+SUBNET="10.11.0.0/16"
+GATEWAY="10.11.0.1"
+docker swarm init
+
+#docker network create --scope=swarm $NET_NAME
+#docker network create --scope=swarm --driver overlay --attachable $NET_NAME
+docker network create --driver=overlay --attachable $NET_NAME
+#docker network create --scope=swarm --driver overlay --ingress --opt com.docker.network.driver.mtu=1200 $NET_NAME
+docker network create --driver overlay --ingress --subnet=$SUBNET --gateway=$GATEWAY --opt com.docker.network.driver.mtu=1200 traefik-ingress
+
+docker network create --subnet $SUBNET --opt com.docker.network.bridge.name=docker_gwbridge --opt com.docker.network.bridge.enable_icc=false --opt com.docker.network.bridge.enable_ip_masquerade=true docker_gwbridge
+
+#docker network create --subnet=172.20.0.1/16 -o com.docker.network.bridge.enable_icc=false -o com.docker.network.bridge.name=docker_gwbridge docker_gwbridge
+
+#docker service update --network-rm traefik-net myservice
+#docker service create --publish 80:80 --network=$NET_NAME --name nginx nginx
+docker service update --network-add $NET_NAME db
+
+docker node update --availability active $SWARM_NODE
+docker swarm init

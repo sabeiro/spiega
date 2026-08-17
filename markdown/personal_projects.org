@@ -1,0 +1,62 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: personal_projects
+:END:
+# Local IspellDict: en
+#+title: personal projects
+#+STARTUP: showeverything
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-05-22>
+#+AUTHOR: sabeiro
+#+KEYWORDS: emacs-reveal, howto, HTML, reveal.js, org, Org mode, presentation, slideshow, OER, open educational resource, licensing
+#+DESCRIPTION: digital twins on blender with FEM
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_twin/docs/
+#+BEGIN: clocktable :scope file :block thisweek :maxlevel 2 :step day :stepskip0 t
+#+END:
+#+INCLUDE: "./template/reveal_config.org"
+# #+REVEAL_TITLE_SLIDE: ./static_html/title-slide.html 
+
+
+* personal projects
+
+This is an overview of mine [[id:personal_experience][personal experience]] with the links from the blog [[id:spiega_overview][spiega overview]].
+
+  
+** personal reseach
+
+- [[./agent_naming.md][agent_naming.md]] :: [[id:agent_naming][agent naming]]
+- [[./creative_coding.md][creative_coding.md]] :: [[id:creative_coding][creative coding]]
+- [[./text_gen.md][text_gen.md]] :: [[id:text_generation][text generation]]
+- [[./video_production.md][video_production.md]] :: [[id:video_production][video production]]
+- [[./phonosymbolic.org][phonoxymbolic]] :: [[id:phonosymbolic_language][phonosymbolic language]]
+
+
+** audio applications 
+
+- [[./audio_mixer.md][audio_mixer.md]] :: [[id:audio_mixer_matrix][audio mixer matrix]]
+- [[./coiler.md][coiler.md]] :: [[id:coiler][coiler]]
+- [[./dsp.md][dsp.md]] :: [[id:dsp_programming][dsp_programming]]
+- [[./flute.md][flute.md]] :: [[id:flute_calculatorl][flute calculator]]
+- [[./mc_amp.md][mc_amp.md]] :: [[id:mc_amp][mechanical amplifier]]
+- [[./midi_hub.md][midi_hub.md]] :: [[id:midi_hub][midi hub]]
+- [[./music_composition.md][music_composition.md]] :: [[id:music_composition][music composition]]
+- [[./music_entropy.md][music_entropy.md]] :: [[id:entropy_in_music ][entropy in music]]
+- [[./music_evaluation.md][music_evaluation.md]] :: [[id:music_evaluation][music evaluation]]
+- [[./no_key_board.md][no_key_board.md]] :: [[id:no-key-board][no-key-board]]
+- [[./piezo_buffer.md][piezo_buffer.md]] :: [[id:piezo_buffer][piezo buffer]]
+- [[./synth.md][synth.md]] :: [[id:synth][synth]]
+
+  
+** community
+
+- [[./lernia.md][lernia.md]] :: [[id:lernia_library][lernia ML library]]
+- [[./lernia_feature.md][lernia_feature.md]] :: [[id:lernia_feature][lernia feature]]
+- [[./overview.md][overview.md]] :: [[id:lernia_feature][lernia features]]
+
+

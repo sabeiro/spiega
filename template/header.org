@@ -1,0 +1,36 @@
+#+AUTHOR: Giovanni Marelli
+#+LANGUAGE: en
+#+LICENSE: CC-BY-SA-NC 3.0 https://creativecommons.org/licenses/by/3.0/legalcode.en
+#+KEYWORDS: Data science, language models, LLMs
+#+HTML_LINK_HOME: ../index.html
+#+HTML_LINK_UP: ../index.html
+#+html_doctype: xhtml-strict
+#+html_container: div
+#+html_content_class: content
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../css/default.min.css" />
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="../css/modest.css" />
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="../css/print.css" />
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="../css/spiega.css" />
+#+INFOJS_OPT: view:info toc:nil path:../js/highlight.min.js
+#+HTML_MATHJAX: align: left indent: 5em tagside: left
+#+HTML_MATHJAX: path:'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'
+#+HTML_HEAD_EXTRA: <script type="text/x-mathjax-config"> MathJax.Hub.Config({tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } // ,tex: {physics: {italicdiff: false,arrowdel: false }},tex: {packages: {'[+]': ['physics']}} });</script>
+#+OPTIONS: html-style:bold
+#+OPTIONS: html-self-link-headlines:t
+#+options: d:t todo:t broken-links:mark toc:nil \\=':nil body-only:t e:t f:t title:t |:t 
+#+OPTIONS: skip-link-check:t
+#+OPTIONS: broken-links:t
+#+options: html-link-use-abs-url:nil html-postamble:auto
+#+options: html-preamble:t html-scripts:nil html-style:t
+#+options: html5-fancy:nil tex:t
+#+html_equation_reference_format: \eqref{%s}
+#+infojs_opt:
+#+creator: <a href="https://intertino.it">intertino</a> 30.2 (<a href="https://intertino.it">intertino</a> mode 9.7.11)
+#+EXPORT_FILE_NAME: tmp.org
+#+ODT_STYLES_FILE: "template/odt_template.ott"
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: { @COMPLETED(c) @INPROGRESS(p) } LEGACY(l) REVIEW(r) GENERATED(g)
+#+STARTUP: latexpreview
+
+
+

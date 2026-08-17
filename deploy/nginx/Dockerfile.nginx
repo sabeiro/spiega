@@ -1,0 +1,14 @@
+# Nginx with WebDAV extended methods (PROPFIND, OPTIONS, LOCK, UNLOCK) for GNOME/WebDAV clients
+FROM debian:bookworm-slim
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends nginx libnginx-mod-http-dav-ext curl \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN rm -f /etc/nginx/sites-enabled/default
+RUN sed -i '/sites-enabled/d' /etc/nginx/nginx.conf
+RUN mkdir -p /var/tmp/nginx/webdav && chown www-data:www-data /var/tmp/nginx /var/tmp/nginx/webdav
+
+EXPOSE 80 443
+STOPSIGNAL SIGTERM
+CMD ["nginx", "-g", "daemon off;"]

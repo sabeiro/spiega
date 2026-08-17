@@ -1,0 +1,48 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: blender_twin_plan
+:END:
+#+title: blender twin plan
+#+STARTUP: showall
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: { @COMPLETED(c) @INPROGRESS(p) } LEGACY(l) REVIEW(r) GENERATED(g) SLIDE(s) NOSLIDE(n)
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_cv/mcp_server/
+#+BEGIN: clocktable :scope file :block thisweek :maxlevel 2 :step day :stepskip0 t
+#+END:
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+
+
+* FEM with blender
+:PROPERTIES:
+:Effort:   4d
+:ID:       plan-FEM
+:ROAM_ALIASES: blender FEM
+:END:
+:LOGBOOK:
+CLOCK: [2026-06-18 Thu 11:46]--[2026-06-18 Thu 12:14] =>  0:28
+:END:
+FEM with blender
+
+** Approach
+1. Check the dolphin/blender add-on functionalities
+2. Is the object export complete to run FEM
+3. How do we validate geometry?
+4. Do we need an external program for volumes?
+5. Can we export all the properties for blender?
+
+
+
+* blender MCP integration
+:PROPERTIES:
+:Effort:   4d
+:ID: blender_twin_plan-MCP
+:ROAM_ALIASES: blender_twin_plan_blender
+:END:
+
+To work on the 3d part instead of asking an LLM to write python script we directly connect to a running blender instance and interact with an LLM chat.
+Since coding agents are inside containers and they cannot see the host we built a middleware to interact with the few tools we want the system to have. 

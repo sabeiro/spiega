@@ -1,33 +1,40 @@
+---
+title: causality
+author: Giovanni Marelli
+date: 2019-07-02
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: causality
+category: #science
+roam_refs: causality
+roam_aliases: ["causality"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
+## causality
+
 [blog](https://www.researchgate.net/post/Any_recommended_techniques_for_testing_causal_relations)
-##  Jochen Wilhelm
 
-IMPORTANT: NO regression technique, NO statistical analysis at all can test a causal relationship. Causality is no property contained in the data. The ONLY way to adress causality is to perform a controlled experiment, where you know, a priory, that only the arbitrarily changed condition (and nothing else) can be responsible for a possible change in the response. If you have only observational data (what is often the case in econometrics), you can only speculate or hypothesize about causal relations. A correlation of the respective variables would then be "in accordance" with such a speculation, but it will never be a proof, not even a strong support. And the lack of a correlation would *not* indicate that there is no causal relation.
 
-## Mohammad Tahir
+NO regression technique, NO statistical analysis at all can test a causal relationship. Causality is no property contained in the data. The ONLY way to adress causality is to perform a controlled experiment, where you know, a priory, that only the arbitrarily changed condition (and nothing else) can be responsible for a possible change in the response. If you have only observational data (what is often the case in econometrics), you can only speculate or hypothesize about causal relations. A correlation of the respective variables would then be "in accordance" with such a speculation, but it will never be a proof, not even a strong support. And the lack of a correlation would *not* indicate that there is no causal relation.
+
 Path coefficient analysis of the dependent and independent variables partitions the correlations into the so called direct and indirect effects. It enables us to argue about the causality of independent variables with reference to dependent variables. I would not specifically refer to the data in question. However, there should be some hypothesized relationship existing between the independent and dependent variables.
 Other alternative is using the technique of Simultaneous Equation Modeling (SEM).
 Hope it helps.
 
-## Fabrice Clerot
-1- complete agreement with Jochen above : causality is not the data unless such data come out of a controlled experiment !
+1- causality is not the data unless such data come out of a controlled experiment !
 2- now, if you want to go on with something which is somehow a "statistical proxy" for causality, you can try to go along with "Granger causality" (although the name itself seems to me misleading as it is indeed a sophisticated correlation analysis which tries to capture some properties commonly associated with causality) ... but beware of the many technicals traps !
-see also the discussion below :
-https://www.researchgate.net/post/Cause-effect_dilemma2
+see also the discussion below [cause effect dilemma](https://www.researchgate.net/post/Cause-effect_dilemma2)
 
-## Patrick S Malone
-Malone Quantitative
-I essentially agree with Jochen, but with some caveats. First, even an experiment requires certain assumptions to make a strong inference of causality, which can be especially challenging in a field and/or longitudinal study.
+First, even an experiment requires certain assumptions to make a strong inference of causality, which can be especially challenging in a field and/or longitudinal study.
 Second, there *are* techniques for plausible causal inference without those conditions, or in an observational study, but they require rather strict assumptions. In econometrics, the most common to my knowledge is an instrumental variable approach, which may get you started on finding didactic papers and chapters. Again, the assumptions required are fairly technical and not to be taken lightly, especially with observational data. Consulting with an expert on causal inference is a good idea.
 I am going to respectfully disagree with Mohammad. In recent years, the traditional path modeling approach to partitioning direct and indirect effects has increasingly come under fire as a flawed method for inferring causality except in limited cases. Pearl, Imai, and Mackinnon, among others, have written extensively on this.
 
-## Jochen Wilhelm
-Justus-Liebig-Universität Gießen
-Patrick, thank you for your additions.
-You are right that longitudinal studies, even with experimental intervention, can be problematic to infere causal relationships. Here, to my (limited) knowledge, an appropriate control group is obligatory, since anything can change over time, and often some unconsidered variable changing over time is the common reason for the variables under investigation changing, what automatically results in an apparent (but spurious) correlation.
+Longitudinal studies, even with experimental intervention, can be problematic to infere causal relationships. An appropriate control group is obligatory, since anything can change over time, and often some unconsidered variable changing over time is the common reason for the variables under investigation changing, what automatically results in an apparent (but spurious) correlation.
 Am am not an expert in causal inference, but I suppose that the "rather strict [and] fairly technical [...] assumptions" eventually just assure that the data can be used as if it was from a well-controlled experiment. Under the bottom line, it seems to me again that data alone can be no means provide any hints for (or against) causality. Causality remains a concept outside of the data that has to be tackled with logical arguments (and design of experiments) rather than with data. This might possibly me a little too strong position, though, but that's so far my understanding.
 
-
-## Paul Louangrath
 There seems to be confusions about whether to use linear regression or not. The decision to use regression is not a matter of personal choice or preference. Whether regression is applicable depends on the nature of the data. A model by definition is a mathematical statement that could best describe the behavior of the data set, i.e. a model must be best fitted to the data distribution.
 LINEARITY
 Test whether the data is normally distributed. If so, then linear regression is applicable. If linear regression is used, test of significance may be applied by using:
@@ -60,9 +67,6 @@ To be acceptable, the model must be reliable. To be reliable, the model in the p
 -Kuder-Richardson formula-20
 Failing applicable reliability test, the proposed model is nothing more than an algebraic formula. It would lack scientific value.
 
-## Jochen Wilhelm
-
-Paul, I don't agree with several points you made. Either these points are wrong or I am missing a deeper understanding (and I am wrong):
 Linearity of the relationship has nothing to do with a normal distribution of the data. Further, I suspect that trhere might be some confusion of "linear regression" and "linear models".
 (1) Not the data needs to be normal distributed but the errors/residuals of the applied model. The model may well model some non-linear relationship between the response and the predictors.
 (2) The statement that "Normal distribution is directly tied to linear regression" is wrong. It would be more correct the other way around, like "linear regression is directly tied to Normal distribution".
@@ -77,10 +81,6 @@ Lik = P(e1) * P(e2) * ... * P(en)
 Lik = P(y1-(b0+b1*x1)) * P(y1-(b0+b1*x2)) * ... * P(y1-(b0+b1*xn))
 The probabilities are taken from the normal distribution. To detemine the maximum likelihood, some algebra shows that the variance is irrelevant. For confidence intervals, the likelihood over all parameters plus the variance estimate has to be considered and the profile likelihood can be taken to define the limits for a given level of confidence. The profile likelihood hat the functional form of a t-distribution. For convenience, Fisher (and/or Gossett) provided a standardized form of this distribution, so that proabilities could be derived for an easy-to-calculate pivot of the data. This pivot contains a normalization factor what is known as the standard error.
 
-## Paul Louangrath
-
-Jochen,
-Thank you for putting some thoughts into the issue. Several points follow to your comments:
 (1) DATA TEST
 It is not suggested that the data "must be" normally distributed. However, the purpose of testing if the data is normally distributed is to confirm whether it is normally distributed or something else.
 (2) LINEAR REGRESSION & NORMAL DISTRIBUTION
@@ -95,9 +95,6 @@ In pharmaceutical testing, it is indispensable especially in testing new drugs. 
 Here lies of disagreement. I was looking in the perspective of linear regression (i.e. biostatistics).
 I appreciate and thank you for your additional points on NB1 and NB2.
 
-## Jochen Wilhelm
-
-Thank you for your feedback, Paul.
 I find your point (5) interesting. You use pharmaceutical testing as an example here. To my understanding, clinical trials performed to approve drugs for the market is *not* science. These studies are neither planned nor conducte to *learn* something but rather and explicitly to provida an empirical basis for a decision (approve or not). This is an important and useful tool - don't get me wrong here! - but actually it not science. The testing procedure is required for a quality control on the level of the society, for the population of all drugs that are on the market.
 But there is still another point: "that is necessary to test and retest by the original lab and independent labs.". No doubt that this is right, but: if the test is believed to keep the desired error-rates, why should a re-testing be necessary or even important?
 And, finally, "As a general practice in biology, biochemistry, pharmacology and epidemiology or even in social science, such as marketing research, hypothesis test and confidence interval procedures are still employed as conventional tools." - I know well. But the mere frequency of useage is no indication of its meaningfulness. If you would remove all papers showing hypothesis tests where the authors are not able to explain correctly what the meaning of a p-value or a "significant" result is, there would'nt be many papers left.
@@ -114,5 +111,4 @@ https://machinelearningmastery.com/keras-functional-api-deep-learning/
 https://www.pyimagesearch.com/2018/04/16/keras-and-convolutional-neural-networks-cnns/
 https://github.com/memo/webcam-pix2pix-tensorflow
 https://towardsdatascience.com/bayesian-linear-regression-in-python-using-machine-learning-to-predict-student-grades-part-2-b72059a8ac7e
-https://medium.com/@williamkoehrsen
 

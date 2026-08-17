@@ -1,0 +1,42 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: corporate_organization
+:END:
+#+TITLE: corporate organization
+#+SUBTITLE: managers, politics, career progression
+#+DATE: 14-05-2026
+#+KEYWORDS: Data science, language models, LLMs
+#+description:
+# #+INCLUDE: ~/lav/src/spiega/template/header.org
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+OPTIONS: body-only:t
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: buisness(b) dev(t) science(s) management(m) data_science(d) admin(a) consultancy(c) art(r)
+#+STARTUP: showall
+
+* corporate organization
+
+Corporate life is tricky, there are many aspects to consider on top of delivering. Conflicts with colleagues or managers can vanish years of successful work and envy can kill your career.
+Some situations can be played wisely, other are lost. Sentiment inside the company is difficult, some companies value discussions and teams process successes and failures, others are used to rumors.
+In some companies you know your allies and the people you trust, in other you question most of your colleagues.
+In some companies you understand what your colleague aim at, in other you are much more uncertain.
+
+*** colleague types
+
+I had many colleagues in my career and there are a lot of different relationship types:
+
+- buddies :: people you value with whom you get into a really close relationship. You are pretty aligned regarding understanding company values and strategies. You share a similar vision and sometimes you get into a close friendship. Those are the people you trust and you are not afraid to ask for advice or recommendations 
+- professionals :: people with a high degree of professionalism, they work with a similar ethic and you trust the quality of what they do
+- envy :: some colleagues want the same piece of cake and you know there will be conflicts
+  - win-win :: in some cases there are situations where you can divert their interests in something different
+  - hide :: they hide some information so you cannot compete
+  - sabotage :: they on purpose put you in the situation where you will make mistakes
+- managers :: they sit between the company strategy and the executors, they need to translate company needs into productive workforce
+  - trust :: they hired you because they know they can trust you, they need few meetings to update you with the latest organization changes and they check if everything works fine
+  - level bar :: managers can set the bar of their team, if a manager relies too much on proper capabilities the team members can't have the exposure or the maturity they need. If your manager is less experienced than you but keeps telling how you should do your job the team capability is capped and the team cannot deliver its full potential
+  - organize :: some managers are mainly focused on checking that everything is on track and they work to resolve conflicts or emergencies but they don't intervene with specific aspects of your delivery

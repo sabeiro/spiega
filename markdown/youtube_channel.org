@@ -1,0 +1,64 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: youtube_channel
+:END:
+#+TITLE: youtube channel
+#+SUBTITLE: Working with the algorithm
+#+DATE: 14-05-2026
+#+KEYWORDS: Data science, language models, LLMs
+#+description:
+#+INCLUDE: "../template/header.org" 
+#+OPTIONS: body-only:t
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: { @COMPLETED(c) @INPROGRESS(p) } LEGACY(l) REVIEW(r) GENERATED(g)
+#+STARTUP: latexpreview
+
+* youtube channel
+
+Opening a youtube channel means to deal a lot with its algorithm.
+After many years in data science and data analytics, working in advertising and media I still find the platform pretty unique in its strategy and interest.
+
+I watched dozens of videos of vloggers thinking to understand the algorithm but their hints were too specific to their audience, creators like me who don't understand how to gain audience and they would believe in anyone pretending to help.
+
+** Metrics
+
+- CTR :: click through: should be >4%
+- views :: how many users made it to sec 30+: should be >50%
+- view thru :: how long are users watching: should be >20%
+
+** what I learned
+
+- creator :: the creator is a user like anybody else which means likes, click on miniatures and comments help to improve metrics
+- bot :: bot checks is pretty advanced for youtube, every time I tried to create views from other devices I got the impression youtube was punishing the channel, there is a period my shorts are much less pushed
+- edits :: any edit can re-trigger the algorithm which is sometimes good sometimes bad. If I edit description, miniature or cut parts the algorithm can go to a completely different direction. I cut one video intro to improve the view thru and the algo stopped immediately to push that video. I did the same with another one that was stuck and the algo started immediately to push it
+- description :: there are many different opinions here depending on the algo version too, they mainly say that the advanced algos barely need descriptions any longer but I still keep the SEO approach which doesn't hurt
+- miniature :: of course they are important for CTR, I'm not a designer and I standardized them to the same style. I don't know if this is good or bad but I decided by now to keep a consistent signature
+- keywords :: I eventually tend to put too many, probably the camera gears are not relevant if the video doesn't speak about them
+- channel description :: I updated it as many suggest but I think it was more for me than youtube. I then try to consistently produce thinking at the description I set to make my content more consistent
+- reach :: creators can tell whatever, youtube has enough users to find your audience. In 2026 they say that your channel should be consistent as so your audience but I refuse to think that people will keep watching only instrument repair. If that is not your instrument you won't keep watching so I prefer to invest in broader content and hope that contextual search will be again more important than feed.
+- content :: contrary to most of the suggestions I want to make videos with a consistent style but a specific disconnected argument which I find interesting in a dense content. Most of the successful videos are casual with a lot of talking and long preambles. I still prefer to be pretty dense
+
+* analytics
+
+#+ATTR_ORG: :file ../../f/f_media/youtube.png :width 300px
+[[file:/../../f/f_media/youtube_01.png]] 
+
+The view thru was pretty bad, I usually get rather 50% then 25% so I decided to shorten the intro to gain more retention. 
+
+#+ATTR_ORG: :file ../../f/f_media/llm_01.png :width 300px
+[[file:/../../f/f_media/youtube_02.png]] 
+
+
+And youtube decided then to stop pushing my video
+
+#+ATTR_ORG: :file ../../f/f_media/llm_01.png :width 300px
+[[file:/../../f/f_media/youtube_03.png]] 
+
+
+
+
+

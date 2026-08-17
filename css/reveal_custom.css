@@ -1,0 +1,160 @@
+/* Dark theme with proper IDs and navigation */
+:root {
+    --bg-primary: #1e293b;
+    --bg-secondary: #334155;
+    --bg-dark: #111827;
+    --bg-header: rgba(30, 41, 59, 0.95);
+    --primary: #333661;
+    --primary-dark: #4f4695;
+    --accent: #4b5ca6;
+    --a-visited: #4b5ca6;
+    --text: #e5e7eb;
+    --text-muted: #9ca3af;
+    --border: #374151;
+    --code-bg: #374151;
+    --slide-bg: #0f172a;
+    --content-max-width: 1000px;
+}
+.reveal {
+    background-color: var(--bg-primary);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-size: 18px;
+    line-height: 1.6;
+}
+.reveal .slides {
+    text-align:left;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+.reveal .slides .date {
+    font-size: 12px;
+}
+.reveal-viewport{
+    background: var(--bg-dark);
+    background-color: var(--bg-dark);
+}
+dl {
+    display: grid;
+    grid-template-columns: max-content auto;
+}
+
+dt {
+    grid-column-start: 1;
+    font-weight: 700;
+}
+
+dd {
+    grid-column-start: 2;
+}
+.figure img{
+    display: block;
+    margin: auto;
+    background:#ccc;
+    /* max-height:300px; */
+}
+.legalese{
+    display:none;
+}
+.reveal .controls .controls-arrow{
+    color: #ada;
+}
+.timestamp{
+    float: right;
+    margin: 10px;
+    font-size:12pt;
+    color:#5c9;
+}
+.tag{
+    float: right;
+    margin: 10px;
+    font-size:10pt;
+    color:#9c4;
+}
+h4 {
+    font-size:22pt;
+}
+.src {
+    font-size:8pt;
+}
+code {
+    font-size:8pt;
+    line-height: 11px;
+    display: block;
+}
+.example {
+    font-size: 8pt;
+}
+.todo{
+    float: right;
+    margin: 30px;
+    font-size:10pt;
+    color:#c94;
+}
+table{
+    /* display:block; */
+    margin:auto;
+}
+.two_columns{
+    display: flex;
+}
+.col_right{
+    display: flex;
+    flex: 1;
+}
+.col_left{
+    display: flex;
+    flex: 1;
+}
+div.palette, div.boardhandle {
+  position: absolute;
+/*
+  height: 260px;
+  margin: -130px 0 0 0px;
+*/  
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  border-radius: 10px;
+  border-top:    4px solid #222; 
+  border-right:  4px solid #222; 
+  border-bottom: 4px solid #222;
+  background: black;
+  transition: transform 0.3s;
+}
+
+div.palette  {
+  left: -10px;
+  padding-left:10px;
+}
+
+div.boardhandle {
+  right: -10px;
+  padding-right:10px;
+}
+
+div.palette > ul,
+div.boardhandle > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+div.palette > ul > li,
+div.boardhandle > ul > li {
+  margin: 10px;
+}
+
+@media print {
+	div.palette, div.boardhandle { 
+		display: none!important; 
+	}
+}

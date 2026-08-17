@@ -1,0 +1,56 @@
+# docker-compose.yml for Unsloth CUDA Docker
+# Usage: docker-compose up -d --build
+# Run with GPU access: docker compose up --gpus all
+#
+# Key configuration:
+# - NVIDIA CUDA base image with Ubuntu 24.04
+# - Unsloth auto-installs CUDA-enabled PyTorch
+# - Works with Ubuntu host machines
+
+services:
+  unsloth:
+    container_name: unsloth
+    command: ["unsloth","studio","--host","0.0.0.0","-p","8888"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:8889:8000"  # REST API
+      - "127.0.0.1:8888:8888"  # JupyterHub
+      - "127.0.0.1:2222:22"  # SSH/VS Code
+    volumes:
+      - ${HOME}/Downloads/llm_model/:/model
+      - ${HOME}/Downloads/llm_cache/git/:${HOME}/.pi/agent/git/
+      - ${HOME}/Downloads/llm_cache/sessions/:${HOME}/.pi/agent/sessions/
+      - ${HOME}/Downloads/llm_cache/node_modules/:${HOME}/.config/opencode/node_modules/
+      - ~/.pi/:${HOME}/.pi
+      - ../pi_config/:${HOME}/.pi_config/
+      - ${HOME}/lav/src/:${HOME}/lav/src/
+    #user: "${UID-1000}:${GID-1000}"
+    environment:
+      - PATH=$PATH:"/root/.local/bin/":${HOME}"/.local/bin/"
+      - MODEL_PATH=/model/gemma-4-E4B-it-Q4_K_M.ggfu
+      - MODEL_NAME=Model
+      - UNSLOTH_TOKEN=${UNSLOTH_TOKEN}  # Set this from environment
+      - OPCODE_API_KEY=${UNSLOTH_TOKEN:-}
+      - OPCODE_API_BASE_URL=http://localhost:8000/v1
+      - UNSLOTH_HOME=/home/user/.unsloth
+      - UNSLOTH_STUDIO_HOME=/home/user/.unsloth/studio
+    networks:
+      - webserver-net
+    restart: unless-stopped
+    # Pass-through NVIDIA GPU drivers
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    runtime: nvidia
+    
+networks:
+  webserver-net:
+    name: webserver_webserver-net
+    driver: bridge
+    external: true

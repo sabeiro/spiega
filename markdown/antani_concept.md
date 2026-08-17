@@ -1,19 +1,22 @@
 ---
-title: "Antani"
+title: antani optimization engine
 author: Giovanni Marelli
 date: 2019-11-18
 rights:  Creative Commons Non-Commercial Share Alike 3.0
 language: en-US
+id: antani_optimization_engine
+category: #tech
+roam_refs: antani optimization engine
+roam_aliases: ["antani optimization engine"]
 output: 
 	md_document:
 		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
 ---
-
 # Antani
 
 Ant - agent/network intelligence 
 
-![antani_logo](../f/f_ops/antani_logo.svg "antani logo")
+![antani_logo](../../f/f_ops/antani_logo.svg "antani logo")
 
 _ants optimizing paths on a network_
 
@@ -29,7 +32,7 @@ Why operation efficiency?
 
 The closest path facing the warehouse fullfilling the most valuables tasks
 
-![optimization_engine](../f/f_ops/optimization_engine.svg "optimization engine")
+![optimization_engine](../../f/f_ops/optimization_engine.svg "optimization engine")
 
 _optimization engine requirements_
 
@@ -44,7 +47,7 @@ Delivery based, routific:
 * Skipped tasks
 * Unclear priorities
 
-![routific_problems](../f/f_ops/prob_prio1.png "routific problems")
+![routific_problems](../../f/f_ops/prob_prio1.png "routific problems")
 
 _problems with routific_
 
@@ -54,7 +57,7 @@ No resuming, everytime a new simulation
 
 open source software suite for optimization
 
-![problems_ortools](../f/f_ops/problem_ortools.svg "problem ortools")
+![problems_ortools](../../f/f_ops/problem_ortools.svg "problem ortools")
 _or-tools solutions_
 
 
@@ -66,7 +69,7 @@ Many crossing Incomplete vans, long trajectories:
 
 ## In house solution
 
-![optimization engine](../f/f_ops/vid_8.gif "optimization engine")
+![optimization engine](../../f/f_ops/vid_8.gif "optimization engine")
 _in house optimization engine_
 
 Step by step task assignement
@@ -74,7 +77,7 @@ Step by step task assignement
 ## Path optimization
 Path like polymers
 
-![phd defense](../f/f_ops/phd_defense.png "phd defense")
+![phd defense](../../f/f_ops/phd_defense.png "phd defense")
 
 _PhD defense – computational biophysics 2012_
 
@@ -82,7 +85,7 @@ _PhD defense – computational biophysics 2012_
 
 Ludewa/Tanzania - 2013
 
-![electrical line](../f/f_ops/animation_optimize.gif "electrical line")
+![electrical line](../../f/f_ops/animation_optimize.gif "electrical line")
 
 _Electrical line design to connect households to the new power plant_
 
@@ -90,14 +93,14 @@ _Electrical line design to connect households to the new power plant_
 
 From detailed street network to an efficient graph
 
-![graph_detail](../f/f_ops/graph_detail.png "graph detail")
+![graph_detail](../../f/f_ops/graph_detail.png "graph detail")
 _Subset, connect, simplify, subgraph, check directions..._
 
 ## weighting
 
 Weight every segment
 
-![graph_weight](../f/f_ops/graph_weight.png "graph weight")
+![graph_weight](../../f/f_ops/graph_weight.png "graph weight")
 
 _Maxspeed, streetclass, length, junctions_
 
@@ -105,7 +108,7 @@ _Maxspeed, streetclass, length, junctions_
 
 Checking routes
 
-![graph undirected](../f/f_ops/graph_undirected.png "graph undirected")
+![graph undirected](../../f/f_ops/graph_undirected.png "graph undirected")
 
 _checking routes_
 
@@ -118,13 +121,13 @@ Osrm – open street routing machine
 
 Subset the city in geohashes (~70m)
 
-![routing_info](../f/f_ops/routing_info.svg "routing info")
+![routing_info](../../f/f_ops/routing_info.svg "routing info")
 
 _routing information_
 
 Calculate all pair distances and build a lookup database
 
-![routing_info](../f/f_ops/routing_database.svg "routing info")
+![routing_info](../../f/f_ops/routing_database.svg "routing info")
 
 _pair relationship database_
 
@@ -132,7 +135,7 @@ _pair relationship database_
 
 Sum up tasks in the same geohash
 
-![mallink_concept](../f/f_ops/concept_mallink.svg "mallink concept")
+![mallink_concept](../../f/f_ops/concept_mallink.svg "mallink concept")
 
 _graph edges kept_
 
@@ -143,12 +146,12 @@ Keep only neighbor connections between tasks
 Ant/colony
 
 
-![antani_concept](../f/f_ops/antani_concept.svg "antani concept")
+![antani_concept](../../f/f_ops/antani_concept.svg "antani concept")
 _an ant per loop, iterate over the network_
 
 
 
-![concept_energy](../f/f_ops/concept_mallink_energy.svg "concept energy")
+![concept_energy](../../f/f_ops/concept_mallink_energy.svg "concept energy")
 _energy definition_
 
 Energy:
@@ -162,13 +165,13 @@ Energy:
 
 An ant connecting each task
 
-![concept_antani](../f/f_ops/concept_antani.svg "concept antani")
+![concept_antani](../../f/f_ops/concept_antani.svg "concept antani")
 
 _antani concept_
 
 ## Path opt
 
-![opt_graph](../f/f_ops/opt_graph.png "opt_graph")
+![opt_graph](../../f/f_ops/opt_graph.png "opt_graph")
 
 _optimize sequences_
 
@@ -176,7 +179,7 @@ _optimize sequences_
 
 Single random move
 
-![optimization engine](../f/f_ops/vid_8.gif "optimization engine")
+![optimization engine](../../f/f_ops/vid_8.gif "optimization engine")
 
 _energy evolution_
 
@@ -186,7 +189,7 @@ Asyntotic energy and move acceptance rate evolution
 
 Transition probabilities, limit links
 
-![markov_chains](../f/f_ops/markov_3.png "markov chains")
+![markov_chains](../../f/f_ops/markov_3.png "markov chains")
 _markov chains_
 
 We limit the possible moves leaving the most probable
@@ -195,7 +198,7 @@ We limit the possible moves leaving the most probable
 
 single, Markov, distance, extrude
 
-![move mallink](../f/f_ops/move_mallink.svg "move mallink")
+![move mallink](../../f/f_ops/move_mallink.svg "move mallink")
 
 _move selection_
 
@@ -206,15 +209,15 @@ Spot selection according different probabilities
 * Faster convergency
 * Higher acceptance
 
-![optimization engine](../f/f_ops/vid_8.gif "optimization engine")
+![optimization engine](../../f/f_ops/vid_8.gif "optimization engine")
 
-![optimization engine](../f/f_ops/vid_phantom.gif "optimization engine")
+![optimization engine](../../f/f_ops/vid_phantom.gif "optimization engine")
 
 Single move, routific optimization, Markov chain, extrusion, grand canonical...
 
 ## Calculation time
 
-![execution time](../f/f_ops/execution_time.png "execution time")
+![execution time](../../f/f_ops/execution_time.png "execution time")
 
 _Early simulations were too slow_
 
@@ -222,7 +225,7 @@ _Early simulations were too slow_
 
 scoring
 
-![kpi_comparison](../f/f_ops/kpi_comparison.png "kpi comparison")
+![kpi_comparison](../../f/f_ops/kpi_comparison.png "kpi comparison")
 
 _kpi comparison_
 
@@ -232,7 +235,7 @@ _kpi comparison_
 
 Improve acceptance
 
-![reinforce move](../f/f_ops/reinforce_move.svg "reinforce_move")
+![reinforce move](../../f/f_ops/reinforce_move.svg "reinforce_move")
 
 _reinforce moves_
 
@@ -242,13 +245,13 @@ Single agent reinforcement is too slow and chaotic
 
 Improve with real data
 
-![posterior probabilities](../f/f_ops/post_prob.svg "posterior probability")
+![posterior probabilities](../../f/f_ops/post_prob.svg "posterior probability")
 
 _posterior probabilities_
 
 ## Demand
 
-![demand_forecast](../f/f_act/map_urev.png "demand forecast")
+![demand_forecast](../../f/f_act/map_urev.png "demand forecast")
 
 _demand forecast_
 
@@ -256,7 +259,7 @@ _demand forecast_
 
 Backbone +microservices
 
-![engine design](../f/f_ops/engine_design.svg "engine design")
+![engine design](../../f/f_ops/engine_design.svg "engine design")
 
 _engine design_
 
@@ -264,7 +267,7 @@ _engine design_
 
 Docker, flask, redis,celery
 
-![antani_infra](../f/f_ops/antani_infra.svg "antani infrastructure")
+![antani_infra](../../f/f_ops/antani_infra.svg "antani infrastructure")
 _antani infrastructure_
 
 Client – broker/worker design
@@ -273,18 +276,18 @@ Client – broker/worker design
 
 OpenLayers, d3, ajaxDocumentation
 
-![frontend](../f/f_ops/antani_frontend.png "antani frontend")
+![frontend](../../f/f_ops/antani_frontend.png "antani frontend")
 _antani frontend_
 
 ## Documentation
 
-![module mallink](../f/f_lib/module_mallink.svg "module mallink")
+![module mallink](../../f/f_lib/module_mallink.svg "module mallink")
 
 _module mallink_
 
 ## Code
 
-![module library](../f/f_lib/module_library.svg "module library")
+![module library](../../f/f_lib/module_library.svg "module library")
 
 _library ecosystem_
 

@@ -1,0 +1,39 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: agenda
+:END:
+#+title: current agenda
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-05-22>
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_twin/docs/
+
+* current tasks
+
+<2026-06-20 Sat>
+
+** active diagram.html
+
+Finish debugging [[http://localhost/CV/diagram.html][diagram]]
+
+** php container
+
+Finalize the php container [[http://localhost/kotoba/][php page]]
+
+** done blender mcp
+
+Finish connecting emacs to blender-mcp [[https://www.blender.org/lab/mcp-server/][mcp1]] [[https://www.blender.org/lab/mcp-server/#addon][mcp2]] [[https://blendermcp.org/][mcp3]] [[https://github.com/ahujasid/blender-mcp][mcp4]] [[https://blendermcp.org/setup/ollama][mcp5]] [[https://projects.blender.org/lab/blender_mcp][mcp6]] [[https://www.blender.org/lab/mcp-server/][mcp7]] [[https://projects.blender.org/lab/blender_mcp/wiki/Llama.cpp][mcp8]]
+
+** inventati password
+
+Find out the password for [[https://accounts.autistici.org/sso/login/][inventati]]
+
+** finish video
+
+for agentic interview 

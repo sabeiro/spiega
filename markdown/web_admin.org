@@ -1,0 +1,93 @@
+:PROPERTIES:
+:ID: web_admin
+:END:
+#+title: web admin
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge task
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-06-24>
+
+* web admin utils
+
+*** webdav
+
+#+name: nginx_webdav
+#+begin_example
+
+
+#+end_example
+
+
+*** apache password
+
+#+name: apache_password
+#+begin_bash
+# -c create new file 
+htpasswd -c /~/cred.apache2/.htpasswd dav 
+#+end_bash
+
+#+name: apache_password_check
+#+begin_bash
+htpasswd -v ~/cred.apache2/.htpasswd dav
+#+end_bash
+
+#+name: apache_mod
+#+begin_src bash :export results :results output replace
+cat ~/lav/src/malastro/server/apache_permission.sh
+#+end_src
+
+#+RESULTS: apache_mod
+#+begin_example
+sudo a2enmod ssl
+sudo a2enmod proxy
+sudo a2enmod proxy_balancer
+sudo a2enmod proxy_http
+sudo a2enmod proxy_connect
+sudo a2enmod proxy_html
+sudo a2enmod fastcgi
+sudo a2enmod proxy_ajp
+sudo a2enmod rewrite
+sudo a2enmod deflate
+sudo a2enmod headers
+
+
+#ln -s /etc/apache2/mods-available/proxy_http.load /etc/apache2/mods-enabled/proxy_http.load
+sudo apache2ctl configtest
+sudo apache2ctl graceful
+
+sudo echo 'ServerName localhost' >> /etc/apache2/conf.d/fqdn
+sudo echo 'ServerName localhost' >> /etc/apache2/conf-available/servername.conf
+#+end_example
+
+
+#+name: apache_mod
+#+begin_src bash :export results :results output replace
+cat ~/lav/src/malastro/server/apache_mod.sh
+#+end_src
+
+
+
+
+
+#+name: web_utils
+#+begin_src bash :export none results: output replace
+ls ~/lav/src/malastro/server/
+#+end_src
+
+#+RESULTS: web_utils
+| apache_mod.sh        |
+| apache_permission.sh |
+| enable_proxy.sh      |
+| grafana              |
+| https.sh             |
+| https_localhost.sh   |
+| local_certificate.sh |
+| nodejs.sh            |
+| nodejs_update.sh     |
+| php_apache.sh        |
+| server.csr.cnf       |
+| sql_set.sh           |
+| v3.ext               |
+| web_permissions.sh   |
+

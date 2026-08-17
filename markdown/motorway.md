@@ -1,9 +1,25 @@
+---
+title: motorway stoppers
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: motorway_stoppers
+category: #tech
+roam_refs: motorway stoppers
+roam_aliases: ["motorway stoppers"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
+
 # Motorway Stoppers
 ## Use case description
 _______________
 On the motorway there are isolated [gas stations](/motion/raw/tank/poi.csv). Few activities but few cells too.
 
-![gas stations on the motorway](../f/f_mot/motorway_01.png "Gas stations")
+![gas stations on the motorway](../../f/f_mot/motorway_01.png "Gas stations")
 _Blue arrows show the gas stations and the direction of the traffic and the green dots the position of the centroids of the cell_
 
 We should be able to isolate inhabitants between stoppers on the motorway.
@@ -15,7 +31,7 @@ Gas stations might be:
 2. Single
 3. Composite
 
-![location overview](../f/f_mot/location_overview.png "overview of the different gas stations")
+![location overview](../../f/f_mot/people_car.png "overview of the different gas stations")
 _satellite views of different gas station locations_
 
 And the can be present on both sides.
@@ -63,15 +79,15 @@ We structure the work in the following way:
 We performed some quick check about consistency in the data.
 
 The distribution of the trip distance is regular
-![distance distribution](../f/f_mot/trip_distance_distribution.png "distribution of the trip distance")
+![distance distribution](../../f/f_mot/trip_distance_distribution.png "distribution of the trip distance")
 _Distribution of the trip distance_
 
 Duration as irregular distribution apart from half hour binning
-![duration distribution](../f/f_mot/duration_distribution.png "distribution of the duration")
+![duration distribution](../../f/f_mot/duration_distribution.png "distribution of the duration")
 _Distribution of duration_
 
 We can than observe that chirality wihtin a day is conserved:
-![chirality distribution](../f/f_mot/chirality_distribution.png "distribution of chirality")
+![chirality distribution](../../f/f_mot/chirality_distribution.png "distribution of chirality")
 _$\chi$=0 and $\chi$=1 are equally distributed, chirality 1 and 2 are two alternative definitions_
 
 ## ETL
@@ -94,7 +110,7 @@ disk = disk.loc[disk <= max_d**2]
 cellL.loc[dist.index,"cluster"] = c["cluster"]
 ```
 We prepare then the data to be structure on a matrix, cells on the rows, time along columns.
-![input data](../f/f_mot/input_data.png "representation of the input data")
+![input data](../../f/f_mot/input_data.png "representation of the input data")
 _matrix representation of the input data_
 
 ## Filtering
@@ -105,11 +121,11 @@ We apply different trip distance filters on the input data:
 * sym: symmetric, previous + following trip
 * asym: asymmetric, previous ~and~ following trip
 
-![trip distance filter](../f/f_mot/trip_filter.png "trip distance filter")
+![trip distance filter](../../f/f_mot/trip_filter.png "trip distance filter")
 _Trip distance filter_
 
 Trip distance filter has different effect on every single cell.
-![distance filter](../f/f_mot/distance_filter.png "filter on the trip distance")
+![distance filter](../../f/f_mot/distance_filter.png "filter on the trip distance")
 _Effect on the trip distance filter on correlation with reference data, the smaller the circle the higher the trip distance filter, the redder the color the higher the correlation_
 
 We can see that for some cells we have a positive effect of the filter while in some case even counterprodictive effect. Some cells are not correlated at all with the activities at the gas station.
@@ -119,7 +135,7 @@ To distinguish between directions on the motorway we use a metric that distingui
 $$\chi = \frac{\vec v \times \vec w}{||v|| + ||w||} > 0  $$
 Where $\vec v$ is the vector connecting the previous activity to the current activity and $\vec w$ the center of the country with the previous activity. 
 
-![direction dinstinction](../f/f_mot/direction_distinction.png "distinction by direction")
+![direction dinstinction](../../f/f_mot/direction_distinction.png "distinction by direction")
 _The color of the arrows show the opposite chiralities_
 We see that chirality distinguishes both sides of the motorway and is independent on the current angle.
 ```python
@@ -134,26 +150,26 @@ return 1.*(crossP > 0.)
 _vector product between trip and conjunction to the center of Germany_
 
 We can see that we have correctly distinguished the trips dependent on the chirality.
-![chirality trajectory](../f/f_mot/chirality_trajectory.png "trajectories colored by chirality")
+![chirality trajectory](../../f/f_mot/chirality_trajectory.png "trajectories colored by chirality")
 _trajectories colored by chirality_
 
 ## Shape clustering
 We want to recognize the type of user clustering different patterns:
 
-![user patterns](../f/f_mot/shapeCluster.svg "different patterns for kind of user")
+![user patterns](../../f/f_mot/shapeCluster.svg "different patterns for kind of user")
 _different patterns for kind of user_
 
 We calculate characteristic features by interpolating the time series. We distinguish between a *continous time series* where we can calculate the overall trends via the class [train_shapeLib.py](/geomadi/blob/master/py/train_shapeLib.py)
 
-![time series](../f/f_mot/time_series.png "example of a time series")
+![time series](../../f/f_mot/time_series.png "example of a time series")
 _time series of a location_
 and the daily average where we can understand the typical daily activity.
 
-![daily average](../f/f_mot/time_series_day.png "daily average")
+![daily average](../../f/f_mot/time_series_day.png "daily average")
 _daily average of a location_
 Many different parameters are useful to improve the match between mobile and customer data, parameters as position of the peak, convexity of the curve, multiday trends help to understand which cells and filters are capturing the activity of motorway stoppers.
 
-![shape clustering](../f/f_mot/shape_clustering.png "We cluster curves by shapes")
+![shape clustering](../../f/f_mot/shape_clustering.png "We cluster curves by shapes")
 _clustering curves (average per cluster is the thicker line) depending on different values of: intercept, slope, convexity and trend_
 
 Unfortunately no trivial combination of parametes can provide a single filter for a good matching with customer data. We need then to train a model to find the best parameter set for cells and filter selection.
@@ -162,7 +178,7 @@ Unfortunately no trivial combination of parametes can provide a single filter fo
 We need to find a minimal parameter set for good model performances and spot a subset of features to use for the training.
 We realize that some features are strongly correlated and we remove highly correlated features
 
-![correlation matrix](../f/f_mot/correlation_matrix.png "correlation matrix between features")
+![correlation matrix](../../f/f_mot/correlation_matrix.png "correlation matrix between features")
 _correlation between features_
 
 |name           | description        | variance     |
@@ -183,7 +199,7 @@ High variance can signify a good distribution across score or a too volatile var
 
 We select five features which have larger variance to increase training cases.
 
-![selected features](../f/f_mot/selected_features.png "final selection of features")
+![selected features](../../f/f_mot/selected_features.png "final selection of features")
 _final selection of features_
 
 ## Scoring
@@ -192,7 +208,7 @@ We calculate the first score, ~cor~, as the Pearson's r *correlation*:
 $$ r = \frac{cov(X,Y)}{\sigma_x \sigma_y} $$
 This parameter helps us to select the curves which will sum up closely to the reference curve. 
 
-![scoring explanation](../f/f_mot/scoring.png "scoring graphical visualization")
+![scoring explanation](../../f/f_mot/scoring.png "scoring graphical visualization")
 _the superposition of many curves with similar correlation or many curves with heigh regression weights leads to a good agreeement with the reference curve_
 The second parameter, the *regression* ~reg~, is the weight, $w$, given by a [ridge regression](/geomadi/blob/master/py/train_shapeLib.py#L317) 
 $$ \underset{w}{min\,} {{|| X w - y||_2}^2 + \alpha {||w||_2}^2} $$
@@ -219,12 +235,12 @@ t = np.asarray(t,dtype=int)
 return t, pbin
 ```
 
-![score binning](../f/f_mot/bin_correlation.png "binning the correlation score")
+![score binning](../../f/f_mot/bin_correlation.png "binning the correlation score")
 _distribution of the correlation score and the corrisponding binning_
 
 We compare the different models and select the best perfroming for the purpose.
 
-![model score](../f/f_mot/model_score.png "result and score of the models")
+![model score](../../f/f_mot/model_score.png "result and score of the models")
 
 We further [tune](/geomadi/blob/master/py/train_lib.py#L178) the best performing model.
 Alternatively we use keras for high performace model tuning: [train_neural.py](/geomadi/blob/master/py/train_neural.py)
@@ -233,7 +249,7 @@ We observe different performances between models, we use the model with best tra
 
 We observe that all the scores have a good post prediction agreement (apart from regression)
 
-![box plot post prediction](../f/f_mot/boxplot_post.png "box plot post prediction assignment")
+![box plot post prediction](../../f/f_mot/boxplot_post.png "box plot post prediction assignment")
 _for each variable score we see how the predicted bins (b prefix) classify the input scores (y prefix)_
 
 ## Training results
@@ -242,14 +258,14 @@ The steps are mainly performed in this script [train_tank.py](/geomadi/blob/mast
 
 The first score we want to optimize is the correlation. We can indeed see how the model filtered the cells leaving the ones with higher correlation.
 
-![correlation distribution after filtering](../f/f_mot/correlation_distribution.png "correlation distribution after filtering")
+![correlation distribution after filtering](../../f/f_mot/correlation_distribution.png "correlation distribution after filtering")
 _density plot of correlation before and after the filter and dependent on different metrics_
 
 We select the cells that have the highest correlation scores and we limit the number of cells by the highest regression.
 
 We then sum up all the cells within the same cluster and recalculate the correlation between locations.
 
-![matrix correlation](../f/f_mot/matrix_correlation.png "reference and predicted matrix correlation")
+![matrix correlation](../../f/f_mot/matrix_correlation.png "reference and predicted matrix correlation")
 _matrix representation of the predicted and reference time series, correlation between the two matrices_
 
 ## Score optimization
@@ -268,25 +284,25 @@ We have in total three scores, each score has a continous version (calculated on
 We investigate the cumulative distribution of the scores plotting on the same graph _correlation_ and _difference_
 
 We select all cells and we plot the cumulative distribution
-![kpi zone](../f/f_mot/kpi_id_zone_all.png "cumulative distribution of correlation and difference")
+![kpi zone](../../f/f_mot/kpi_id_zone_all.png "cumulative distribution of correlation and difference")
 _cumulative distribution of correlation and difference_
 
 We then select the best performing filter although we cannot optimize both correlation and difference at the same time.
-![kpi cor](../f/f_mot/kpi_id_zone_cor.png "we select only the cells whose correlation is above 0.30")
+![kpi cor](../../f/f_mot/kpi_id_zone_cor.png "we select only the cells whose correlation is above 0.30")
 _we select only the cells whose correlation is above 0.30 (lhs) and those whose binned correlation is above 4 (rhs)_
 
 If we apply direction dinstinction locations become 325 instead of 201 but correlation drops 
-![kpi zone](../f/f_mot/kpi_id_clust_all.png "cumulative distribution of correlation and difference")
+![kpi zone](../../f/f_mot/kpi_id_clust_all.png "cumulative distribution of correlation and difference")
 _cumulative distribution of correlation and difference_
 
 We can still improve the correlation by apply a score selection
-![kpi zone](../f/f_mot/kpi_id_clust_cor.png "cumulative distribution of correlation and difference")
+![kpi zone](../../f/f_mot/kpi_id_clust_cor.png "cumulative distribution of correlation and difference")
 _we select only the cells whose correlation is over 0.30 (lhs) and those whose binned correlation is above 4 (rhs)_
 
 ## Data enrichment
 We enrich location information with geographic information which can give us addtional information on the specificity of the particular location.
 
-![geographic information enrichment](../f/f_mot/data_enrichment.png "Geographic information enrichment for troubleshooting")
+![geographic information enrichment](../../f/f_mot/data_enrichment.png "Geographic information enrichment for troubleshooting")
 _value of the population density on large clusters_
 We added information as the population density or the mean flat area per person for investigating the mismatch within predictions, i.e. in denser area filtering has to be more effective.
 
@@ -304,7 +320,7 @@ For each location we can add as information:
 
 ## Correction factors
 We need to further adjust our results depending on the external parameters, first of all the number of sources available. 
-![regression tree](../f/f_mot/regression_tree.png "regression tree location dependent")
+![regression tree](../../f/f_mot/regression_tree.png "regression tree location dependent")
 _example of a regression tree on prediction results_
 
 We analyzed the influence of some features on the counts mismatch [train_decisionTree.py](/geomadi/blob/master/py/train_decisionTree.py) and spot the most important features for the *predictor*.
@@ -312,7 +328,7 @@ We analyzed the influence of some features on the counts mismatch [train_decisio
 ## Counts correction
 We analyze the variables dependance on counts mismatch and we calculate a correction factor for all locations
 
-![difference dependence](../f/f_mot/difference_dependance.png "dependance of the mismatch on the variables")
+![difference dependence](../../f/f_mot/difference_dependance.png "dependance of the mismatch on the variables")
 _dependance of the mismatch on the variables_
 
 We see indeed that the mismatch between activities and reference data is not independant on:
@@ -338,66 +354,66 @@ Where the binary encoding is calculated in the following way:
 We choose to use a [bagging regressor on decision tree](http://scikit-learn.org/stable/auto_examples/ensemble/plot_bias_variance.html) to correct the results based on environmental variables.
 
 We can see how the regressor improves the agreement on absolute counts:
-![counts corrected](../f/f_mot/kpi_correction.png "counts mismatch after correction")
+![counts corrected](../../f/f_mot/kpi_correction.png "counts mismatch after correction")
 _counts mismatch after correction for `id_zone`_
 
 ## Further corrections
 A general issue is that we don't see the same growth as in the reference data:
-![chirality distribution](../f/f_mot/chirality_distribution.png "activity and reference")
+![chirality distribution](../../f/f_mot/chirality_distribution.png "activity and reference")
 _activity vs reference_
 
 ## Results generation
 Applying both predictor and regressor and we generate:
-![result no order](../f/f_mot/result_no_order.png "resulting activities per location")
+![result no order](../../f/f_mot/result_no_order.png "resulting activities per location")
 _resulting activities per location_
 
 We then sort the results depending on a $\chi^2$ probability and discard results with an high `p_value`
-![result order](../f/f_mot/result_order.png "activities sorted by p-value")
+![result order](../../f/f_mot/result_order.png "activities sorted by p-value")
 _activities sorted by p-value_
 
 To summarize we generate the results applying the following scheme:
-![filter structure](../f/f_mot/filter_structure.png "application of the predictor and regressor")
+![filter structure](../../f/f_mot/filter_structure.png "application of the predictor and regressor")
 _application of the predictor and regressor_
 
 The detailed structure of the files and scripts is summarized in this [node-red](http://nodered.org) flow charts:
-![flow chart](../f/f_mot/test_flow.png "flow chart of the project")
+![flow chart](../../f/f_mot/test_flow.png "flow chart of the project")
 _flow chart of the project_
 
 ## Result visualization
 We display overall correlation on a map
-![correlation map](../f/f_mot/correlation_map.png "correlation map")
+![correlation map](../../f/f_mot/correlation_map.png "correlation map")
 _correlation map_
 
 Isolated spots show good correlation
-![good correlation](../f/f_mot/correlation_good.png "good correlation")
+![good correlation](../../f/f_mot/correlation_good.png "good correlation")
 _example of good correlation_
 
 Spots close to cities show bad correlation
-![bad correlation](../f/f_mot/correlation_bad.png "good correlation")
+![bad correlation](../../f/f_mot/correlation_bad.png "good correlation")
 _example of bad correlation_
 
 
 Correlation increases when take more locations together
-![correlation map spot](../f/f_mot/correlation_map_spot.png "correlation map spot")
+![correlation map spot](../../f/f_mot/correlation_map_spot.png "correlation map spot")
 _correlation map on a spot_
 
 We can calculate the counts even without reference data
-![map counts](../f/f_mot/map_counts.png "counts on a map")
+![map counts](../../f/f_mot/map_counts.png "counts on a map")
 _spatial distribution_
 
 ## Capture rate
 To calculate the capture rate (number of motorway stoppers over number of drivers on the section in front of the gas station) we route all trips over the motorway network. 
 
 In same cases we find good agreement with customer data, seeing the same asymmetry
-![capture rate](../f/f_mot/capture_rate1.png "capture rate of gas station")
+![capture rate](../../f/f_mot/capture_rate1.png "capture rate of gas station")
 _capture rate. Gray:id, blue:section counts, black:predicted activities, red:measured activities, orange:reference data_
 
 We still have to improve the predictions in same cases
-![capture rate](../f/f_mot/capture_rate2.png "capture rate of gas station")
+![capture rate](../../f/f_mot/capture_rate2.png "capture rate of gas station")
 _capture rate, high predictions_
 
 We might even see more symmetry than customer
-![capture rate](../f/f_mot/capture_rate3.png "capture rate of gas station")
+![capture rate](../../f/f_mot/capture_rate3.png "capture rate of gas station")
 _capture rate, good symmetry_
 
 Section counts show numbers comparable to BAst counts leading to around 1.2 person per car.

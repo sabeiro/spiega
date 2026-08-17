@@ -1,0 +1,68 @@
+# =============================================================================
+# Ansible Inventory for YOLO Pose Estimation Project
+# =============================================================================
+# Configure your Jetson device(s) here
+#
+# Usage:
+#   ansible-playbook -i inventory.yml playbook.yml
+# =============================================================================
+
+all:
+  children:
+    jetson:
+      hosts:
+        # Single Jetson device
+        jetson-orin:
+          ansible_host: jetson  # Hostname or IP address
+          ansible_user: sab      # SSH username
+          # ansible_ssh_private_key_file: ~/.ssh/id_rsa
+          
+          # Device-specific variables (override playbook defaults)
+          cuda_arch: "8.7"  # Orin: 8.7, Xavier: 7.2, Nano: 5.3
+          
+      vars:
+        # Common variables for all Jetson hosts
+        ansible_python_interpreter: /usr/bin/python3
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+        
+        # Project configuration
+        project_name: "yolo_pose_estimation"
+        
+        # Model settings
+        yolo_model: "yolov8n-pose"
+        yolo_input_size: 640
+        
+        # Video source (use camera or video file)
+        use_camera: false
+        camera_id: 0
+        video_file: "sfondo_seba.mp4"
+
+# =============================================================================
+# Example configurations for different Jetson models
+# =============================================================================
+# 
+# Jetson Orin Nano/NX/AGX:
+#   cuda_arch: "8.7"
+#
+# Jetson Xavier NX/AGX:
+#   cuda_arch: "7.2"
+#
+# Jetson Nano:
+#   cuda_arch: "5.3"
+#
+# =============================================================================
+# Multiple devices example:
+# =============================================================================
+#
+# jetson:
+#   hosts:
+#     jetson-1:
+#       ansible_host: 192.168.1.100
+#       ansible_user: nvidia
+#       cuda_arch: "8.7"
+#     jetson-2:
+#       ansible_host: 192.168.1.101
+#       ansible_user: nvidia
+#       cuda_arch: "7.2"
+#
+

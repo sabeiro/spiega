@@ -1,0 +1,11 @@
+# Path to the project on the target host (where docker-compose.yml lives).
+# If you deploy from this repo, use the same path as on the server.
+webui_project_path: /var/www/webdav/webui
+docker_compose_cmd: docker compose
+
+# API test: use 127.0.0.1 so the target can reach nginx without DNS; Host header selects vhost.
+ollama_api_base: "https://127.0.0.1"
+ollama_api_host_header: "{{ ansible_host }}"   # e.g. ollama.jetson (nginx server_name)
+
+# Where to save vision_output/ (screenshot + describe_vision). Default /tmp so it works when project is on WebDAV; override with -e vision_output_dest=./vision_output for a local dir.
+vision_output_dest: "/tmp/vision_output"

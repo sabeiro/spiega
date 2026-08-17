@@ -1,0 +1,6 @@
+# LLama.cpp Model Configuration
+# Edit this file to specify which model to use
+# Place your GGUF models in: ~/Downloads/llm_model/models/
+
+model_path: ""
+model_name: ""

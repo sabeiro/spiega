@@ -1,3 +1,19 @@
+---
+title: flute calculator
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: flute_calculatorl
+category: #tech
+roam_refs: flute_calculator
+roam_aliases: ["flute calculator"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
+
 # Flute calculator
 [ref](https://kassaflutes.com/articles/flute-calculator)
 ## Variables

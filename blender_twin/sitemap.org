@@ -1,0 +1,14 @@
+#+OPTIONS: ^:nil author:nil html-postamble:nil
+#+SETUPFILE: ./simple_inline.theme
+#+TITLE: Roam notes
+
+- [[file:agent_call.org][agent call create slides]]
+- [[file:index.org][blender twin]]
+- [[file:blender_twin.org][blender twin]]
+- [[file:twin_documentation.org][blender twin documentation]]
+- [[file:project_stack.org][blender twin project stack]]
+- [[file:knowledge_graph.org][knowledge graph knowledge type]]
+- [[file:plan.org][plan]]
+- [[file:project_tasks.org][project_tasks]]
+- [[file:reveal_config.org][reveal_config]]
+file:sitemap.svg

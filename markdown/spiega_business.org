@@ -1,0 +1,394 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: spiega_business
+:END:
+#+TITLE: spiega business
+#+SUBTITLE: working experience for business use cases
+#+DATE: 14-05-2026
+#+KEYWORDS: Data science, language models, LLMs
+#+INCLUDE: "../template/header.org" 
+#+STARTUP: latexpreview
+
+* spiega business
+
+$a+b$
+
+
+Here I collect all the experiences I accumulated over 17y or career with a focus on business use cases.
+
+* profile
+
+Hands-on experience in data products and infrastructure, fostering cross-functional collaboration across
+technical, product, and commercial teams. Focused on data-driven decision-making built upon a robust
+background in statistical analysis, predictive modeling, algorithm design, machine learning, and data/text
+mining. Successful leadership of complex technical projects in both B2B and B2C environments, proficiently
+managed remote teams, and actively contributing to talent acquisition and mentorship.
+Specialist in optimization problems, productization of ML, prototyping (PoC, MVP), tech presales, personas
+segmentation, multichannel strategies and driving conversion uplift. 15+ years of coding experience in data
+proc/viz, cloud/grid computing, web, data platforms, ETL, front/back end.
+I developed a strong understanding of customer needs and learnt how to build durable customer stakeholding.
+Driven by innovation, novel business models and collaborative working environments. Passionate about story
+telling and crafting, good knowledge of international languages and long coaching experience.
+
+* functions
+
+I covered a diverse range of roles and skills across different industries and technologies. Here's a summary of the key roles:
+
+1. **Tech Consultant**:
+   - Client visits and site assessments for various technologies (e.g., AI solutions, IoT systems).
+   - Project management from inception to completion.
+
+2. **Data Science**:
+   - Conducting exploratory data analysis and modeling.
+   - Developing ML models for predictive maintenance, optimization, and automation.
+   - Analyzing customer data for targeted marketing strategies.
+
+3. **Tech Consultant/Technical Lead**:
+   - Designing and implementing technical solutions (e.g., AI platforms, IoT systems).
+   - Collaborating with development teams to integrate new technologies into existing products or services.
+
+4. **AI Lead**:
+   - Developing and deploying AI models for various applications.
+   - Conducting simulations and optimizations using machine learning algorithms.
+
+5. **Project Manager/SME/Lead**:
+   - Leading multi-disciplinary projects across different industries (e.g., automotive, energy, pharma).
+   - Coordinating resources and ensuring project timelines and goals are met.
+
+6. **Data Architect/Data Engineer**:
+   - Designing data infrastructure to support various data products.
+   - Integrating technologies like databases, cloud platforms, and AI systems.
+
+7. **Sales/Marketing/Consultant**:
+   - Developing sales strategies for customer acquisition.
+   - Collaborating with customers to solve complex technical problems and implement solutions.
+
+8. **Technical Consultant/Collaborator**:
+   - Providing technical guidance and support for various projects.
+   - Ensuring alignment between business goals and technological solutions.
+
+9. **Data Analyst/Data Engineer/Consultant**:
+   - Analyzing data and providing insights for decision-making.
+   - Integrating new technologies into existing systems to improve operational efficiency.
+
+10. **Customer Support Specialist/Agent**:
+    - Providing support for customers through various platforms (e.g., chatbots, email).
+    - Ensuring customer satisfaction and timely resolution of issues.
+
+This diverse range of roles demonstrates your comprehensive expertise in various technical fields and areas related to data-driven solutions, project management, technology implementation, AI development, and business strategy.
+
+* verticals
+
+Here is a list of verticals where I participated to different projects:
+These industries cover various technological areas such as AI, ML, data science, engineering, software development, operations management, and more.
+
+- [[automotive]]    :: backend, user behaviours, motion patters, IoT, energy efficiency
+- [[pharma]]        :: traceability, 
+- [[energy]]        :: 
+- [[FSI]]           ::
+- [[manifacturing]] ::
+- [[research]]      ::
+- [[advertising]]   ::
+- [[publishing]]    ::
+- [[mobility]]      ::
+- 
+
+
+** automotive 
+
+   - Energy Management (id: 1)
+     - Conduct client visit, factory and data room visit.
+     - Talk with all stakeholders and design an action plan for energy efficiency.
+
+   - First Level Support Bot (id: 2)
+     - Conduct client visit.
+     - Design the implementation plan.
+     - Create mockup for the client to test.
+
+   - IoT Predictive Maintenance (id: 5)
+     - Conduct client visit.
+     - Talk with relative stakeholders.
+     - Run exploratory analytics.
+     - Prepare the implementation plan.
+
+    - Motorway Mean Distances (id: 21)
+      - Iterate with engineering team about the quality of routing solution, testing and re-process data for each iteration.
+      - Develop Spark functions to process parquet files and extract needed data.
+      - Build reports for client and add consistency checks.
+      - Data visualization and presentation at customer location.
+
+   
+** energy
+       
+
+   - Pipeline Operations (id: 3)
+     - Collect all data for Bavarian gas subnet.
+     - Create graph and map quantities to respective nodes.
+     - Run simulations, benchmark ML results.
+
+** pharma and lifescience
+       
+   - Agentic System (id: 4)
+     - Conduct client visit.
+     - Collect requirements and discuss feasible solutions.
+     - Propose a 2-year migration plan.
+
+   - Highly Qualified Tech Sales Agent (id: 7)
+     - Parse all documentation.
+     - Develop best-suited tools for better accuracy.
+     - Review infrastructure design and propose selection of better suited tools.
+
+    - Blockchain in Pharma (id: 18)
+      - Decide tech stack.
+      - Analyze existing data.
+      - Estimate phenomenon.
+      - Build app MVP.
+      - Talk to investors and partners.
+  
+** FSI
+
+   - Insurance Assistant Bot (id: 6)
+     - Develop tools to parse contract information.
+     - Tweak language-specific issues.
+     - Run tests and benchmarks to find most suited model.
+
+    - Mortgage Installment Collection Uplift (id: 13)
+      - Dig into data sources.
+      - Build KPIs and propose a metric.
+      - Iterate with AI teams to estimate uplift.
+      - Iterate with DE teams to build pipeline.
+      - Test metric biases.
+      - Propose client operational changes.
+
+   
+** manifacturing
+   - Salesforce Tech Coach (id: 8)
+     - Prepare presentation material.
+     - Travel in different countries, talk in different languages to local salesforce.
+
+** tech industry
+   
+   - Booklink: Books into Graphs 2023 (id: 9)
+     - Decide tech stack productization of code interacting with language model.
+     - Increase code quality for front-end, back-end and batch processes.
+     - ML Ops on AWS and on-prem.
+
+   - Analytics Platform for Sales Emails (id: 10)
+     - Collect requirements.
+     - Propose most suited data platform for fulfilling company's needs.
+     - Implement the data platform on-prem with Docker.
+     - Develop two custom middlewares.
+     - Expose and document custom APIs.
+     - Introduce tests and health checks.
+
+    - Language Models for Sales Emails (id: 11)
+      - Ideate the solution.
+      - Pick tech stack.
+      - Discuss technology moving components and change solutions as market tools change.
+      - Fine-tuning vs prompt engineering vs embeddings.
+      - Custom test models.
+      - Write prompts and code.
+      - Deploy MVP.
+
+** telco and media
+   
+    - Agent Compensation (id: 12)
+      - Define with customer the most important KPIs.
+      - Collect data and design simulation.
+      - Develop models corresponding to each metric.
+      - Simulate scenarios where each agent competes on each metric.
+      - Assess and present best strategy as return of investment.
+
+    - Metric and Delivery Performance Supervision (id: 14)
+      - Sit with business/operational client teams.
+      - Sit with tech client teams.
+      - Propose a metric that is measurable, consistent and aligned to AI model.
+      - Calculate customer lifetime value (CLV).
+      - Predict uplift and build commercial proposal.
+      - Instruct DE, DA, DB, AI teams on working with metric.
+      - Test and monitor processes.
+      - Keep client loop for reporting.
+
+    - Architecture Migration (id: 15)
+      - Sit with client teams.
+      - Discuss data sources and integrations in use.
+      - Propose processes to shift on cloud improving efficiency, security, costs.
+      - Work every single pipeline checking data integrity and reporting.
+
+    - AI for Voice Outreach (id: 16)
+      - Understand customer needs and tech stack.
+      - Propose technical solution and commercial proposal.
+      - Consistency check on data quality and business estimates.
+      - Review contract.
+
+    - Mobile Network Analytical Software (id: 24)
+      - Identify most important stakeholders and establish partnership.
+      - Prepare presentations and sessions for knowledge exchange.
+      - Work reports, identify inconsistencies and improvements.
+      - Support with commercial proposals.
+   
+** mobility
+    
+    - Remote Driving Disconnection Patterns (id: 17)
+      - Collect useful data.
+      - Assess data quality.
+      - Feature engineering and selection.
+      - Model selection and hyperparameter tuning.
+      - Debugging of data inputs and re-phasing of information.
+      - Spot problem and feedback to engineering team.
+
+    - Optimization Engine for Operations (id: 19)
+      - Go on field.
+      - Collect task types and problems connected with operations.
+      - Build graphs and routing software in production.
+      - Create model to create and iterate routes.
+      - Evaluate efficiency.
+      - Generate myriads of simulations and tune parameters.
+      - Deploy model and test API connection.
+      - Develop middleware to convert data types.
+      - Deploy services on different VPCs, configure load balancer.
+      - Test.
+      - Compare solutions with other software.
+      - Present.
+
+    - Daily Commuters (id: 25)
+      - Iterate over different filters to subset user base into daily commuters only.
+      - Use algorithms to perform modal split.
+      - Run model with limited external data to tune parameters.
+      - Run calculation and build reports for customer.
+
+    - Organize Corporate Data Platforms (id: 27)
+      - Talk with cloud providers, evaluate proposals.
+      - Define platforms that need integration.
+      - Convince stakeholders to participate in program and support migration.
+      - Scout technology providers for data source coordination and pipeline ingestion.
+
+    - Data Monetization: Targeted Audience (id: 28)
+      - Define valuable target for industry, build catalogue of audience.
+      - Expand targets across user base using look-alike.
+      - Post evaluate data especially for socio-demo.
+      - Assess performance and use data to improve target definition.
+      - Enrich data with third parties: retail and telco data.
+      - Scout linguistic model provider for labeling content.
+      - Sync data with relevant platforms.
+      - Monetize data.
+
+    - Inventory Forecast (id: 29)
+      - Define different inventory types.
+      - Implement forecast methods and tune them.
+      - Loop on historical data, watch competition among models per inventory type.
+      - Select most performant model per inventory type.
+      - Run forecast each week and communicate with marketing team available inventory.
+      - Analyze sold and unsold to iterate subsequent weeks.
+
+    - Data Visualization and BI (id: 30)
+      - Understand data should be used by which stakeholder.
+      - Agree on time aggregation and graph type.
+      - Build views, aggregated tables in database.
+      - Schedule jobs for aggregated tables.
+      - Find suited BI tools.
+      - Grant permissions or connect with authentication tools.
+    
+** retail
+    
+    - Motorway Stoppers (id: 20)
+      - Build filter to subset user base matching customer requirements.
+      - Iterate with engineering team to improve software quality especially regarding routing.
+      - Send computation and transform data.
+      - Analyze data and compare with external sources.
+      - Build crawlers to retrieve updated information from internet.
+      - Use machine learning to further improve matching with external data.
+      - Build recurrent reports.
+      - Keep conversation with client including future feature development.
+
+    - Retail and Real Estate Visitors (id: 22)
+      - Define polygons covering stores.
+      - Develop software to re-center user position based on cells information.
+      - Subset users dwelling or passing by polygon.
+      - Build reports and present them.
+
+    - White Spot Analysis (id: 23)
+      - Analyze customer data, calculate isochrones.
+      - Enrich customer data with dwellers report to calculate capture rate.
+      - Analyze country-wide data to spot locations with similar conditions outside of existing locations.
+      - Build report, data visualization and present to client.
+
+
+    - Advertisement Platform Syncing (id: 26)
+      - Speak with vendors, configure platforms: SSP, DSP, DMP, ad server, tag manager, optimization tools, header bidder.
+      - Test and configure different platforms.
+      - Dump enriched data to datalake.
+
+** airline
+
+    - E-commerce Booking Uplift: Personalized User Interface (id: 31)
+      - Identify weak spots using analytics tools.
+      - Design and propose a test for production.
+      - Convince stakeholders about feasibility study and revenue estimate.
+      - Instruct agencies to implement test.
+      - Put live and monitor performances.
+      - Analyze different variants, present results.
+      - Calculate uplift and get confirmation attribution team.
+      - Iterate over 30 times per year.
+
+    - Customer Feedback and Sentiment Analysis on E-commerce (id: 32)
+      - Collect onsite data sources, providers' data sources, crawl internet.
+      - Parse data, stem, stopwords, clean.
+      - Build specific dictionary, run sentiment analysis.
+      - Add external tracking information.
+      - Gain insight from outstanding comments.
+      - Write report and circulate.
+
+    - Customer Personalization Program Cross Corporate (id: 33)
+      - Define requirements for datalake and analytical platform.
+      - Scout data sources, integrate with integration providers.
+      - Design products accessing user info delivery content.
+      - Design personalization for each communication channel.
+      - Consult agencies for projects and present reports to stakeholders.
+
+** consulting
+    
+    - ERP in the Cloud (id: 34)
+      - Talk to client, understand needs.
+      - Scout suited solution.
+      - Develop modules business needs.
+      - Configure software.
+      - Build ad-hoc middlewares.
+
+** research
+
+    
+    - Fusion Pathway for Lipid Membranes (id: 36)
+      - Model components simulation, write code each iteration step.
+      - Parallelize code map reduce, tune code.
+      - Run in cluster analyze data.
+      - Develop data visualization suite 3D data exploration.
+
+    - Collaborative Research Center (id: 37)
+      - Teach and tutor students.
+      - Present to conferences, progress reports.
+      - Prepare application for funds.
+      - Publish articles.
+
+
+
+
+
+* customer contact points
+
+I have been working in companies with a focus on customer contact points:
+
+- [[call center]] :: developing AI products to improve customer retention, upsell and seller performances.
+- [[e-commerce]]  :: improving in-site performances by running 30+ optimization tests with 7digits return in a year.
+- [[email]]       :: emails are still the most important tool for direct B2B sales. Improving metrics like open rate and whitelisting mean a big return
+- [[advertising]] :: targeted advertising means efficient coordination between platforms and intelligent parsing of scarce user information. Any improvement of metrics: ctr, view thru, cpc... makes a big difference in spending
+
+
+* customer centric
+
+
+

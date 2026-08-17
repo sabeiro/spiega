@@ -1,0 +1,11 @@
+{
+  "lastChangelogVersion": "0.80.2",
+  "packages": [
+    "git:github.com/badlogic/pi-doom",
+    "npm:pi-llama-cpp",
+    "npm:@ollama/pi-web-search"
+  ],
+  "defaultProvider": "ollama",
+  "defaultModel": "qwen3.5:9b",
+  "theme": "dark"
+}

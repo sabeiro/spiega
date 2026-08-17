@@ -4,16 +4,19 @@ author: Giovanni Marelli
 date: 2019-11-18
 rights:  Creative Commons Non-Commercial Share Alike 3.0
 language: en-US
+id: antani_integration
+category: #tech
+roam_refs: antani_integration
+roam_aliases: ["antani_integration"]
 output: 
 	md_document:
 		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
 ---
-
 # antani
 
 Ant - agent/network intelligence 
 
-![antani_logo](../f/f_ops/antani_logo.svg "antani logo")
+![antani_logo](../../f/f_ops/antani_logo.svg "antani logo")
 
 _ants optimizing paths on a network_
 
@@ -21,13 +24,13 @@ _ants optimizing paths on a network_
 
 The optimization engine has user controlled and automated modules
 
-![ops_app](../f/f_ops/ops_app.svg "ops_app")
+![ops_app](../../f/f_ops/ops_app.svg "ops_app")
 
 _ops application_
 
 We retrieve information directly from the fleet console microservices 
 
-![man_console](../f/f_ops/management_console.png "man console")
+![man_console](../../f/f_ops/management_console.png "man console")
 
 _management console_
 
@@ -42,19 +45,19 @@ resq = requests.get(url=cred['node_url']+"/geodata/areas/deployment/zone",header
 
 The fleet engine sits in the middle and steers all operations, tracking and monitoring log the current status
 
-![obj_dev](../f/f_ops/obj_dev.svg "obj_dev")
+![obj_dev](../../f/f_ops/obj_dev.svg "obj_dev")
 
 _development of objectives_
 
 In the fleet engine 4 objects will be defined with an hierarchical structure 
 
-![metric_ops](../f/f_ops/metric_ops.svg "metric_ops")
+![metric_ops](../../f/f_ops/metric_ops.svg "metric_ops")
 
 _metric operations_
 
 The purpose of the optimization engine is to compute profitability for each drive and iterate all over the possible solutions 
 
-![task preparation](../f/f_ops/task_preparation.svg "task preparation")
+![task preparation](../../f/f_ops/task_preparation.svg "task preparation")
 
 _field operation assignement_
 
@@ -64,12 +67,12 @@ For Each *task* is calculated a revenue and a risk
 
 <!-- To enable parallel work we need to move from a graph design -->
 
-<!-- ![engine_design_old](../f/f_ops/engine_design_old.svg "engine design") -->
+<!-- ![engine_design_old](../../f/f_ops/engine_design_old.svg "engine design") -->
 <!-- _engine design, current scheme_ -->
 
 <!-- To a linear design where the engine just orchestrate the calls and there is always a cached table to substitute a broken service -->
 
-<!-- ![engine_design](../f/f_ops/engine_design.svg "engine design") -->
+<!-- ![engine_design](../../f/f_ops/engine_design.svg "engine design") -->
 <!-- _engine design, suggested scheme_ -->
 
 
@@ -79,16 +82,16 @@ For Each *task* is calculated a revenue and a risk
 
 To enable parallel work we need to move from a graph design
 
-![engine_design_old](../f/f_ops/engine_design_old.svg "engine design")
+![engine_design_old](../../f/f_ops/engine_design_old.svg "engine design")
 _engine design, current scheme_
 
 To a linear design where the engine just orchestrate the calls and there is always a cached table to substitute a broken service
 
-![engine_design](../f/f_ops/engine_design.svg "engine design")
+![engine_design](../../f/f_ops/engine_design.svg "engine design")
 _engine design, suggested scheme_
 
 We draw a cut between field operation and task optimization
 
-![infra_design](../f/f_ops/infra_design.svg "infra design")
+![infra_design](../../f/f_ops/infra_design.svg "infra design")
 _infra design_
 

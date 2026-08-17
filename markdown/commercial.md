@@ -1,3 +1,17 @@
+---
+title: origin destination matrix
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: origin_destination_matrix
+category: #tech
+roam_refs: origin destination matrix
+roam_aliases: ["origin destination matrix"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
 # Activities and ODM
 
 Per user we collect a series of events that contain the information about the cell where the user was seen:
@@ -6,7 +20,7 @@ Per user we collect a series of events that contain the information about the ce
 * *event* - time and cell information about a user
 * *chain* - series of events connected to an imsi
 
-![event collection](../f/f_comm/event_collection.svg "event collection")
+![event collection](../../f/f_comm/event_collection.svg "event collection")
 _We collect an handover between cells per device (D1-Netz)_
 
 We interpret this information defining:
@@ -14,7 +28,7 @@ We interpret this information defining:
 * *activity* - cluster of events limited in space, continous in time
 * *trip* - series of events connecting two activities
 
-![event activity](../f/f_comm/event_activity.png "event and activity")
+![event activity](../../f/f_comm/event_activity.png "event and activity")
 _a chain is divided into activities and trips_
 
 We can aggregate the event information with cell specifications which consist in:
@@ -28,14 +42,14 @@ Currently an activity is defined flat over the BSE polygon for the most frequent
 
 Depending on the particular situation (cell's position, time of the day, geographical information) we can interpret user's behaviour.
 
-![daily_mappings](../f/f_comm/daily_movements.svg "daily mappings")
+![daily_mappings](../../f/f_comm/daily_movements.svg "daily mappings")
 _interpreting users behaviour_
 
 ## zone mappings
 
 We define where an activity took place by calculating the intersection of a zone polygon with the cell's BSE. We overimpose a geometry on the BSE and we assign the intersection between the two geometries as fraction of activity.
 
-![geometries](../f/f_comm/zone_mapping.png "zone mappings")
+![geometries](../../f/f_comm/zone_mapping.png "zone mappings")
 _geometries used to calculated activities_
 
 All the mentioned geometries are available to [download](/motion/gis/geo)
@@ -50,12 +64,12 @@ All the mentioned geometries are available to [download](/motion/gis/geo)
 
 We write hour 14 meaning all the activities between 13 and 14.
 
-![time_mapping](../f/f_comm/time_mapping.svg "time mappings")
+![time_mapping](../../f/f_comm/time_mapping.svg "time mappings")
 _example of time mappings_
 
 We have to convert the time zone depending on the legal time [time zone converter](https://www.worldtimebuddy.com/utc-to-est-converter).
 
-![zone_converter](../f/f_comm/zone_converter.png "zone converter")
+![zone_converter](../../f/f_comm/zone_converter.png "zone converter")
 _different conversions between summer and winter time_
 
 # Statistical week
@@ -65,8 +79,8 @@ The statistical week is a collection of statistical days which consists in a ser
 
 
 The first consistency check is done visualizing the data
-![statWeek duesseldorf](../f/f_comm/statWeek_duesseldorf.png "statWeek duesseldorf")
-_statWeek duesseldor../f/f_
+![statWeek duesseldorf](../../f/f_comm/statWeek_duesseldorf.png "statWeek duesseldorf")
+_statWeek duesseldor../../f/f_
 
 ## ODM
 An ODM is an origin-destination matrix where we consider every single trip to create an origin-destination relationship. 
@@ -75,22 +89,22 @@ We compare people behavior with different statistics.
 
 München suburbs many people travel to München to work.
 
-![statWeek oberhaching](../f/f_comm/statWeek_oberhaching.png "statWeek oberhaching")
+![statWeek oberhaching](../../f/f_comm/statWeek_oberhaching.png "statWeek oberhaching")
 _statWeek odm for oberhaching_
 
 In Stuttgart there is a clear pattern of commuters during the day.
 
-![statWeek stuttgart](../f/f_comm/statWeek_stuttgart.png "statWeek stuttgart")
+![statWeek stuttgart](../../f/f_comm/statWeek_stuttgart.png "statWeek stuttgart")
 _statWeek odm for  stuttgart_
 
 Hannover has a lower dense neighborhood, people travel less.
 
-![statWeek hannover](../f/f_comm/statWeek_hannover.png "statWeek hannover")
+![statWeek hannover](../../f/f_comm/statWeek_hannover.png "statWeek hannover")
 _statWeek odm for  hannover_
 
 Berlin is harder to interpret.
 
-![statWeek berlin](../f/f_comm/statWeek_berlin.png "statWeek berlin")
+![statWeek berlin](../../f/f_comm/statWeek_berlin.png "statWeek berlin")
 _statWeek odm for  berlin_
 
 # footfall
@@ -105,23 +119,23 @@ The most important quantities to consider are:
 
 Building an [overpass query](http://overpass-turbo.eu/) returns all the nodes and ways returning the same label
 
-![overpass query](../f/f_act/overpass_query.png "overpass query")
+![overpass query](../../f/f_act/overpass_query.png "overpass query")
 _overpass query_
 
 We build a network for routing all trips into trajectories. 
 
-![routing highweight](../f/f_route/routing_highweight.png "routing highweight")
+![routing highweight](../../f/f_route/routing_highweight.png "routing highweight")
 _routing, improve in weighting_
 
 and we take into account all the events to calculate the best trip.
 
-![detour_avoided](../f/f_route/detour_avoided.png "detour avoided")
+![detour_avoided](../../f/f_route/detour_avoided.png "detour avoided")
 _detour avoided discarding neighboring events_
 
 We count than the number of trajectories for the nodes contained in the tile and obtain the footfalls.
 
 From each tile we collect the information and we apply it to the geometry under study
-![edge count](../f/f_route/edge_count.png "edge count")
+![edge count](../../f/f_route/edge_count.png "edge count")
 _edge count_
 
 ## API

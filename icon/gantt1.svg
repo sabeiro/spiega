@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="106.37105mm"
+   height="106.3191mm"
+   viewBox="0 0 106.37105 106.3191"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   sodipodi:docname="gantt1.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.80711279"
+     inkscape:cx="325.23335"
+     inkscape:cy="172.2188"
+     inkscape:window-width="1920"
+     inkscape:window-height="1131"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" /><defs
+     id="defs1" /><g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-19.02679,-103.06955)"><path
+       style="fill:#000000"
+       d="m 20.579243,208.99569 c -0.38105,-0.20708 -0.887065,-0.78586 -1.124479,-1.28617 -0.394529,-0.83141 -0.431325,-5.26472 -0.42776,-51.53738 0.0031,-39.96718 0.07353,-50.76533 0.334583,-51.28123 0.181876,-0.35944 0.745668,-0.93523 1.252871,-1.27954 1.312652,-0.8911 2.739152,-0.67524 3.89859,0.58993 l 0.860055,0.93848 v 48.94972 48.94972 l 49.100547,0.0682 49.10055,0.0682 0.9057,0.9883 c 1.02353,1.11688 1.19031,2.32406 0.50434,3.65057 -0.87791,1.6977 3.09109,1.57989 -52.8329,1.56824 -43.487367,-0.009 -50.979934,-0.0653 -51.572097,-0.38709 z M 95.75227,188.359 v -5.15937 h 12.76614 12.76615 v 5.15937 5.15938 H 108.51841 95.75227 Z m -5.02709,-16.13958 v -5.15937 h 9.92188 9.92187 v 5.15937 5.15938 h -9.92187 -9.92188 z m -18.52083,-15.875 v -5.15937 h 12.96458 12.96459 v 5.15937 5.15938 H 85.16893 72.20435 Z M 37.543935,140.20484 v -5.15938 H 65.98664 94.42935 v 5.15938 5.15937 H 65.98664 37.543935 Z m -10.787374,-15.89472 0.07175,-5.18548 8.069791,-0.003 c 4.438385,-0.002 8.935568,0.008 9.993738,0.0229 l 1.92394,0.0263 -0.0719,5.09323 -0.0719,5.09323 -9.993624,0.0693 -9.993624,0.0693 z"
+       id="path1" /></g></svg>

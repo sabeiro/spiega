@@ -1,0 +1,242 @@
+:PROPERTIES:
+:ID: daisy_seed
+:ROAM_ALIASES: daisy, daisy_seed, electro-smith
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response 0 50000))
+:END:
+#+TITLE: daisy seed 
+#+DATE: 2026-06-19 13:45
+#+OPTIONS: toc:nil num:nil html:true
+#+DESCRIPTION: Hardware knowledge base for Electro-Smith daisy seed microcontroller
+
+#+STARTUP: showall
+
+* Hardware Overview
+#+NAME: daisy-hardware-overview
+| Component     | Specification                          |
+|---------------|---------------|-------------|
+| **MCU**       | ESP32-S3-MINI-1 ( Xtensa LX7, 240MHz dual-core)
+| **RAM**       | 8 MB SPI SRAM                          |
+| **Flash**     | 8MB IAP Flash                         |
+| **WiFi**      | 802.11 b/g/n/ac (2.4/5GHz)             |
+| **BT**        | BLE 5.2 + Classic BT                   |
+| **ADC**       | 8-channel 12-bit (ADC1 + ADC2)         |
+| **PWM**       | Dual 80MHz PWM (up to 8 channels)      |
+| **GPIOs**     | 32 user-programmable                   |
+| **DAC**       | 5-channel 10-bit PWM analog output     |
+| **UART**      | 2x UART                                |
+| **SPI**       | 1x SPI + SPI-Flash                     |
+| **I2C**       | 1x I2C                                 |
+| **Voltage**   | 3.3V / 5V tolerant                     |
+| **Form**      | 1.2in x 0.8in x 0.12in                  |
+| **Price**     | $14.99                                 |
+
+* Software Stack
+
+** ESP32-S3-Specific Features
+#+NAME: daisy-esp32s3-features
+- Built-in camera interface (MIPI CSI)
+- I2S audio (I2S/PDM/PDM microphone)
+- Touch-screen controller (10-pin capacitive touch)
+- Deep-sleep retention (~3 seconds)
+- 80MHz PWM for servo control
+- SDIO card interface
+
+** Supported Libraries
+| Library                  | Purpose                        |
+|-----------------------------|-----------------|
+| Arduino Core             | Firmware programming            |
+| LittleFS                 | File system                     |
+| ESPAsyncWebServer        | HTTP server                    |
+| PubsubClient             | MQTT client                    |
+| ESPmDNS                  | Service discovery               |
+
+* GPIO Configuration (32 Total)
+#+NAME: daisy-gpio-config
+| Pin Number    | Function                        | Usage                   |
+|---------------|--------------------------------|------------------|
+| GPIO 0        | Boot Mode / Reset               | BOOT0 pin               |
+| GPIO 1        | I2S Data                        | Audio input/output      |
+| GPIO 2        | I2S Clock                       | Audio clock             |
+| GPIO 3        | I2S Output                      | I2S clock               |
+| GPIO 4        | I2C SDA                         | I2C data                 |
+| GPIO 5        | I2C SCL                         | I2C clock                |
+| GPIO 6-11     | Touch Pins                      | Capacitive touch         |
+| GPIO 12-14    | ADC1 Channels                   | Analog input             |
+| GPIO 15-21    | ADC1/2 Channels                 | Analog input             |
+| GPIO 22-31    | General Purpose I/O             | User-defined            |
+| GPIO 32-35    | PWM/Pinmux                      | Alternative routing      |
+
+* Wiring Diagram
+
+** Expansion Module Pins
+#+NAME: daisy-wiring-diagram
+| Sensor/Actuator  | daisy Pin     | Type                      |
+|------------------|-----------------|------------------------|
+| **MPU6050 IMU**  | I2C SDA/SCL    | I2C (0x68 or 0x69)        |
+| **BMP280**       | I2C SDA/SCL    | I2C (0x76)                 |
+| **OLED Display** | I2C SDA/SCL    | I2C (0x3C)                 |
+| **RGB LED**      | GPIO 12-15     | PWM RGB Strip              |
+| **Servo**        | GPIO 22        | 80MHz PWM Pulse            |
+| **Audio Mic**    | I2S Data/Clock | Audio input (3-wire)       |
+| **SD Card**      | SDIO Pins      | SD/SDHC (requires breakout)|
+
+* Code Examples
+
+** Initialize I2C Sensors
+#+BEGIN_SRC cpp
+#include <Wire.h>
+
+void setup() {
+  Wire.begin(GPIOR_OUT, GPIOR_IN);  // I2C pins
+  Wire.setClock(100000);            // 100kHz I2C
+
+  // BME280 pressure/temperature/humidity
+  bme.begin(0x76);
+  Serial.print("BME280: "); Serial.println(bme.isConnected() ? "connected" : "not found");
+
+  // MPU6050 accelerometer
+  Wire.beginTransmission(0x68);
+  Wire.write(0x6B);  // Gyro
+  Wire.endTransmission();
+  Serial.print("MPU6050: "); Serial.println("connected");
+}
+
+void loop() {
+  // Read sensors
+  float pressure = bme.readPressure() / 100.0;
+  float temp = bme.readTemperature();
+  float accelX = mpureadAccelerometerX();
+  Serial.print("P: "); Serial.print(pressure);
+  Serial.print(" T: "); Serial.println(temp, 2);
+  
+  delay(1000);
+}
+```
+
+#+END_SRC
+
+** PWM Servo Control
+#+BEGIN_SRC cpp
+#include <Servo.h>
+
+Servo myservo;
+
+void setup() {
+  myservo.attach(22);  // PWM pin
+  myservo.write(0);    // Min position
+  
+}
+
+void loop() {
+  myservo.write(90);   // Center
+  delay(1000);
+  myservo.write(180);  // Max position
+  delay(1000);
+  myservo.write(0);    // Min position
+  delay(1000);
+}
+```
+
+#+END_SRC
+
+** BLE Mesh Network
+#+BEGIN_SRC cpp
+#include <BLEDevice.h>
+#include <BLEServer.h>
+
+class MyServer: public BLEServerCallbacks {
+  void onConnect(BLEServer *server) {
+    Serial.println("Client connected");
+  }
+};
+
+void setup() {
+  Serial.begin(115200);
+  BLEDevice::init("Daisy Seed");
+  
+  BLEServer *pServer = BLEDevice->createServer();
+  BLEService *pService = pServer->createService("daisyseed");
+  
+  pService->start();
+  pServer->startAdvertising();
+}
+
+void loop() {
+  // Keep BLE advertising
+}
+```
+
+#+END_SRC
+
+* Project Integration
+
+** Daisy Chain Architecture
+#+NAME: daisy-daisy-chain
+Multiple daisy seed boards can be chained together:
+- Use BLE 192-bit mesh network
+- Each board acts as network node
+- Central hub coordinates all devices
+- Total nodes: 100+ (BLE mesh limitation)
+
+** Sensor Fusion
+| Node Type    | Use Case                              |
+|-------------------|----------------------------|
+| **Sensor Node**  | Environment monitoring             |
+| **Actuator Node**| Relay/Valve control                |
+| **Gateway Node** | Bridge to MQTT/WiFi cloud          |
+| **Router Node**  | BLE mesh routing                   |
+
+* GPIO Limitations Note
+:PROPERTIES:
+:ID: daisy-gpio-limitations
+:END:
+
+#+NAME: gpio-limitations
+- 32 user-programmable GPIOs total
+- Some pins reserved for:
+  - I2S interface (GPIO 1-3)
+  - Touch controller (GPIO 6-11)
+  - SDIO (specific pinmux)
+- PWM: Dual 80MHz PWM
+- DAC: 5-channel PWM analog
+
+* Power Requirements
+| Parameter      | Value                    |
+|-------------------|-------------------------|
+| **Input Voltage**    | 3.3V - 5V              |
+| **Quiescent Current**| ~150mA (WiFi off)      |
+| **WiFi Active**      | ~200-300mA             |
+| **BLE TX Current**   | ~150-250mA             |
+| **Peak Current**     | ~400mA (WiFi + BT peak)|
+| **Deep Sleep**       | ~45μA                  |
+| **RTC Sleep**        | ~50μA                  |
+
+* Recommended Tools
+
+** Debug Tools
+#+NAME: daisy-recommended-tools
+| Tool                   | Purpose                        |
+|------------------------|--------------------------------|
+| Arduino IDE            | Primary development            |
+| PlatformIO + ESP-IDF   | Advanced firmware              |
+| ESPHome                | Configuration via YAML         |
+| BLE Mesh Editor        | Network configuration          |
+| BLE Scanner            | Device discovery               |
+| Serial Plotter         | Debug monitoring               |
+| Oscilloscope           | I2S/PWM verification           |
+
+* Hardware Diagnostics
+#+NAME: daisy-diagnostics
+| Check            | Command                        | Expected Output        |
+|------------------|---------------------------------|--------------|
+| **WiFi Mode**    | WiFi.mode()                    | WIFI_STA/1           |
+| **Flash Info**   | get.freeHeap()                 | >7000 bytes          |
+| **Touch Test**   | touchRead(GPION_TOUCH)         | 0-1023 (touch value)   |
+| **I2C Scan**     | Wire.scan()                    | Device addresses      |
+| **GPIO Test**    | digitalRead(pin)               | HIGH/LOW             |
+
+This documentation reflects the Electro-Smith daisy seed microcontroller configuration for the Blender Twin IoT sensor controller architecture.

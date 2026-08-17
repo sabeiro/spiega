@@ -1,0 +1,144 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: llm_governanace
+:END:
+#+TITLE: LLM governance
+#+SUBTITLE: ownership and traceability
+#+DATE: 14-05-2026
+#+KEYWORDS: Data science, language models, LLMs
+# Local IspellDict: en
+#+STARTUP: showall latexpreview
+#+OPTIONS: tex:t
+#+TODO: active done crit milestone todo review knwoledge task
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+property: header-args:bash :result output replace :export none
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+BIBLIOGRAPHY: bibliography.bib
+
+* AI agents
+
+AI agents can speed up operations by processing near real time incoming inquiries. The reliability and preciseness of the responses depends on few factors which we need to assess first.
+Let's consider customer support first.
+The ERP/CRM system is well integrated and contains the full-standing information about the customer, the AI agent should be able to retrieve the exact information and formulate a proper answer without guessing any non-factual information
+There are multiple available run-books explaining what is the company procedure and how to solve customer issues. Those run-books should be coherent, updated and complete. I suggest to create synthetic data of customer issues to evaluate that LLM answers are reproducible and reliable.
+There is an extensive documentation around legal risks associated with wrong answers so we can build guardrails which will review the answers before responding to the customer.
+The automation of labor intensive tasks is a promising cost-cutting in many branches but we need to make sure we properly evaluate the connected risks because failures can have high cost in terms of legal actions and reputation. This is why I suggest a step-by-step approach to enable a reliable transition.
+
+* enrollment 
+
+** PoC
+
+We collect all the input material (API integration, run-books, labelled cases) and we build an off-line model which will evaluate historical data. 
+historical data: check any mis-interpretation in customer inquiries
+synthetic data: create additional data points to explore less common issues
+LLM agent: build an tune an LLM agent which performs the best evaluation and has a good cost balance
+Guardrail: which will further evaluate responses
+At the end of the PoC many metrics will be computed (response time, reliability, cost reduction/inquiry, false positive rate...) and then decision to proceed to next phase will be compared to business KPIs. 
+
+** MVP
+
+The PoC code will be cleaned up and put in a dev environment attached to live resources. A portion of the incoming traffic will be elaborated from the AI agents and the results will be compared in a variant testing. It KPIs prove to be as solid in a live situation the solution can be enrolled for a larger portion of traffic.
+Product
+The MVP code will be re-written to perform at scale and the portion of human agents will be still kept as control group. Performances will be monitored and we will put alerts for model performances drops or data drifts.
+
+** Governance
+
+AI agents don't take any reliability for their answers. There is no LLM provider able to guarantee the stability of answers which we need to check during PoC.
+The company should need to decide few crucial points before you put the solution in production to avoid serious unexpected risks.
+Local/public: do we need to deploy a local model to avoid sensitive information leak (what is the company policy?)
+Performances: who is responsible for performances and what is the expected SLA
+Responsibility: who is the ultimate responsible for customer communication and what is the expected behavior for those agents (conservative vs creative)
+Customer satisfaction: how do we evaluate and consider customer feedback to be able to revert in case the market will badly react
+
+** Conclusion
+
+These are few thought regarding the implementation of AI agents for customer support based on my experience. My experience helps to forecast problems which could not be seen at the beginning but thanks to the big exposure I have with telco, e-commerce and media company I believe this is the pathway to follow for such an implementation.
+First of all we should start the PoC to deeply evaluate whether the expectation of the AI agents meets the business expectation. This step is low-cost and creates many valuable insights about efficiency in operations for the company and adds added value independently on the enrollment of the project.  
+
+
+* [#B] LLM governance
+
+Agentic workflow is shifting the paradigm from running operations to monitor the operativity of agents.
+The system should define clear ownership across all the components to allow proper decision making.
+The key component is traceability: the system should be built so any agent decision is more or less reproducible and we can spot where the issue was initiated.
+There are as well few main areas where different stakeholders need to monitor and control the status and the success of the system. Those areas should properly define metrics, KPIs, indicators, logs, checks, evaluations... so each owner can control and act on the system.
+The system should follow some guidelines and all the components should be consider them.
+The main areas are:
+
+- [[backend]]  :: cost and performance control
+- [[fitness]]  :: how much the results are aligned with the goals
+- [[goodness]] :: checks on model performances and edge cases, data drifts and models evaluation
+- [[business]] :: is the overall system performing correctly and delivering value
+
+
+#+BEGIN_aside
+Define the key metrics is the most relevant activity
+#+END_aside
+
+#+ATTR_HTML: :controls controls :width 350
+#+BEGIN_video
+#+HTML: <source src="movie.mp4" type="video/mp4">
+#+HTML: <source src="movie.ogg" type="video/ogg">
+Your browser does not support the video tag.
+#+END_video
+
+#+HTML: Literal HTML code for export
+
+#+BEGIN_EXPORT html
+  All lines between these markers are exported literally
+#+END_EXPORT
+
+#+ATTR_HTML: :title The Org mode website :style color:red;
+[[https://orgmode.org]]
+
+#+CAPTION: This is a table with lines around and between cells
+#+ATTR_HTML: :border 2 :rules all :frame border
+
+Many stakeholders get lost in defining a proper governance method especially regarding some terms:
+- traceability :: rebuild the actions done by the agents using accurate logs
+- observability :: a much generic term to indicate the collection of metrics around a running system
+- evaluation :: check model performances against typical metrics like: hallucination,
+- KPI :: more business oriented indicators, they should comprise multiple quantities and 
+
+#+begin_src elisp
+(org-html-export-to-html)
+#+end_src
+
+#+CAPTION: example of a flow of responsibilities
+#+ATTR_HTML: :width 600px :alt data governance model proposed :align center
+#+NAME:   fig:data governance
+[[~/lav/siti/f/f_sawmill/data_governance.svg]]
+
+* backend
+
+* fitness
+
+* goodness
+
+* business
+
+
+* commands
+
+
+#+BEGIN_SRC bash :tangle yes :tangle "tangled.sh" :shebang "#!/bin/bash"
+echo "This is my configuration script"
+echo "..do something interesting here.."
+#+END_SRC
+
+
+#+ATTR_HTML: :textarea t :width 40
+#+BEGIN_EXAMPLE
+  (defun org-xor (a b)
+     "Exclusive or."
+     (if a (not b) b))
+#+END_EXAMPLE
+
+
+

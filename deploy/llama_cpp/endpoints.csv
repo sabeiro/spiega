@@ -1,0 +1,4 @@
+#ghcr.io/ggml-org/llama.cpp:light-cuda
+/models
+/models/load
+/models/unload

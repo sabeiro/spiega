@@ -1,0 +1,7 @@
+
+Error: file-missing ("Cannot open load file" "Dosiero aŭ dosierujo ne ekzistas" "request")
+  require(request)
+  load-with-code-conversion("/home/sabeiro/lav/siti/spiega/script/org-export-html-conf.el" "/home/sabeiro/lav/siti/spiega/script/org-export-html-conf.el" nil t)
+  command-line-1(("tmp.org" "--load" "org-export-html-conf.el" "--"))
+  command-line()
+  normal-top-level()

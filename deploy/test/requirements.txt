@@ -1,0 +1,32 @@
+# Blender CV Python Environment Requirements
+# This file lists the Python dependencies for the Blender CV MCP Server
+# The slide show works with or without these libraries
+
+# Required for visualization (optional for slide show)
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Scientific computing
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Machine learning
+scikit-learn>=1.2.0
+
+# For pose estimation (optional)
+opencv-python>=4.8.0
+
+# Visualization and graphs
+requests>=2.31.0
+
+# Network testing
+# (Already available in system)
+
+# Optional: For web serving
+# Flask>=3.0.0
+
+# MCP related (install separately if needed)
+# @earendil-works/pi-coding-agent>=0.78.0
+
+# For FEM and heat simulation (optional)
+# FEniCS (requires system packages)

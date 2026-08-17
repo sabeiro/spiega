@@ -1,0 +1,81 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: product_design
+:END:
+#+TITLE: product design
+#+SUBTITLE: the important questions to build a product
+#+DATE: 14-05-2026
+#+KEYWORDS: Data science, language models, LLMs
+#+description:
+# #+INCLUDE: ~/lav/src/spiega/template/header.org
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+OPTIONS: body-only:t
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: buisness(b) dev(t) science(s) management(m) data_science(d) admin(a) consultancy(c) art(r)
+#+STARTUP: showall
+
+* product design
+
+While working in different companies and serving multiple clients I collected a lot of experience and exposure to products.
+
+
+*** evolution of products design
+
+When I started my enterprise career in 2013 the market looked like the golden age for product design.
+The companies where pivoting around products re-structuring teams around ideas, breaking hierarchies and building sub companies to be ready to treat as external entities.
+
+
+*** company's evaluation
+
+For VCs investing in startups the most important moment is the company exit more than the relevance of the business or the durability of the company. The exit value is based on company evaluation which in many cases around 2020s wasn't really tight to revenue figures. 
+
+*** bad return
+
+Among all the strange evaluations we saw big investments in products who didn't have enough market or enough maturity to disrupt. We paid with increased service costs some of these investments that didn't bring the expected return. The question is whether the buyer or the seller had a bad understanding of the profitability of the products.
+To name a few:
+- virtual reality :: hard to think you can spend hours a day with an visor on your head
+- 5G :: hard to quantify the improvement. The moment I switched it off from my self phone my battery lasted 3 times longer
+- web3 :: a lot more computation needed and unclear advantages
+- blockchain :: I don't see any more companies offering this service 
+- autonomous drive :: in 2015 everybody said in 3y we will stop buying private cars
+- SaaS :: in 2026 it's hard to see how can they be profitable
+- LLMs :: we'll see. It's hard to think that a subscription model could bring long term revenues
+
+*** cost saving
+
+The easiest argument for selling to a client is cost saving.
+
+* needs
+
+The easiest path is to start from market needs. The most important aspect is optimization and I see different areas where the industry needs a huge productivity boost:
+
+- healthcare :: one of the most significant expense for the state budget
+  - predictive :: prevention is a huge cost saving which rarely get considered. Data are not collected correctly, shared, anonymized, used...
+- logistics :: humans have many means of transportation but there is no infrastructure for goods in city centers [[id:mini_hub][mini hub logistics]]
+
+
+*** logistics
+
+Logistic is a field where the optimization potential is huge but the resistance against changes is even larger.
+
+*** delivery
+
+Delivery sounds like a well established market where everything is highly optimized. I rarely order something online but when I needed some hardware components my experience was in 2025:
+
+- China :: the provider didn't have debit card nor IBAN options to pay
+- US :: the price wasn't considering custom fees which wasn't clear at the time of the order
+- EU :: the product wasn't in stock and the price was much higher due to hypothetical custom fees
+- account :: I had to open two different accounts for the two different regions for the same company. Each region has separated customer service, terms and conditions
+- delivery :: I find in my mailbox a note that the courier didn't find me when I actually was at home
+  - tracking :: I opened the different emails to find out who was the carrier but the link for the tracking ID was broken
+  - customer service :: I contacted the Indian contact center multiple times, people where kind but couldn't help, nobody could tell me where my parcel I paid for was delivered
+  - parcel :: I went all over the shops in the neighborhood where usually parcels get delivered and finally found the product I paid for
+  - laptop :: when my company sent me the laptop they delivered it to a neighbor breaking the confidential terms of my contracts. The delivery service sent me a note instead naming a shop close by who didn't actually received my laptop
+
+It is pretty clear that the optimization potential is huge and the industry is not mature enough. The idea itself that running vans across the city for door-to-door activity consuming boxes and trash is not competitive against a well organized mini hub logistics is not comparable. The labor, even with automation, for door-to-door is not convenient. 
+

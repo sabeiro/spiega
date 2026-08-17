@@ -1,0 +1,25 @@
+FROM ghcr.io/ggml-org/llama.cpp:light-cuda
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    python3-pip \
+    bash \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN adduser --disabled-password --gecos '' ubuntu || true
+
+WORKDIR /app
+
+COPY ./app/ /app
+RUN chmod +x run.sh /app/run.sh
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD cat /app/run.sh
+
+ENTRYPOINT ["/app/run.sh"]

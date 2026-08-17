@@ -1,13 +1,18 @@
 ---
-title: "data platform"
+title: data platform
 author: Giovanni Marelli
-date: 2019-07-02
+date: 2019-09-12
 rights:  Creative Commons Non-Commercial Share Alike 3.0
 language: en-US
+id: data_platform
+category: #tech
+roam_refs: data platform
+roam_aliases: ["data platform"]
 output: 
 	md_document:
 		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
 ---
+
 # data platform
 
 A collection of docker images, middlewares, schedulers, jobs, UIs to set up a self managed analytical cluster.
@@ -27,7 +32,7 @@ Industry standards following some modern principles:
 * **agile**: goals should be defined considering urgency and complexity, cost and benefits. Epics define the overall strategic goals, sprints the detailed operational tasks. Planning and retrospective should occur periodically
 * **collaborative**: simple selection of admin tools, browser based, device agnostic
 
-![data_platform](../f/f_sawmill/data_pipe.svg "data pipe")
+![data_platform](../../f/f_sawmill/data_pipe.svg "data pipe")
 _example of a data pipeline_
 
 ## main features

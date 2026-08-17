@@ -1,0 +1,309 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: knowledge_graph_create
+:END:
+#+title: knowledge graph creation
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-05-22>
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_twin/docs/
+
+* knowledge base                                           :present:dev:
+:PROPERTIES:
+:ID:       knowledge_graph-knowledge_intro
+:ROAM_ALIASES: agentic knowledge graph
+:END:
+
+Here we create knowledge graphs with LLMs. We need to parse different types of knowledge base and use dedicated models and prompt for that. The challenge here is to consider a reasonable amount of context to capture the most useful information.
+
+** knowledge types 
+:PROPERTIES:
+:ID:  knowledge_graph-types
+:ROAM_ALIASES: knowledge types graph
+:END:
+
+In this project we analyze different types of source documents.
+
+*** blog post
+
+Blog posts are files I directly wrote to present some projects:
+
+- tech :: collections of blog posts in the directory [[~/lav/siti/spiega/markdown][spiega]]
+- thoughts :: collection of thoughts from the directory [[~/lav/siti/scritti/markdown/][scritti]]
+- science :: collection of work during [[~/lav/kotoba/Fiziko][PhD]]
+
+*** video content
+
+The channel is [[https://www.youtube.com/@viudi_music][viudi]] and the description is [[~/lav/src/spiega/graph/video_desc_qwen25coder3b.csv][collected here]].
+
+*** source code
+
+All the source files selected from [[~/lav/src/kotoba/kotoba/model_local.py][dir2tree]] from the folder [[~/lav/src/][src/]]
+
+*** working experience
+
+The collection of skills and experiences from [[~/lav/siti/spiega/markdown/*yml][CV]]
+
+*** pictures
+
+All technical pictures published online from [[~/lav/siti/f][siti]]
+
+** parsing
+
+The first step is to prepare the knowledge base as described in [[id:knowledge_graph][knowledge graph project]].
+
+The main file is [[~/lav/src/kotoba/example/create_knowledge_base.py][create knowledge base]] which uses [[~/lav/src/kotoba/kotoba/graph_rag.py][graph_rag]], [[~/lav/src/kotoba/kotoba/local_model.py][local_model]], which I load as
+
+#+name: kotoba-libraries
+#+begin_src python :results output replace
+import os, sys, json, re, yaml
+os.environ['LAV_DIR'] = os.environ['HOME'] + '/lav/'
+dL = os.listdir(os.environ['LAV_DIR']+'/src/')
+sys.path = list(set(sys.path + [os.environ['LAV_DIR']+'/src/'+x for x in dL]))
+import kotoba.model_local as c_t
+import kotoba.graph_rag as g_r
+#+end_src
+
+#+RESULTS: kotoba-libraries
+
+To create the knowledge base a function called `dir2tree` reads select file format types and creates a summary for each source. Sources are different, in one case we use blog posts, source codes or video descriptions retrieved from APIs. 
+
+#+name: create_knowledge
+#+begin_src python :results output replace
+llm = c_t.get_llm_chat(model_id=model_id)
+videD = c_t.summarize_text(llm,videD,is_video=True)
+videD.to_csv(baseDir + "graph/video_desc_" + modelN + ".csv",index=False)
+blogD = c_t.dir2tree(os.environ['HOME'] + '/lav/siti/spiega/markdown/')
+blogD = c_t.summarize_text(llm,blogD)
+blogD.to_csv(baseDir + "graph/blog_desc_" + modelN + ".csv",index=False)
+codeD = get_new_list(codeD,os.environ['HOME'] + '/lav/src/')
+codeD = g_r.gen_tech_summary(codeD,model_id=model_id)
+codeD['lang'] = codeD['file'].apply(lambda x: x.split(".")[-1])
+codeD['summary'] = codeD['description'].apply(lambda x: json.loads(x)['summary'])
+codeD['time'] = codeD['path'].apply(lambda x:  str(datetime.fromtimestamp(os.path.getmtime(x)).year))
+codeD.to_csv(baseDir + "graph/code_desc_" + modelN + ".csv",index=False)    
+#+end_src
+
+I load all the summarized text files:
+
+#+name: load_knowledge
+#+begin_src python :results output replace
+import pandas as pd
+import os, sys, json, re, yaml
+baseDir = os.environ['HOME'] + '/lav/src/spiega/'
+model_id = "qwen2.5-coder:3b"
+modelN = re.sub(r'[^\w\s]', '', model_id)
+codeD = pd.read_csv(baseDir + "graph/code_desc_" + modelN + ".csv")
+pictD = pd.read_csv(baseDir + "graph/pict_desc_" + modelN + ".csv")
+blogD = pd.read_csv(baseDir + "graph/blog_desc_" + modelN + ".csv")
+compD = pd.read_csv(baseDir + "graph/comp_desc_" + modelN + ".csv")
+#+end_src
+
+#+RESULTS: load
+
+#+name: load_knowledge
+#+begin_src python :results output replace
+import pandas as pd
+import os, sys, json, re, yaml
+baseDir = os.environ['HOME'] + '/lav/src/spiega/'
+model_id = "qwen2.5-coder:3b"
+modelN = re.sub(r'[^\w\s]', '', model_id)
+codeD = pd.read_csv(baseDir + "graph/code_desc_" + modelN + ".csv")
+pictD = pd.read_csv(baseDir + "graph/pict_desc_" + modelN + ".csv")
+blogD = pd.read_csv(baseDir + "graph/blog_desc_" + modelN + ".csv")
+compD = pd.read_csv(baseDir + "graph/comp_desc_" + modelN + ".csv")
+#+end_src
+
+where:
+
+- code :: 3k3 source code files (cpp,py,go,js,...)
+- pictures :: 2k pictures created in documentations
+- videos :: 180 videos from the [[https://www.youtube.com/@viudi_music][channel]]
+- blog :: 110 articles for technical/scientific blog posts
+- competences :: 5 yaml [[../markdown/*yml][yaml source files]] describing working experience and competences 
+
+For each data set we create consistent summaries of the content. 
+
+* agentic graph                                                 :present:dev:
+:PROPERTIES:
+:ID:       knowledge_graph-agentic_graph
+:ROAM_ALIASES: agentic graph
+:END:
+
+This project makes heavily use of graphs. The process is has follow:
+The main file is [[~/lav/src/kotoba/example/graph_rag.py][graph_rag]] which uses [[~/lav/src/kotoba/kotoba/graph_rag.py][graph_rag]], [[~/lav/src/kotoba/kotoba/knowledge_hierarchy.py][knowledge hierarchy]], [[~/lav/src/kotoba/kotoba/local_model.py][local_model]],  [[~/lav/src/kotoba/kotoba/graph_neo4j.py][graph neo4j]] which I load as
+
+#+name: kotoba-libraries
+#+begin_src python :results output replace
+import kotoba.model_local as c_t
+import kotoba.graph_rag as g_r
+import kotoba.graph_neo4j as g_n
+import kotoba.knowledge_hierarchy as k_h
+import kotoba.mcp_client as m_c
+#+end_src
+
+In my projects the [[~/lav/src/kotoba/example][example]] folder has runnable examples with real data.
+
+The graph is created as follow:
+- load the generated summary for each data source
+- use ollama `chat` to get a structured and consistent json which contains nodes and links.
+- deduplicate all nodes and 
+- use an llm to enrich node attributes
+- export nodes and relations to graph (neo4j) to visualize them
+  
+#+name: link-library
+#+begin_src python :results output replace
+class LinkL(BaseModel):
+    id: str
+    source_id: str
+    source_description: str
+    target_id: str
+    target_description: str
+    labels: str
+    relationship_type: str
+    relationship_description: str
+#+end_src
+
+* level up knowledge
+
+Clamping the different topics to level up the knowledge is not a trivial task, there are many ways important information can be neglected.
+We start performing some K-means clustering where we start with 40 clusters.
+We use a text embedding function as we would do to build a [[~/lav/src/kotoba/kotoba/chat_utils.py][RAG]] to project the data in the vector space.
+Some information is scarcely populated and we have multiples clusters with less than 10 nodes. Among the left over clusters we calculate the different relationships as done above (per single document) and we unfold the query results into a graph with links and nodes.
+We then append all the information to similar nodes and ask a language model to summarize the findings.
+
+#+name: link-library
+#+begin_src python :results output replace
+llm = c_t.get_llm_mcp(model_id=model_id)
+embed_model = c_t.get_emb_mcp()
+relD, grpD = k_h.level_up_link(enD,llm,embed_model,clusterN=clusterN)
+grpD = g_r.gen_relationship_grp(llm,grpD,model_id=model_id)
+enDG, relDG = g_r.relation2graph(grpD,is_group=True)
+enD1 = g_r.categorize_node(enD1,model_id)
+#+end_src
+
+When then export the results to neo4j for queries and visualization.
+
+#+name: link-library
+#+begin_src python :results output replace
+g_n.delete_graph()
+g_n.graph_neo4j(enD,relD)
+g_n.delete_graph()
+g_n.graph_neo4j(enDG,relDG)
+#+end_src
+
+We reach the [[http://localhost:7474/browser/][neo4j dashboard]] and type the query to select all nodes and links.
+
+#+name: neo4j-query
+#+begin_src sql :results output replace
+MATCH (n)-[r]->(m)
+RETURN *; 
+#+end_src
+
+For a more advanced visualization we use [[https://github.com/yWorks/yfiles-jupyter-graphs-for-neo4j][yFiles]] by running a jupyter and opening a [[http://localhost:8891/notebooks/example/neo4j_data_explorer.ipynb][notebook]].
+
+#+name: jupyter-notebook
+#+begin_src bash :results output replace
+jupyter notebook --notebook-dir $HOME/lav/src/kotoba/ &
+#+end_src
+
+#+name: kill-process
+#+begin_src bash :results output replace
+kill %$(jobs)
+#+end_src
+
+#+RESULTS: kill-process
+
+
+* project presentation                                     :present:business:
+:PROPERTIES:
+:ID:       knwoledge_graph-present
+:END:
+
+To present the content of one of these projects I need to convert these .org files into html presentations.
+
+** slides
+
+Turn .org files into html slides. Each headline will split the content into a slide.
+- output :: `agent_call.html`
+- org processing :: `emacs agent_call.org --batch --load -f emacs/org-html-export-html-conf --kill`
+- html processing :: `python3 convert_slides.py agent_call.html 
+- navbar :: on the header with usual links: home, blog...
+- footer :: with navigation buttons: next, prev, top. Always visible 
+- table of content :: as separate panel callable from a navigation button
+- style :: a single css file in `css/` where
+  - current :: only current slide is visible
+  - tag :: only sections marked as `SLIDE` are visible
+  - theme :: dark and elegant professional style
+  - responsive :: responsive theme
+- script :: a single .js file in `js/` folder
+  - navigation :: connects navigation buttons with slide view
+- slides :: slide behavior as follow:
+  - attributes ::
+    - `id` :: as header name
+    - `class` :: as `slide` and `current` as currently visible slide
+    - `tag` :: from .org headers into `data-property` into the <div>
+  - split :: only first level headers define a slide
+  - content :: should be wrapped and the slide content should have overflow-y: scroll
+- processing ::
+  - script :: `org-export-html-conf.el` defines org exports from `ox.el` library
+
+We first export the org into html `emacs tmp.org --batch --load -f org-html-export-html-conf --kill`
+
+#+begin_src bash :results output replace
+emacs agent_call.org --batch --load emacs/org-html-export-html-conf.el -f org-html-export-to-html --kill
+#emacs $PROJ_DIR/agent_call.org --batch  -f org-html-export-to-html --kill
+#+end_src
+
+#+RESULTS:
+ 
+
+** diagrams
+
+The results of the knowledge graphs are saved into json files like `diagram_graph.json`. This graph need to be displayed to create visualizations useful for presenting.
+Specs:
+- output :: `diagram.html`
+- data :: the json like `diagram_graph.json` contains nodes and links for a graph
+  - nodes :: useful attributes are `id`, `color`, `icon`, `description`
+  - links :: useful attributes are `id`, `color`, `description`
+- script :: javascript in `js/`
+  - D3.js :: `js/diagram.js` to manage the graph
+- style :: css in `css/diagram.css`
+  - theme :: dark, elegant, professional, responsive
+  - tooltip :: visualize node description on hover
+  - icons :: load node icon
+  - colors :: use colors as in dataset
+- controls :: collapsable panel
+  - graph selector :: top-down menu to select a list of graphs
+    
+* active video on agents                                   :business:present:
+:PROPERTIES:
+:ID:       knowledge_graph-video
+:ROAM_ALIASES: video on agents
+:END:
+
+We refer to the channel [[id:youtube-intro][youtube channel]] 
+
+A video to explain this process:
+
+- Audience :: who should watch this video
+  - IT :: people working in IT creating similar agentic support and knowledge base
+  - creators :: who need to understand how to organize the content they made and they are preparing
+- Knowledge base :: information to work on
+
+#+begin_example
+'"For a youtube audience how to run an agentic job in the sense that you set up a system where you build your professional knowledge base as documentation, you index everything and provide a knowledge graph and let an agent run an interview based purely on the information you provide"'
+#+end_example
+
+#+begin_src emacs-lisp
+(message "Hello world")
+#+end_src
+
+#+RESULTS:
+: Hello world

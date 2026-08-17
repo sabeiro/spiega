@@ -1,0 +1,70 @@
+body {
+  color: #eee;
+  background: #121212;
+}
+h1, h2, h3, h4, h5{
+    color: #eee;
+}
+p {
+    color: #eee;
+}
+a:link, a:visited {
+    color: #c7a38a;
+    background: transparent;
+    font-weight: bold;
+    text-decoration: underline;
+}
+a {
+}
+#wrapper, 
+#content { 
+    width: auto; 
+    margin: 0; 
+    padding: 0; 
+    border: 0; 
+    float: none !important; 
+    color: #eee;
+    background: transparent none;
+    max-width: 70em;
+}
+#content a:link::after, #content a:visited::after {
+    /* content: " (" attr(href) ") "; */
+    content: "";
+    font-size: 90%;
+}
+
+p author	{}
+p date	{}
+p creator	{}
+.title	{
+    font-size: 2.1em;
+}
+.subtitle	{
+    font-size: 0.5em;
+}
+.todo	{}
+.done	{}
+.WAITING	{}
+.timestamp	{}
+.timestamp-kwd	{}
+.timestamp-wrapper	{}
+.tag	{}
+._HOME	{}
+.target	{}
+.linenr	{}
+.code-highlighted	{}
+div outline-N	{}
+div outline-text-N	{}
+.section-number-N	{}
+.figure-number	{}
+.table-number	{}
+.listing-number	{}
+div figure	{}
+pre src	{}
+pre example	{}
+p verse	{}
+div footnotes	{}
+p footnote	{}
+.footref	{}
+.footnum	{}
+.org-svg	{}

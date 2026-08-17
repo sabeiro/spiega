@@ -1,62 +1,77 @@
+---
+title: javascript
+author: Giovanni Marelli
+date: 2019-09-12
+rights:  Creative Commons Non-Commercial Share Alike 3.0
+language: en-US
+id: javascript
+category: #tech
+roam_refs: javascript
+roam_aliases: ["javascript"]
+output: 
+	md_document:
+		variant: markdown_strict+backtick_code_blocks+autolink_bare_uris+markdown_github
+---
+
 # javascript
 
 # d3
 
 Some d3.js examples are published on [anticolo](https://intertino.it/anticolo)
 
-![d3](../portfolio/f/d3viz.png "d3 overview")
+![d3](../portfol../../f/d3viz.png "d3 overview")
 _d3 overview_
 
 Example of [network](https://intertino.it/anticolo/network.php)
 
-![network](../f/f_stage/viz_network.png "network")
+![network](../../f/f_stage/viz_network.png "network")
 _network_
 
 Example of [heatmap](https://intertino.it/anticolo/heatmap.php)
 
-![heatmap](../f/f_stage/viz_heatmap.png "heatmap")
+![heatmap](../../f/f_stage/viz_heatmap.png "heatmap")
 _heatmap_
 
 Example of [sunburst](https://intertino.it/anticolo/sunburst.php)
 
-![sunburst](../f/f_stage/viz_sunburst.png "sunburst")
+![sunburst](../../f/f_stage/viz_sunburst.png "sunburst")
 _sunburst_ 
 
 Example of [circle packt](https://intertino.it/anticolo/circle_pack.php)
 
-![circle pack](../f/f_stage/viz_circlePack.png "circlePack")
+![circle pack](../../f/f_stage/viz_circlePack.png "circlePack")
 _circlePack_ 
 
 Example of [treebox](https://intertino.it/anticolo/treebox.php)
 
-![treebox](../f/f_stage/viz_treebox.png "treebox")
+![treebox](../../f/f_stage/viz_treebox.png "treebox")
 _treebox_ 
 
-![taxonomy](../portfolio/f/taxonomy.png "taxonomy")
+![taxonomy](../portfol../../f/taxonomy.png "taxonomy")
 _taxonomy_
 
 # R 
 
-![demographics](../portfolio/f/socio_demo.png "socio demo")
+![demographics](../portfol../../f/socio_demo.png "socio demo")
 _socio demo_
 
-![time series](../portfolio/f/time_series.png "time series")
+![time series](../portfol../../f/time_series.png "time series")
 _time series_
 
-![geo](../portfolio/f/geo.png "geo")
+![geo](../portfol../../f/geo.png "geo")
 _geo_
 
-![affinity](../portfolio/f/affinity.png "affinity")
+![affinity](../portfol../../f/affinity.png "affinity")
 _affinity_
 
-![customer_feedback](../portfolio/f/customer_feedback.png "customer_feedback")
+![customer_feedback](../portfol../../f/customer_feedback.png "customer_feedback")
 _customer feedback_
 
 # openlayer
 
 Openlayers is a really handy map library that supports many the display of different geometrical layers on top of raster or vector maps.
 
-![open layers](../f/f_ride/openlayes.png "openlayers")
+![open layers](../../f/f_ride/openlayes.png "openlayers")
 _openlayers_
 
 
@@ -190,3 +205,69 @@ function plotPoly(spotL,currZoom){
 
 
 ```
+
+
+# Bot review on my work
+
+It seems like you've been working on various JavaScript projects across different platforms such as React Native, Node.js, React, Angular, and more. Each of these projects has its unique requirements and challenges.
+
+Here are some key takeaways from your experiences:
+
+### React Native Projects
+
+1. **Async Functionality**: You've used `async` functions extensively in your React Native apps to handle asynchronous tasks efficiently. This is crucial for handling user input, fetching data from APIs, and managing state in a React-Native app.
+
+2. **Redux Form**: You're familiar with the Redux-Form library, which simplifies form management in React applications. It provides powerful validation, error handling, and form submission features.
+
+3. **Performance Optimization**: Managing performance is key in React Native apps, especially when dealing with large amounts of data or complex UIs. You've used techniques like memoization, lazy loading components, and avoiding unnecessary re-renders to improve app performance.
+
+4. **State Management**: You've used various state management libraries like Redux, Context API, or useReducer for managing application state in React Native apps effectively.
+
+5. **Testing**: Writing unit tests and end-to-end tests using Jest and other testing frameworks is essential for maintaining the quality of your React Native applications. Understanding how to write testable code and ensuring that your app works as expected across different devices is crucial.
+
+### Node.js Projects
+
+1. **Express Framework**: You've used Express.js extensively in your Node.js projects to create RESTful APIs. It provides a robust set of tools for building web servers and handling HTTP requests efficiently.
+
+2. **Database Integration**: Working with databases like MongoDB or MySQL has been part of your projects, using libraries like Mongoose (for MongoDB) and Sequelize (for MySQL).
+
+3. **Error Handling**: Implementing effective error handling is crucial in Node.js applications to ensure that errors are logged and handled gracefully without crashing the application.
+
+4. **Asynchronous Programming**: You've used promises and async/await to handle asynchronous operations efficiently, which is particularly useful when dealing with multiple API calls or database queries.
+
+5. **Security**: Implementing security measures like authentication, data encryption, and input validation is essential in Node.js applications to protect against common vulnerabilities.
+
+### React Projects
+
+1. **Form Handling**: Using libraries like Formik for managing forms has allowed you to streamline form validation and submission processes in React apps effectively.
+
+2. **State Management**: You've used Redux and Context API for state management in React projects, ensuring that your application's state is centralized and managed efficiently.
+
+3. **Testing**: Writing unit tests using Jest and React Testing Library has become a standard practice in your React projects to ensure that your components are working as expected.
+
+4. **Responsive Design**: Ensuring that your React apps are responsive and work well on different devices and screen sizes has been a focus.
+
+5. **Deployment**: Deploying your React applications to platforms like AWS or Vercel, along with setting up CI/CD pipelines, has become an important part of your development process.
+
+### Angular Projects
+
+1. **End-to-End Testing**: Using Protractor for end-to-end testing allows you to test the entire application flow from user input to backend interactions effectively.
+
+2. **Component Testing**: Writing unit tests for components using Jasmine and Karma helps ensure that individual UI components are working as expected independently of other parts of the app.
+
+3. **Security**: Implementing security measures like authentication, input validation, and protecting against common Angular vulnerabilities is important in Angular projects.
+
+4. **Performance Optimization**: Optimizing Angular applications to improve performance, especially with large datasets or complex templates, has been a focus.
+
+5. **Deployment**: Deploying your Angular apps using tools like Angular CLI for building and deploying, along with setting up continuous integration/continuous deployment pipelines, is crucial for maintaining a smooth release process.
+
+### Overall Recommendations
+
+- **Documentation Learning**: Always invest time in learning the official documentation of libraries and frameworks you're using, as they often provide best practices and solutions to common problems.
+  
+- **Code Reviews**: Regularly review your code with peers or mentors to gain insights and improve coding standards.
+
+- **Continuous Learning**: The tech landscape is constantly evolving, so stay updated with new tools, technologies, and patterns. Attend workshops, meetups, and online courses to keep up with the latest trends in JavaScript development.
+
+By leveraging these best practices and continuously learning, you can enhance your skills and create more robust applications across different platforms.
+

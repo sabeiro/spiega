@@ -1,0 +1,138 @@
+- type: work
+  year: 02-23/present
+  role: Lead AI/generative solutions for cloud and on-prem
+  company: Softserve
+  description: 'Tech lead for scoping and implementing AI projects. Building and steering the teams responsible for implementation. Positioned between hardware
+    producers (nvidia, lenovo, dell, cisco...) and the market to consult, teach and
+    realize ML/AI projects with the use of the most modern solutions both on the appropriate
+    hardware (cloud/on-prem) or software.'
+- type: work
+  year: 09-22/01-23
+  role: Strategic platform consultant/LLM
+  company: startups + lightmeter@Y-combinator
+  description: 'Consulting early stage start-ups to architect and deliver data infrastructure: storage, interfaces, middlewares, scheduler, messaging, security, redundancy, analytics, BI. Train and implement language models with focus on email outreach.'
+- type: work
+  year: 09-20/07-22
+  role: Director client data services/telco
+  company: afiniti
+  description: 'Leading the technical implementation of afinti AI solutions for big
+    European clients (telco, banking, media) and managing remote teams assigned to
+    the project: DE, DA, DS, AI, DB admin. Responsible in customer projects: pre-sales,
+    feasibility study, metric design, data reliability, data analytics, performance
+    monitoring, billing, financial reports.'
+- type: work
+  year: 09-19/09-20
+  role: AI lead/mobility
+  company: circ/bird + vay
+  description: 'Developing a full stack (micro service based) solution for fleet dispatch.
+    The engine defines the most profitable task assignments for the capable agents
+    on the field. Demand forecast and customer patterns. Forecast on telemetry data.'
+- type: work
+  year: 10-17/09-19
+  role: Sr DS/mobility
+  company: Motionlogic@Deutsche Telekom
+  description: 'Interpreting mobile data of 30M users and their mean of transportation,
+    product owner for product development of origin-destination matrices, responsible
+    for customer deliveries (mobility, advertising, real estate, commuter patterns).
+    Machine learning, insight highlights and data monetization.'
+- type: work
+  year: 10-16/10-17
+  role: Sr DS/advertising
+  company: Mediamond@Mediaset
+  description: 'Data driven advertising via audience segmentation on a large cross
+    device media network. Responsible for target quality and performance, inventory
+    forecast, modeling, data visualization, and business intelligence. Tech consultant
+    for user profiling built from web logs, CRM data, second party enrichment, semantic
+    engines, and SEO keywording. Representing my company for the big data project
+    of the corporation.'
+- type: work
+  year: 10-14/01-16
+  role: DS/e-commerce
+  company: E-dynamics@Lufthansa
+  description: 'Data driven segmentation of price and ancillary teasers on lufthansa.com.
+    Campaign design, tracking, revenue calculation, reporting and tool concept development.
+    Owner of 30+ A/B tests with 3M certified revenue uplift.'
+- type: work
+  year: 02-13/10-14
+  role: Software consultant/ERP & BI
+  company: dauvi
+  description: 'Advising SMEs to organize and collect data in their companies, installing
+    cloud based ERP/CRM systems. Setting a geo based rural portal to connect professionals.'
+- type: work
+  year: 06-09/01-13
+  role: Research assistant/biophysics
+  company: "UniGoe"
+  description: 'Developing a parallel high performance c++ suite for Monte Carlo and
+    Molecular Dynamics simulations, openGL 3D visualization, ETL, data visualization
+    and reporting for biological oriented questions. Publications: Influenza Fusion,
+    String Method, Pore Formation.'
+- type: education
+  year: 06-09/01-13
+  role: PhD
+  company: "UniGoe"
+  description: Study of protein-induced pore stability via profiled parallel computing
+    on multiprocessor clusters via MonteCarlo and molecular dynamics methods and PDE.
+    Visualization of statistical properties of data and study on membrane morphology
+    transformations.
+- type: education
+  year: 01-07/03-09
+  role: Master
+  company: UniPd
+  description: Nanoparticle stability in lipid membranes via molecular dynamics simulations
+    and visualization tools. Parallel code with revision control.
+- type: education
+  year: 10-02/12-06
+  role: Bachelor
+  company: UniPd
+  description: Monte Carlo simulations of ion-defects' diffusion after distribution
+    calculation of sputtering of silicon ions on a silicon lattice.
+- type: training
+  year: Q3/12
+  role: trainee
+  company: UniHB
+  description: Tuning of parallel programs
+- type: training
+  year: Q3/13
+  role: trainee
+  company: "UniGoe"
+  description: Management consulting & project management
+- type: training
+  year: Q1/14
+  role: trainee
+  company: odoo.com
+  description: ERP setting up and programming
+- type: training
+  year: Q2/14
+  role: trainee
+  company: ander35
+  description: 'Entrepreneurship: market, strategy and business plan'
+- type: training
+  year: Q1/17
+  role: trainee
+  company: hfarm
+  description: 'HackItaly: 48h app dev'
+- type: training
+  year: Q2/20
+  role: trainee
+  company: xpeppers
+  description: Aws training courses
+- type: training
+  year: Q2/20
+  role: trainee
+  company: entrepreneur first
+  description: 'Entrepreneurship program: blockchain in pharma'
+- type: awards
+  year: Q3/13
+  role: creator
+  company: Regione Lombardia
+  description: Fund for supporting cultural and creative ideas
+- type: awards
+  year: Q1/13
+  role: creator
+  company: "Comunità Montana ValSabbia"
+  description: "Ideas' competition Valsabbia e Garda"
+- type: awards
+  year: Q3/15
+  role: creator
+  company: Maker faire Rome
+  description: Maker of merit

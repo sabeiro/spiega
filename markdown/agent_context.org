@@ -1,0 +1,1520 @@
+:PROPERTIES:
+:GPTEL_MODEL: qwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model living in Emacs and a helpful assistant. Respond concisely. gptel loaded
+:GPTEL_TOOLS: Agent Skill TodoWrite Grep Read Glob Write Insert Edit Mkdir Diagnostics YouTube WebFetch WebSearch Eval Bash blender_interface send_to_blender read_buffer echo_message append_to_buffer read_file create_file make_directory list_directory run_shell_command
+:ID: agent_context
+:GPTEL_BOUNDS: ((response (2016 2017)))
+:END:
+#+title: agentic context 
+#+STARTUP: showall
+#+TODO: active done crit milestone todo review knwoledge task
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-06-24>
+
+* agent context
+
+It is really important to let agents know what is the right context and what is expected from them. Many LLMs tend to overdo or take autonomous decisions which go in the wrong direction.
+
+* models
+
+We need to list all [[~/lav/src/blender_twin/deploy/ollama/pi_config/agent/models.json][models.json]]
+
+{
+  "providers": {
+    "ollama": {
+      "baseUrl": "http://localhost:11434/v1",
+      "api": "openai-completions",
+      "apiKey": "ollama",
+      "models": [
+       { "id": "qwen3.6:latest" },
+       { "id": "llama3.2:latest" },
+       { "id": "dolphin-mistral:latest" },
+       { "id": "gemma4:latest" },
+       { "id": "deepseek-coder:6.7b" },
+       { "id": "codegemma:7b" },
+       { "id": "qwen3.5:9b" },
+        { "id": "qwen2.5-coder:7b" }
+      ]
+    }
+  }
+}
+
+* settings
+
+We define the default settings for each run [[~/lav/src/blender_twin/deploy/ollama/pi_config/agent/settings.json][settings.json]]
+
+{
+  "lastChangelogVersion": "0.79.0",
+  "packages": [
+    "git:github.com/badlogic/pi-doom",
+    "npm:pi-llama-cpp",
+    "npm:@ollama/pi-web-search"
+  ],
+  "defaultProvider": "ollama",
+  "defaultModel": "qwen3.5:9b"
+}
+
+* instructions
+
+Coding agents need to be properly instructed. For that we provide a clear set of rules.
+
+* example from [[~/lav/src/blender_twin/deploy/ollama/pi_config/.rules][.rules]]
+
+** 🔴 CRITICAL RULES (Never Violate)
+1. stick to the task, don't overinterpret, don't over do, ask instead of inventing
+2. **ALWAYS backup first** - Create .bkp file before ANY change
+  - use a file named /home/sabeiro/lav/src/blender_twin/docs/ongoing/review.md and write there all the files with absolute path which I need to review/delete/edit
+3. **READ FULL FILES** - Don't just read top 100 lines
+4. **ONE TASK AT A TIME** - Add theme toggle only, nothing else
+5. **DON'T BREAK EXISTING** - Preserve all current functionality and recover from .bkp files if needed.
+6. **VERIFY BEFORE DONE** - Test syntax, check existing features
+7. **ASK FOR REWRITES** - ask to replace working code
+8. **DO NOT WORK ON WRONG TASKS** - Stick strictly to stated requirements
+9. **DO NOT SPEND HOURS ON MISINTERPRETATION** - Clarify or do minimal
+10. **ONLY TOUCH related files** - I the task is to edit one file ask before touching anything else
+
+** 🟡 WORKING RULES (Always Follow)
+- Check existing logic before adding features
+- Minimal changes - only what's necessary
+- Create proper backups (.bkp extension)
+- Don't touch HTML files in static_html folder unless directed
+- Read all files before editing
+- Verify changes work correctly
+- Keep code simple and maintainable
+
+** 🟢 GOOD PRACTICES
+- Understand full file structure first
+- Test incrementally
+- Document what you're adding
+- Ask clarifying questions before changing logic
+- Stick to stated task, don't assume additional features needed
+
+** 🎯 TASK EXECUTION
+1. Read the input files mentioned FULLY to understand current structure
+2. Don't interpret the task, read it carefully and ask in case of doubts
+3. Create backup first: cp slide.js slide.bkp.js
+4. Test everthing works correctly
+
+** 🚫 NEVER DO
+- Rewrite entire logic when simple tweak is needed
+- Modify files in wrong directories. If you don't find it ask instead of searching or creating
+- Break existing functionality
+- Create buggy replacements
+- Assume more features needed than specified
+- Spend hours on wrong task interpretation
+
+** ✅ CORRECT APPROACH
+1. Read requirements fully
+2. Backup files
+3. Make minimal changes
+4. Test incrementally
+5. Verify functionality
+6. Ask if unclear
+
+** 📍 YOUR FILE LOCATIONS (ONLY THESE FILES)
+Keep in mind:
+- Your temp files regarding your tasks: /~/lav/src/blender_twin/docs/ongoing/
+- Your conf files : /~/lav/src/blender_twin/deploy/ollama/pi_config/
+
+To NEVER Touch:
+- Any .org file which I use for planning and consistency
+
+** ⚠️ IF UNCLEAR
+1. Stop
+2. Clarify task
+3. Don't assume
+4. Don't break anything
+
+
+
+* system
+
+We need to inform the agent what is the system we are working with.
+For that we created  [[~/lav/src/blender_twin/deploy/ollama/pi_config/SYSTEM.md][SYSTEM.md]] and [[~/lav/src/blender_twin/deploy/ollama/pi_config/SYSTEM_APPEND.md][SYSTEM_APPEND.md]] to inform the assistant where they will operate.
+
+** example from  [[~/lav/src/blender_twin/deploy/ollama/pi_config/SYSTEM.md][SYSTEM.md]] 
+# System Configuration
+
+## Environment
+- **OS:** Ubuntu 26.04 LTS
+- **Architecture:** x86-64 / ARM64 (Jetson Orin)
+- **GPU:** NVIDIA RTX 5060 (8GB VRAM) / Jetson Orin Nano (10 TOPS)
+- **RAM:** 32GB (Recommended: 64GB for high-throughput)
+- **Storage:** 500GB+ NVMe SSD (Recommended: 1TB with RAID0)
+- **Power:** 220W+ continuous (with GPU)
+- **Network:** Gigabit Ethernet / Wi-Fi 6
+
+## Hardware Support
+
+### Edge Nodes
+- Jetson Orin Nano (4GB RAM, 12 TOPS NPU)
+- Jetson Orin NX (16GB RAM, 216 TOPS)
+- NVIDIA RTX 5060 (8GB GDDR6)
+- RTX 4070/4080 for high-throughput
+- Coral TPU for inference acceleration
+
+### Supported Camera Modules
+- OV2640 (VGA, 30 FPS)
+- IMX219 (HD, 30 FPS)
+- IMX477 (QHD, 60 FPS)
+- Thermal sensors (MLX90614)
+- Depth cameras (ToF, LIAR)
+- RGB+Depth fusion
+
+### Sensors
+- IMU (accelerometer, gyroscope)
+- Barometric pressure
+- Temperature & humidity
+- Microphone array (8-channel)
+- GPS/Geolocation
+- LiDAR (optional)
+
+---
+
+## Security Policies
+
+### Network Access
+- Local development only (127.0.0.1)
+- No external network access in containers
+- Port forwarding restricted
+- No outbound connections except to trusted services
+- Rate limiting on external endpoints
+
+### File Permissions
+```bash
+# Directory permissions
+data/           drwxr-xr-x     755
+logs/           drwxr-xr-x     700
+config/         drwxr-xrw-     750
+models/         drwxr-x---     750
+sensitive/      drwxr-----     700
+
+# File permissions
+*.py           644
+*.pyc          640
+*.conf         600
+*.key          600
+*.pem          600
+
+# Sensitive data
+credentials/    drwx------     700
+private_keys/   drwx------     700
+```
+
+### Container Permissions
+- No sudo execution from containers
+- Read-only file permissions on shared volumes
+- Drop capabilities: `--cap-drop=ALL`
+- No privileged containers
+- Seccomp profile: `default`
+- AppArmor profile: `docker-default`
+
+---
+
+## Deployment Modes
+
+### A) Development Mode
+
+```bash
+# Enable debug logging
+LOG_LEVEL=DEBUG
+
+# Permissive security
+MODE=development
+ALLOW_INsecure=1
+
+# Resource limits relaxed
+MAX_MEMORY=8GB
+MAX_CPU=80%
+```
+
+**Features:**
+- All MCP tools enabled
+- Unlimited context window
+- Full system access
+- Debug mode enabled
+- No rate limiting
+
+### B) Production Mode
+
+```bash
+# Production settings
+LOG_LEVEL=INFO
+MODE=production
+
+# Resource restrictions
+MAX_MEMORY=4GB
+MAX_CPU=90%
+MAX_CONCURRENT=4
+
+# Security hardening
+ENCRYPT_SECRETS=1
+RATE_LIMIT=100/s
+```
+
+**Features:**
+- Production-hardened security
+- Rate limiting
+- Resource capping
+- Audit logging
+- Health checks
+
+### C) Edge Mode
+
+```bash
+# Edge deployment
+MODE=edge
+LOW_POWER_MODE=1
+DEEP_SLEEP_ENABLED=1
+
+# Wake triggers
+WAKE_ON_MOTION=1
+WAKE_ON_GPIO=1
+WAKE_ON_WIFI=1
+```
+
+**Features:**
+- Deep sleep mode
+- Low-power operation
+- Local processing only
+- Minimal network use
+- Battery optimization
+
+---
+
+## Ollama Configuration
+
+### Model Constraints
+
+```yaml
+# Max concurrent requests
+max_concurrent_requests: 2
+context_window: 8192  # tokens
+keep_alive: 10m  # minutes
+model_memory_limit: 8GB
+
+# Model caching
+model_cache_size: 10GB
+auto_download: true
+prune_old_models: true
+
+# Response time
+max_response_time_ms: 30000
+min_throughput_rpm: 5
+```
+
+### Context Management
+
+```yaml
+# Context window
+max_tokens: 8192
+default_context: 2048
+compression: 0.65
+
+# Memory optimization
+memory_budget: 16GB
+quantization: fp16
+keep_alive_window: 110m
+```
+
+### Request Queue
+
+```yaml
+queue_max_size: 100
+queue_timeout_ms: 30000
+fallback_model: ""
+priority_queue: true
+```
+
+---
+
+## Resource Monitoring
+
+### Performance Metrics
+
+```python
+# CPU usage
+cpu_current: < 90%
+cpu_average: < 70%
+cpu_spike_threshold: > 100%
+
+# Memory usage
+memory_used: < 4GB
+memory_average: < 2.5GB
+memory_swap: 0
+
+# Disk I/O
+read_ops: < 500/s
+write_ops: < 100/s
+disk_utilization: < 80%
+
+# Network throughput
+upload_rate: < 100MB/s
+download_rate: < 200MB/s
+latency_p99: < 50ms
+```
+
+### Alert Thresholds
+
+```bash
+# Warning thresholds
+LOGGING_MEMORY_WARNING=80%
+LOGGING_CPU_WARNING=80%
+LOGGING_DISK_WARNING=85%
+LOGGING_NETWORK_WARNING=90%
+
+# Critical thresholds
+ALERT_MEMORY_CRITICAL=95%
+ALERT_CPU_CRITICAL=95%
+ALERT_DISK_CRITICAL=95%
+ALERT_NETWORK_CRITICAL=95%
+```
+
+---
+
+## MCP Server Configuration
+
+### Tool Definitions
+
+```yaml
+# Code tools
+code-read:
+  description: Read source files and logs
+  capabilities: [read, analyze]
+  scope: [src/, logs/, config/]
+
+code-ask:
+  description: Analyze code without execution
+  capabilities: [syntax, logic]
+  max_tokens: 8192
+
+code-run:
+  description: Execute code with restrictions
+  capabilities: [execute, output]
+  restrictions: [no_network, safe_only]
+  timeout_sec: 60
+  memory_limit_mb: 512
+
+# MCP Server permissions
+max_concurrent_tools: 4
+tool_timeout_ms: 30000
+request_validation: true
+```
+
+### Security Model
+
+```yaml
+# Read-only tools
+read_only:
+  tools: [code-read, code-ask]
+  scope: [/src/, /logs/, /data/]
+
+# Write tools (restricted)
+write_tools:
+  tools: [code-run]
+  restrictions: [write_file:/logs/, write_file:/data/]
+  no_database: true
+  no_external_api: true
+
+# Full access (admin only)
+admin_tools:
+  tools: []
+  scope: [/]
+  restrictions: []
+```
+
+---
+
+## Network Configuration
+
+### Local Network
+
+```yaml
+host: 127.0.0.1
+port_ollama: 11434
+port_mcp: 18789
+port_api: 8000
+
+# Bind address
+bind_address: 0.0.0.0
+external_access: true
+```
+
+### External Access
+
+```yaml
+# Production mode
+external_network: false
+
+# Allow-listed IPs (optional)
+allow_ips: []  # Empty = no access
+
+# Rate limiting
+rate_limit_requests: 100/s
+rate_limit_window: 60s
+```
+
+---
+
+## Process Limits
+
+### CPU Management
+
+```yaml
+# Per-process limits
+max_cpu_percent: 90
+cpu_affinity: []
+cpu_isolation: true
+
+# Process controls
+nice_level: 19
+pdeath_signal: 9
+oom_score_adj: -500
+```
+
+### Memory Management
+
+```yaml
+# Memory limits
+process_memory_max: 4GB
+cache_memory_max: 2GB
+heap_memory_max: 1.5GB
+
+# Swapping policy
+memory_swap_enabled: false
+memory_overcommit: false
+```
+
+### Concurrency Control
+
+```yaml
+# Parallelism limits
+max_workers: 4
+max_file_handles: 1024
+max_connections: 300
+
+# Queue management
+queue_depth: 100
+queue_timeout: 30s
+backlog_max: 4
+```
+
+---
+
+## Build Requirements
+
+### Base Image
+
+```dockerfile
+# Base image
+FROM python:3.11-slim
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    python3.11 \
+    python3-pip \
+    gcc \
+    make \
+    cmake \
+    build-essential \
+    && apt-get clean
+
+# Install Python packages
+RUN pip install --no-cache-dir \
+    torch>=2.1.0 \
+    pytorch-lightning>=2.1.0 \
+    opencv-python>=4.8.0 \
+    numpy>=1.24.0 \
+    pandas>=2.0.0 \
+    scipy>=1.11.0 \
+    torchvision>=0.16.0 \
+    pillow>=10.0.0 \
+    uvicorn>=0.23.0 \
+    fastapi>=0.100.0
+```
+
+---
+
+## Environment Variables
+
+### Development
+
+```bash
+export PYTHONPATH=""
+export PYTHONDONTWRITEBYTECODE=1
+export PY_DEBUG=1
+export LOG_LEVEL=DEBUG
+export MAX_MEMORY=8GB
+
+# Security relaxed
+export ALLOW_INSECURE=1
+export SKIP_TLS_VERIFY=1
+export SKIP_CERT_VERIFICATION=1
+```
+
+### Production
+
+```bash
+export PYTHONPATH=""
+export PYTHONDONTWRITEBYTECODE=1
+export LOG_LEVEL=INFO
+export MAX_MEMORY=4GB
+
+# Security hardened
+export ALLOW_INSECURE=0
+export SKIP_TLS_VERIFY=0
+export SKIP_CERT_VERIFICATION=0
+export ENCRYPT_SECRETS=1
+```
+
+---
+
+## Startup Configuration
+
+### Service Dependencies
+
+```yaml
+services:
+  ollama:
+    requires:
+      - docker
+      - python
+      - mcp-server
+    environment:
+      - OLLAMA_MODELS=/models
+      - OLLAMA_MAX_MEMORY=16GB
+
+  mcp-server:
+    depends_on:
+      - ollama
+    environment:
+      - MCP_MODE=production
+      - MCP_MAX_WORKERS=4
+
+  web-ui:
+    depends_on:
+      - mcp-server
+    ports:
+      - "8000:8000"
+```
+
+---
+
+## Health Checks
+
+### Ollama Health
+
+```bash
+# Check if Ollama is running
+curl -s http://localhost:11434/ping
+
+# Get system statistics
+curl -s http://localhost:11434/api/tags
+
+# Check model availability
+curl -s http://localhost:11434/api/version
+```
+
+### MCP Server Health
+
+```bash
+# Check MCP server status
+curl -s http://localhost:18789/health
+
+# Get worker stats
+curl -s http://localhost:18789/stats
+```
+
+---
+
+## Monitoring
+
+### Logging Configuration
+
+```yaml
+# Log format
+format: json
+
+# Log levels
+dev: DEBUG
+staging: INFO
+prod: INFO
+```
+
+### Metrics Export
+
+```yaml
+export:
+  prometheus: true
+  grafana: true
+  dataplane: false
+
+scrape_interval: 15s
+scrape_timeout: 10s
+```
+
+---
+
+## License
+
+MIT License - See LICENSE file for details.
+
+
+
+
+
+
+** example from  [[~/lav/src/blender_twin/deploy/ollama/pi_config/SYSTEM_APPEND.md][SYSTEM_APPEND.md]]
+
+## Agent-Specific Configurations
+
+### 🎨 blender_mcp Agent
+```yaml
+description: Blender integration via MCP for 3D modeling in digital twins
+config_path: blender_mcp/
+stack: blender_mcp
+capabilities:
+  - mesh_deformation
+  - texture_generation
+  - rigging_and_animation
+  - environment_modeling
+  - object_import_export
+limits:
+  max_active_objects: 500
+  texture_memory: 4GB
+  gpu_rendering: true
+export_formats: [.obj, .fbx, .gltf]
+version: 4.0+ LTS
+```
+
+### 🔬 fenics_solver Agent
+```yaml
+description: FEniCSx/DOLPHIN finite element analysis tools
+config_path: heat_fem/
+stack: fenics/heat_fem
+capabilities:
+  - thermal_analysis
+  - structural_analysis
+  - adaptive_mesh_refinement
+  - nonlinear_solutions
+  - time_dependent_problems
+limits:
+  timeout_minutes: 30
+  memory_limit: 16GB
+  output_format: HDF5
+validation:
+  mesh_quality_check: true
+  convergence_criteria: true
+```
+
+### ⚡ optimization_engine Agent
+```yaml
+description: Energy optimization engines for graph-based problems
+config_path: phys_opt/
+stack: phys_opt
+capabilities:
+  - constraint_satisfaction
+  - resource_allocation
+  - thermal_optimization
+  - parallel_computation
+limits:
+  max_cores: 8
+  cache_duration: 24h
+  timeout_minutes: 15
+solvers: [Pyomo, IPOPT]
+```
+
+### 👁️ computer_vision Agent
+```yaml
+description: Pose estimation, object detection, tracking using OpenCV/ONNX
+config_path: pose_estimate_py/
+stack: pose_estimate_py
+capabilities:
+  - pose_estimation
+  - object_detection
+  - multi_person_tracking
+  - depth_estimation
+  - motion_analysis
+limits:
+  inference_latency: 100ms
+  framerate: 30fps
+  batch_size: 8
+model_formats: [ONNX, TensorRT]
+```
+
+### 🕸️ knowledge_graphs Agent
+```yaml
+description: Graph databases and RDF for entity relationships
+config_path: graphdb/
+stack: graphdb/neo4j/rdf
+capabilities:
+  - entity_relationship_modeling
+  - ontology_definition
+  - query_optimization
+  - graph_traversal
+limits:
+  max_nodes: 10000
+  max_edges: 50000
+libraries: [RDFLib, GraphDB, neo4j]
+```
+
+### 📡 iot_connectivity Agent
+```yaml
+description: IoT integration via MQTT, CoAP, OPC-UA protocols
+config_path: mqtt/coap/opcua/
+stack: mqtt/coap/opcua
+protocols:
+  - MQTT
+  - CoAP
+  - OPC-UA
+capabilities:
+  - device_discovery
+  - data_subscription
+  - publish_subscribe
+  - gateway_management
+```
+
+### 📊 time_series Agent
+```yaml
+description: Time-series sensor data processing and analysis
+config_path: pandas/numpy/
+stack: pandas/numpy
+capabilities:
+  - stream_processing
+  - window_aggregations
+  - anomaly_detection
+  - trend_analysis
+  - forecast_modeling
+libraries: [pandas, numpy, statsmodels, prophet]
+```
+
+### ⚙️ physics_simulation Agent
+```yaml
+description: Multi-physics simulation (CFD, structural analysis)
+config_path: simpy/pysims/
+stack: simpy/pysims
+fields:
+  - fluid_dynamics: CFD, flow_simulation
+  - structural: stress_analysis, deformation
+  - environmental: weather_modeling
+capabilities:
+  - multi_phase_flows
+  - turbulence_modeling
+  - thermal_transfer
+```
+
+### 📡 data_streaming Agent
+```yaml
+description: Real-time data pipeline management
+config_path: apache/beam/
+stack: apache/beam
+capabilities:
+  - event_streaming
+  - batch_processing
+  - windowing_operations
+  - state_management
+  - fault_tolerance
+formats: [Kafka, MQTT, Pulsar]
+```
+
+### 🎨 visualization Agent
+```yaml
+description: WebGL 3D visualization and AR/VR integration
+config_path: webgl/threejs/
+stack: webgl/threejs
+capabilities:
+  - scene_assembly
+  - real_time_rendering
+  - vr_integration
+  - dashboard_creation
+technologies: [webgl, threejs]
+```
+
+### 🔄 sensor_fusion Agent
+```yaml
+description: Multi-sensor data integration and calibration
+config_path: opencv/ptile/
+stack: opencv/ptile
+capabilities:
+  - calibration_management
+  - synchronization
+  - data_fusion
+  - noise_reduction
+sensor_types: [camera, imu, lidar, thermal, gps]
+```
+
+### 🤖 predictive_ml Agent
+```yaml
+description: Predictive models and anomaly detection
+config_path: scikit-learn/tensorflow/
+stack: scikit-learn/tensorflow
+tasks:
+  - predictive_maintenance
+  - anomaly_detection
+  - behavior_prediction
+frameworks: [scikit-learn, tensorflow, pytorch, xgboost]
+```
+
+### 📱 edge_computing Agent
+```yaml
+description: Jetson Orin Nano on-device ML processing
+config_path: nvidia/cuda/
+stack: nvidia/cuda
+capabilities:
+  - model_inference
+  - edge_training
+  - model_optimization
+  - resource_scheduling
+platforms: [jetson_orin_nano, jetson_orin_nx]
+```
+
+### ⚡ energy_modeling Agent
+```yaml
+description: Building energy systems and thermal dynamics
+config_path: building-energy/
+stack: building-energy
+components:
+  - hvac_systems
+  - thermal_zones
+  - renewable_integration
+capabilities:
+  - load_simulation
+  - efficiency_optimization
+  - carbon_footprint_calculation
+```
+
+### 📡 sensor_data Agent
+```yaml
+description: Sensor data collection and quality validation
+config_path: data-quality/
+stack: data-quality
+capabilities:
+  - data_collection
+  - normalization
+  - quality_validation
+  - outlier_detection
+data_sources: [iot, api, manual]
+```
+
+### 📑 twin_protocols Agent
+```yaml
+description: Digital Twin standards (DTCL, AAS, OPC UA)
+config_path: dtcl/aas/opcua/
+stack: dtcl/aas/opcua
+standards:
+  - dtcl: digital_twins_companion_link
+  - aas: asset_administration_shell
+  - opcua: information_modeling
+capabilities:
+  - metadata_management
+  - lifecycle_management
+```
+
+### ✨ emacs Agent (Orchestrator)
+```yaml
+description: Emacs orchestrator for project coordination
+config_path: mcp_server/emacs/emacs.el
+stack: emacs/elpa/org
+capabilities:
+  - org_mode_coordination
+  - mcp_tool_integration
+  - code_execution
+  - documentation_generation
+  - workflow_automation
+priority: MASTER
+```
+
+---
+
+## 🚀 Deployment Configurations
+
+### Hardware Targets
+
+#### 🖥️ Laptop (ACER Nitro V16 AI)
+```yaml
+name: acer_nitro_v16
+cpu: AMD Ryzen 7 with NPU
+gpu: NVIDIA GeForce RTX 5060
+ram: 32GB
+use_case:
+  - primary_development
+  - heavy_simulation
+  - model_training
+```
+
+#### 📦 Edge Device (Jetson Orin Nano)
+```yaml
+name: jetson_orin_nano
+cpu: 2x ARM Cortex-A55 cores
+ram: 8GB
+use_case:
+  - edge_inference
+  - distributed_twins
+  - sensor_processing
+```
+
+### Deployment Scripts
+- **Docker**: docker-compose.yml (mcp_server + mcp_client)
+- **Ansible**: ansible/ (remote deployment)
+- **Nginx**: nginx/ (web server config)
+- **Ollama**: ollama/ (LLM container)
+- **Logs**: logs/ (debug outputs)
+
+---
+
+## 🔐 Security & Access
+- LLM models via Ollama (local)
+- Direct HF URLs without token when possible
+- Use model_list.txt to check available models
+- Don't modify containers without permission
+
+---
+
+## 📝 License
+All content under: **Creative Commons BY-NC-SA 4.0**
+
+URL: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+---
+
+**Version**: 1.0.0  
+**Last Updated**: 2026-06-09  
+**Maintainer**: intertino
+
+
+
+* skills
+
+Given the context of the project we can then define the skills needed.
+Skills usually is a yaml file containing the definition of the tools needed.
+
+** example from [[~/lav/src/blender_twin/deploy/ollama/pi_config/SKILLS.md][SKILLS.md]]
+---
+name: blender mcp
+description: you should be able to use blender via MCP connection for 3D modeling, geometry manipulation, and asset creation for digital twins
+---
+name: fenics_solver
+description: Fenicsx/doplhin for finite element analysis, thermal simulations, and structural calculations in digital twins
+---
+name: optimization_engine
+description: Energy optimization engines for graph-based problems, thermal efficiency, and resource allocation in digital twin systems
+---
+name: computer_vision
+description: Pose estimation, object detection, and tracking for real-time sensor processing in digital twins using OpenCV and ONNX models
+---
+name: knowledge_graphs
+description: Graph databases and RDF for modeling relationships between digital twin components, building information models (BIM), and ontology-based data modeling
+---
+name: iot_connectivity
+description: IoT integration via MQTT, CoAP, OPC-UA protocols for sensor data streaming, device connectivity, and real-time telemetry in digital twins
+---
+name: time_series
+description: Time-series processing for handling sensor data streams, historical analysis, and predictive analytics in digital twin workflows
+---
+name: physics_simulation
+description: Multi-physics simulation capabilities including fluid dynamics (CFD), structural analysis, and environmental modeling for realistic digital twin behavior
+---
+name: data_streaming
+description: Real-time data pipeline management, batch processing, and event handling for high-frequency sensor data in digital twin applications
+---
+name: visualization
+description: 3D visualization, WebGL rendering, and AR/VR integration for presenting digital twin states through web interfaces and immersive experiences
+---
+name: sensor_fusion
+description: Multi-sensor data integration, calibration, and synchronization for reliable digital twin inputs from heterogeneous device sources
+---
+name: predictive_ml
+description: Machine learning models for predictive maintenance, anomaly detection, and behavior prediction in digital twin applications
+---
+name: edge_computing
+description: On-device ML inference and processing for Jetson Orin Nano and embedded platforms, enabling distributed digital twin deployments
+---
+name: energy_modeling
+description: Building energy systems, thermal dynamics, and HVAC optimization for energy-efficient digital twin simulations
+---
+name: sensor_data
+description: Sensor data collection, normalization, and quality validation for feeding digital twin models with accurate real-world observations
+---
+name: twin_protocols
+description: Implementation of digital twin standards including DTCL, Asset Administration Shell (AAS), and OPC UA Information Modeling
+---
+---
+name: emacs
+description: emacs is the orchestrator of the whole project and the integration with LLMs need to work seaminglessly. The configugarion file in `mcp_server/emacs/emacs.el` need to work. Use emacs for lisp and .org files
+---
+
+
+* agents
+
+In the file [[~/lav/src/blender_twin/deploy/ollama/pi_config/agent/AGENTS.md][AGENTS.md]] we define the expertise by each agents.
+
+** example from [[~/lav/src/blender_twin/deploy/ollama/pi_config/agent/AGENTS.md][AGENTS.md]] 
+# 🤖 Agent Definitions & Capabilities
+
+## 🎯 Core Agent Overview
+
+| Agent | Category | Primary Function |
+|-------|----------|------------------|
+| **blender_mcp** | 3D Modeling | Blender integration via MCP for 3D geometry |
+| **fenics_solver** | Simulation | FEniCSx/DOLPHIN for FEM calculations |
+| **optimization_engine** | Energy | Graph-based energy optimization |
+| **computer_vision** | Vision | CV/ML models, pose estimation, ONNX |
+| **knowledge_graphs** | Graph DB | RDF graphs for relationships |
+| **iot_connectivity** | IoT | MQTT/CoAP/OPC-UA protocols |
+| **time_series** | Analytics | Time-series sensor data processing |
+| **physics_simulation** | Physics | CFD, structural analysis |
+| **data_streaming** | Pipeline | Real-time data pipelines |
+| **visualization** | Rendering | WebGL, 3D rendering, AR/VR |
+| **sensor_fusion** | Fusion | Multi-sensor integration |
+| **predictive_ml** | ML | Predictive models, anomaly detection |
+| **edge_computing** | Edge | Jetson Orin on-device ML |
+| **energy_modeling** | Energy | HVAC, thermal dynamics |
+| **sensor_data** | Sensors | Sensor data collection/validation |
+| **twin_protocols** | Standards | Digital Twin standards (DTCL, AAS) |
+| **emacs** | Orchestrator | Emacs .org orchestration |
+
+---
+
+## 📋 Detailed Agent Definitions
+
+### 1. blender_mcp
+```yaml
+category: 3D Modeling
+stack: blender_mcp
+description: You should be able to use Blender via MCP connection for 3D modeling, 
+             geometry manipulation, and asset creation for digital twins.
+capabilities:
+  - mesh_deformation
+  - texture_generation
+  - rigging_and_animation
+  - environment_modeling
+  - object_import_export
+limits:
+  max_active_objects: 500
+  texture_memory: 4GB
+  gpu_rendering: true
+export_formats: [.obj, .fbx, .gltf]
+```
+
+### 2. fenics_solver
+```yaml
+category: Simulation
+stack: fenics/heat_fem
+description: Fenicsx/doplhin for finite element analysis, thermal simulations, 
+             and structural calculations in digital twins.
+capabilities:
+  - thermal_analysis
+  - structural_analysis
+  - adaptive_mesh_refinement
+  - nonlinear_solutions
+  - time_dependent_problems
+limits:
+  timeout_minutes: 30
+  memory_limit: 16GB
+  output_format: HDF5
+validation:
+  mesh_quality_check: true
+  convergence_criteria: true
+```
+
+### 3. optimization_engine
+```yaml
+category: Energy Optimization
+stack: phys_opt
+description: Energy optimization engines for graph-based problems, thermal 
+             efficiency, and resource allocation in digital twin systems.
+capabilities:
+  - constraint_satisfaction
+  - resource_allocation
+  - thermal_optimization
+  - parallel_computation
+limits:
+  max_cores: 8
+  cache_duration: 24h
+  timeout_minutes: 15
+solvers: [Pyomo, IPOPT]
+```
+
+### 4. computer_vision
+```yaml
+category: Computer Vision
+stack: pose_estimate_py
+description: Pose estimation, object detection, and tracking for real-time 
+             sensor processing in digital twins using OpenCV and ONNX models.
+capabilities:
+  - pose_estimation
+  - object_detection
+  - multi_person_tracking
+  - depth_estimation
+  - motion_analysis
+limits:
+  inference_latency: 100ms
+  framerate: 30fps
+  batch_size: 8
+model_formats: [ONNX, TensorRT]
+```
+
+### 5. knowledge_graphs
+```yaml
+category: Knowledge Management
+stack: graphdb/neo4j/rdf
+description: Graph databases and RDF for modeling relationships between 
+             digital twin components, building information models (BIM), 
+             and ontology-based data modeling.
+capabilities:
+  - entity_relationship_modeling
+  - ontology_definition
+  - query_optimization
+  - graph_traversal
+limits:
+  max_nodes: 10000
+  max_edges: 50000
+libraries: [RDFLib, GraphDB, neo4j]
+```
+
+### 6. iot_connectivity
+```yaml
+category: IoT Integration
+stack: mqtt/coap/opcua
+description: IoT integration via MQTT, CoAP, OPC-UA protocols for sensor 
+             data streaming, device connectivity, and real-time telemetry 
+             in digital twins.
+protocols:
+  - MQTT: topic_routing, qos_levels
+  - CoAP: constrained_devices
+  - OPC-UA: information_modeling, semantic_metadata
+capabilities:
+  - device_discovery
+  - data_subscription
+  - publish_subscribe
+  - gateway_management
+```
+
+### 7. time_series
+```yaml
+category: Time-Series Analysis
+stack: pandas/numpy
+description: Time-series processing for handling sensor data streams, 
+             historical analysis, and predictive analytics in digital twin 
+             workflows.
+capabilities:
+  - stream_processing
+  - window_aggregations
+  - anomaly_detection
+  - trend_analysis
+  - forecast_modeling
+libraries: [pandas, numpy, statsmodels, prophet]
+```
+
+### 8. physics_simulation
+```yaml
+category: Physics Simulation
+stack: simpy/pysims
+description: Multi-physics simulation capabilities including fluid dynamics 
+             (CFD), structural analysis, and environmental modeling for 
+             realistic digital twin behavior.
+fields:
+  - fluid_dynamics: CFD, flow_simulation
+  - structural: stress_analysis, deformation
+  - environmental: weather_modeling, pollutant_dispersion
+capabilities:
+  - multi_phase_flows
+  - turbulence_modeling
+  - thermal_transfer
+  - coupling_simulation
+```
+
+### 9. data_streaming
+```yaml
+category: Data Pipelines
+stack: apache/beam
+description: Real-time data pipeline management, batch processing, and 
+             event handling for high-frequency sensor data in digital twin 
+             applications.
+capabilities:
+  - event_streaming
+  - batch_processing
+  - windowing_operations
+  - state_management
+  - fault_tolerance
+formats: [Kafka, MQTT, Pulsar, IoT Core]
+```
+
+### 10. visualization
+```yaml
+category: Visualization
+stack: webgl/threejs
+description: 3D visualization, WebGL rendering, and AR/VR integration for 
+             presenting digital twin states through web interfaces and 
+             immersive experiences.
+technologies:
+  - webgl: 3d_rendering
+  - threejs: scene_management
+  - arvr: immersive_experience
+capabilities:
+  - scene_assembly
+  - real_time_rendering
+  - vr_integration
+  - dashboard_creation
+```
+
+### 11. sensor_fusion
+```yaml
+category: Sensor Fusion
+stack: opencv/ptile
+description: Multi-sensor data integration, calibration, and synchronization 
+             for reliable digital twin inputs from heterogeneous device sources.
+capabilities:
+  - calibration_management
+  - synchronization
+  - data_fusion
+  - noise_reduction
+  - uncertainty_propagation
+sensor_types: [camera, imu, lidar, thermal, gps]
+```
+
+### 12. predictive_ml
+```yaml
+category: Machine Learning
+stack: scikit-learn/tensorflow
+description: Machine learning models for predictive maintenance, anomaly 
+             detection, and behavior prediction in digital twin applications.
+tasks:
+  - predictive_maintenance
+  - anomaly_detection
+  - behavior_prediction
+  - regression_classification
+  - clustering
+frameworks: [scikit-learn, tensorflow, pytorch, xgboost]
+```
+
+### 13. edge_computing
+```yaml
+category: Edge Computing
+stack: nvidia/cuda
+description: On-device ML inference and processing for Jetson Orin Nano 
+             and embedded platforms, enabling distributed digital twin 
+             deployments.
+capabilities:
+  - model_inference
+  - edge_training
+  - model_optimization
+  - resource_scheduling
+platforms:
+  - jetson_orin_nano
+  - jetson_orin_nx
+  - cortex_a55_cores
+constraints: [memory, compute, power]
+```
+
+### 14. energy_modeling
+```yaml
+category: Energy Management
+stack: building-energy
+description: Building energy systems, thermal dynamics, and HVAC 
+             optimization for energy-efficient digital twin simulations.
+components:
+  - hvac_systems
+  - thermal_zones
+  - renewable_integration
+  - energy_storage
+capabilities:
+  - load_simulation
+  - efficiency_optimization
+  - peak_demand_reduction
+  - carbon_footprint_calculation
+```
+
+### 15. sensor_data
+```yaml
+category: Sensor Processing
+stack: data-quality
+description: Sensor data collection, normalization, and quality validation 
+             for feeding digital twin models with accurate real-world 
+             observations.
+capabilities:
+  - data_collection
+  - normalization
+  - quality_validation
+  - outlier_detection
+  - gap_filling
+data_sources: [iot, api, manual]
+```
+
+### 16. twin_protocols
+```yaml
+category: Standards & Protocols
+stack: dtcl/aas/opcua
+description: Implementation of digital twin standards including DTCL, Asset 
+             Administration Shell (AAS), and OPC UA Information Modeling.
+standards:
+  - dtcl: digital_twins_companion_link
+  - aas: asset_administration_shell
+  - opcua: information_modeling
+capabilities:
+  - metadata_management
+  - lifecycle_management
+  - operational_transition
+  - state_estimation
+```
+
+### 17. emacs
+```yaml
+category: Orchestrator
+stack: emacs/elpa/org
+description: Emacs is the orchestrator of the whole project and the 
+             integration with LLMs needs to work seamlessly. The 
+             configuration file in mcp_server/emacs/emacs.el needs to work. 
+             Used for Emacs Lisp and .org files.
+capabilities:
+  - org_mode_coordination
+  - mcp_tool_integration
+  - code_execution
+  - documentation_generation
+  - workflow_automation
+config_path: mcp_server/emacs/emacs.el
+```
+
+---
+
+## 🔧 Agent Interaction Model
+
+### Communication Pattern
+- **Master-Agent**: `emacs` orchestrates all agents
+- **Agent Communication**: Via MCP (Model Context Protocol)
+- **Data Exchange**: JSON over HTTP/WebSockets
+
+### Execution Flow
+```
+┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐
+│  emacs  │ →  │  Agent  │ →  │  Tool   │ →  │  Output │
+└─────────┘    │(Runner) │    │  Exec   │    │    Data │
+               └─────────┘    └─────────┘    └─────────┘
+```
+
+### Priority Levels
+1. **Critical**: Immediate execution, no batching
+2. **High**: Within 1 minute
+3. **Medium**: Within 5 minutes
+4. **Low**: Batch when possible
+5. **Background**: Non-blocking, async
+
+---
+
+## 📊 License & Attribution
+
+All content under: **Creative Commons BY-NC-SA 4.0**
+
+URL: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+---
+
+**Version**: 1.0.0  
+**Last Updated**: 2026-06-09  
+**Maintainer**: intertino
+
+** example from  [[~/lav/src/blender_twin/deploy/ollama/pi_config/agent/README.md][README.md]]
+# Blender MCP Tools for Ollama/LLM Agents
+
+## Setup
+
+This setup allows LLM agents (via Ollama) to interact with Blender operations directly without requiring external Blender installation.
+
+## Configuration
+
+The MCP server is configured in `mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "blender-mcp": {
+      "command": "python3",
+      "args": ["-m", "blender_mcp_client"],
+      "cwd": "/home/sabeiro/lav/src/blender_twin/deploy/ollama/pi_config/agent/standalone_client"
+    }
+  }
+}
+```
+
+## Available Tools
+
+The MCP server provides the following tools:
+
+- `add_cube` - Add a 3D cube to the scene
+- `add_sphere` - Add a 3D sphere object
+- `add_plane` - Add a 3D plane surface
+- `add_material` - Create new materials
+- `add_uv_map` - Add texture maps
+- `render_preview` - Render the scene
+- `list_objects` - List scene objects
+- `list_materials` - List available materials
+- `create_camera` - Create a camera
+- `create_lights` - Create point lights
+- `create_sunlight` - Create area lights (sunlight)
+- `reset_camera` - Reset camera to default
+- `delete_object` - Delete Blender objects
+
+## Usage
+
+The client can be run standalone:
+
+```bash
+cd /home/sabeiro/lav/src/blender_twin/deploy/ollama/pi_config/agent/standalone_client
+python3 blender_mcp_client.py
+```
+
+Or via the MCP server with Ollama using the `mcp.json` configuration.
+
+## Project Integration
+
+This local MCP client integration:
+- Enables the agent to understand Blender operations without requiring external tools
+- Provides tools for common Blender operations (add/delete cubes, materials, cameras)
+- Works with Ollama local LLMs
+- No external Blender installation needed for basic operations
+
+## See Also
+
+- `blender_mcp_client.py` - Main MCP server implementation
+- `mcp.json` - MCP server configuration for Ollama
+- `/home/sabeiro/lav/src/blender_twin/deploy/mcp-client/` - Alternative MCP client setup
+
+
+* MCP
+
+We can as well define the explicit tools an agent can access
+
+** example from  [[~/lav/src/blender_twin/deploy/ollama/pi_config/agent/mcp.json][mcp.json]]
+{
+  "mcpServers": {
+    "blender-mcp": {
+      "command": "python3",
+      "args": [
+        "-m", 
+        "blender_mcp_client"
+      ],
+      "cwd": "/home/sabeiro/lav/src/blender_twin/deploy/ollama/pi_config/agent/standalone_client",
+      "env": {
+        "BLENDER_EXE": "/snap/blender/7480/blender"
+      }
+    },
+    "heat-mcp": {
+      "command": "python3",
+      "args": ["-m", "heat_fem_client"],
+      "cwd": "/home/sabeiro/lav/src/blender_twin/deploy/ollama/pi_config/agent"
+    }
+  }
+}
+
+* extensions
+
+We can define the assistant extensions with python or typescript in [[~/lav/src/blender_twin/deploy/ollama/pi_config/agent/extensions][extensions]].
+
+* sessions
+
+We have traces of all the past interactions in [[~/lav/src/blender_twin/deploy/ollama/pi_config/agent/sessions][sessions]].
+We can than find out what the model decided and modified.
+
+

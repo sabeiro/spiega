@@ -1,0 +1,30 @@
+# Architecture (one LLM, no "two models"):
+# - ollama: only container that uses GPU; runs the model. /api/tags, /api/show, and
+#   chat requests (from the gateway) go here.
+# - mcp: CPU only. Two processes in one container (two ports): 8000 = MCP protocol (Emacs),
+#   8001 = FastAPI agent (control UI, tool-injecting chat, health, vision). Nginx exposes
+#   both under /mcp: /mcp → 8000, /mcp/* → 8001. Chat is forwarded to ollama.
+# - nginx: /mcp and /mcp/* → mcp container; / and /api/* → ollama.
+# Parallel: set OLLAMA_NUM_PARALLEL to 2+ if your GPU has room; 1 is safest for small VRAM.
+# control panel: https://ollama.jetson/mcp/control/
+# All config is in this file for debugging.
+
+services:
+  mcp-client:
+    build:
+      context: ../mcp-client
+      dockerfile: Dockerfile
+    volumes:
+      - ../mcp-client/mcp-client.py:/app/client.py  # hot-reload source code
+    networks:
+      - webserver-net
+    
+networks:
+  webserver-net:
+    name: webserver_webserver-net
+    driver: bridge
+    external: true
+
+volumes:
+  mcp_data:   # /app/data in mcp (response_log.db for eval)
+

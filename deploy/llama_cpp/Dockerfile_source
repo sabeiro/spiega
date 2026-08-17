@@ -1,0 +1,43 @@
+#FROM nvcr.io/nvidia/l4t-base:r36.3.0
+#FROM nvcr.io/nvidia/l4t-cuda:r35.1.0
+#FROM nvcr.io/nvidia/l4t-cuda:12.6.11-runtime
+FROM nvidia/cuda:12.6.0-cudnn-devel-ubuntu22.04
+#FROM nvcr.io/nvidia/l4t-jetpack:r36.3.0
+#FROM ghcr.io/ggml-org/llama.cpp:server-cuda
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONBUFFERED=1
+
+RUN sed -i 's/^# deb/deb/g' /etc/apt/sources.list
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip python3-dev build-essential cmake git curl \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN apt update
+RUN apt install -y libssl-dev 
+RUN python3 -m pip install --upgrade pip setuptools wheel
+RUN nvcc --version
+
+ENV CUDA_HOME=/usr/local/cuda-12.6
+ENV CUUD_TOOLKIT_ROOT_DIR=/usr/local/cuda-12.6
+ENV PATH=${CUDA_HOME}/bin:$PATH
+ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
+ENV CMAKE_ARGS="-DGGML_CUDA=ON -DMAKE_CUDA_COMPILER=${CUDA_HOME}/bin/nvcc"
+ENV FORCE_CMAKE=1
+
+#RUN python3 -m pip install llama-cpp-python
+WORKDIR /opt
+RUN git clone https://github.com/ggerganov/llama.cpp.git
+WORKDIR /opt/llama.cpp
+#RUN rm -rf build 
+RUN cmake -DGGML_CUDA=ON -DBUILD_SHARED_LIBS=OFF -B build
+RUN cmake --build build --config Release
+ENV PATH=/opt/llama.cpp/build/bin:$PATH
+
+
+WORKDIR /app
+COPY run.sh /app/run.sh
+RUN chmod +x /app/run.sh
+
+CMD ["/app/run.sh"]
+    

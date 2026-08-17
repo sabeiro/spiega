@@ -1,0 +1,185 @@
+:PROPERTIES:
+:ID: xiao_esp32s3
+:ROAM_ALIASES: xiao, xiao_esp32, activators
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response 0 50000))
+:END:
+#+TITLE: Xiao ESP32S3 
+#+DATE: 2026-06-19 13:45
+#+OPTIONS: toc:nil num:nil html:true
+#+DESCRIPTION: Hardware knowledge base for Xiao ESP32S3 Seeed Studio IoT activator board
+
+#+STARTUP: showall
+
+* Hardware Overview
+#+NAME: xiao-hardware-overview
+| Component     | Specification                           |
+|---------------|-----------------------------------------|
+| **MCU**       | ESP32-S3 ( Xtensa LX7, 240MHz dual-core)
+| **RAM**       | 10 MB SPI SRAM (shared with flash)    |
+| **Flash**     | 8MB Flash                               |
+| **WiFi**      | 802.11 b/g/n (2.4GHz)                  |
+| **BT**        | BLE 5.2                                 |
+| **ADC**       | 4-channel 12-bit                        |
+| **PWM**       | 16 channels                              |
+| **GPIOs**     | 20 total (15 programmable)              |
+| **UART**      | 2x UART, 1x SPI, 1x I2C                 |
+| **Voltage**   | 3.3V / 5V tolerance                     |
+| **Form**      | 0.3in x 1.3in x 0.12in                  |
+| **Price**     | $9.99 - $12.99                          |
+
+* Software Stack
+
+* GPIO Configuration
+#+NAME: xiao-gpio-config
+| Pin Number    | Function                      | Usage                |
+|---------------|---------------|------------|-------|
+| GPIO 1        | TX / RX (UART)                | Serial debug         |
+| GPIO 2        | I2C SDA                       | Sensor data          |
+| GPIO 3        | I2C SCL                       | Sensor clock         |
+| GPIO 4        | PWM Channel                   | LED control          |
+| GPIO 5        | PWM Channel                   | Solenoid control     |
+| GPIO 6        | ADC Channel                   | Voltage read         |
+| GPIO 7        | ADC Channel                   | Current read         |
+| GPIO 8        | ADC Channel                   | Temperature sensor   |
+| GPIO 9        | I2C GPIO                      | Device address       |
+| GPIO 10-20    | General Purpose I/O           | Actuators            |
+
+* Wiring Diagram
+#+NAME: xiao-wiring-diagram
+| Sensor/Actuator  | Xiao Pin     | Type                   |
+|------------------|-----------------|------------------------|
+| **BME280**       | I2C SDA        | I2C SDA                |
+| **BME280**       | I2C SCL        | I2C SCL                |
+| **LED Strip**    | GPIO 4-10      | RGB PWM                |
+| **Relay**        | GPIO 11        | Digital Output         |
+| **Servo (SG90)** | GPIO 12        | PWM Pulse              |
+| **MOT002 Motor** | GPIO 14        | PWM Speed Control      |
+| **Temp Sensor**  | ADC 1          | 12-bit Voltage         |
+
+* Code Examples
+
+** Blink LED Example
+#+BEGIN_SRC cpp
+#include <Arduino.h>
+
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  delay(1000);
+}
+
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(100);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(100);
+}
+```
+
+#+END_SRC
+
+** I2C Sensor Read Example
+#+BEGIN_SRC cpp
+#include "BME280_Arduino.h"
+
+void setup() {
+  Serial.begin(115200);
+  bme.begin(0x76); // Default I2C address
+}
+
+void loop() {
+  float T = bme.readTemperature();
+  float P = bme.readPressure();
+  float H = bme.readHumidity();
+  Serial.print("T: "); Serial.println(T, 2);
+  Serial.print("P: "); Serial.println(P, 2);
+  Serial.print("H: "); Serial.println(H, 2);
+  delay(1000);
+}
+```
+
+#+END_SRC
+
+** Bluetooth BLE Advertising
+#+BEGIN_SRC cpp
+#include <Esp.h>
+
+void setup() {
+  Serial.begin(115200);
+  esp_bluedroid_init();
+  ble_gap_adv_start(BLE_GAP_SEC_CONN_PRESET);
+}
+
+void loop() {
+  // BLE advertisements
+  Serial.println("Advertising...");
+  delay(1000);
+}
+```
+
+#+END_SRC
+
+* Project Integration
+- Connect to Blender Twin IoT sensor controller
+- Use Arduino framework with BLE libraries
+- MQTT broker communication for cloud integration
+- OTA firmware updates via serial
+
+* GPIO Limitations Note
+:PROPERTIES:
+:ID: xiao-gpio-limitations
+:END:
+
+#+NAME: gpio-limitations
+- Total available GPIO pins: 20
+- Only 15 are user-programmable (some reserved)
+- PWM resolution: 8-bit maximum
+- ADC accuracy: ~3% at room temperature
+- No native audio DAC
+- Limited interrupt pins (GPIO 23+ reserved)
+
+* Power Requirements
+| Parameter      | Value              |
+|-------------------|-------------------|
+| **Input Voltage**    | 3.3V - 5V        |
+| **Quiescent Current**| ~150mA            |
+| **Active Current**   | ~150mA-300mA     |
+| **BLE TX Current**   | ~150-300mA       |
+| **WiFi TX Current**  | ~400-700mA       |
+| **Peak Current**     | ~500mA           |
+
+* Flash Storage Note
+:PROPERTIES:
+:CUSTOM_ID: flash-storage-esp32
+:END:
+
+This board shares 8MB flash between:
+- System bootloader (~400KB)
+- User application (~6-7MB)
+- OTA update space
+
+* Recommended Tools
+#+NAME: xiao-recommended-tools
+| Tool                     | Purpose                       |
+|--------------------------|----------------------------|
+| Arduino IDE              | Primary development          |
+| ESP-IDF                  | Advanced firmware            |
+| VS Code + PlatformIO     | IDE integration              |
+| Tasmot                   | MQTT firmware                |
+| BLE Scanner              | Device discovery             |
+| Serial Plotter           | Debug monitoring             |
+
+** Hardware Diagnostics
+#+NAME: xiao-diagnostics
+| Check           | Command                         | Expected Output       |
+|--------------------|----------------------------------|-----------------|
+| **WiFi Status**   | WiFi.status()                  | 2 (connected)        |
+| **Flash Size**    | get.flashSize()                | 8MB (8192 KB)        |
+| **BLE Mode**      | esp_ble_peripheral_config_get()| CONFIG_BT_MODE_ALL   |
+| **ADC Reading**   | analogRead()                   | 0-4095 (12-bit)      |
+| **GPIO Pin Test** | pinMode() / digitalRead()      | HIGH/LOW             |
+
+This documentation reflects the Xiao ESP32S3 Seeed Studio activator board configuration for the Blender Twin IoT sensor controller architecture.

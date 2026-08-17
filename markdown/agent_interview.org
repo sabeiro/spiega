@@ -1,0 +1,703 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: agentic_interview
+:END:
+#+title: agentic interview
+#+DATE: <2026-06-23>
+#+AUTHOR: sabeiro
+#+STARTUP: showall
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+BIBLIOGRAPHY: bibliography.bib
+
+
+Would you think it is interesting to make a video on how to run a job interview with an LLM in 2026? 
+
+Yes, I find it intriguing to imagine how leveraging large language
+models (LLMs) for conducting job interviews might evolve by 2026. The
+potential for automating initial screening, providing personalized
+feedback, and even simulating real-life scenarios could revolutionize
+the hiring process.
+
+* agentic interview
+:PROPERTIES:
+:HTML_CONTAINER_CLASS: highlight
+:ID:       agentic_interview
+:ROAM_ALIASES: agentic interview intro
+:END:
+
+In an agentic world agent should be able to run an interview with you.
+This means agents should retrieve enough information about your experience.
+
+
+#+NAME:   fig:agentic_interview
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/agent_interview.png]]
+
+*** personal information
+
+First of all I created the following yaml files describing those main areas:
+- [[~/lav/src/spiega/markdown/skills.yml][skills]] :: languages, programming languages, technologies
+- [[~/lav/src/spiega/markdown/personal_profile.yml][personal profile]] :: profile description, soft skills
+- [[~/lav/src/spiega/markdown/portfolio.yml][portfolio]] :: project descriptions, verticals 
+- [[~/lav/src/spiega/markdown/resume.yml][resume]] :: working experiences, education, certificates
+
+#+NAME:   fig:spiega_cover
+#+ATTR_HTML: :align center :height 400pt
+[[../../f/f_twin/spiega_cover.png]]
+
+
+*** file input
+
+The files look like:
+
+#+begin_src bash :exports results :results output replace
+head -n 4 ~/lav/src/spiega/markdown/skills.yml
+#+end_src
+
+#+RESULTS:
+: - topic: languages
+:   skill: 'Native: Italian. Fluent: English, German, Spanish. Intermediate: French, Portuguese.'
+: - topic: programming
+:   skill: python, js, c++, c, R, spark, go (viz) openGL, Qt, GTK+
+  
+Those file are used to create as well the [[https://intertino.it/CV/index.html][resume website]] using the script [[~/lav/siti/CV/script/gen_portfolio.py][gen_portfolio.py]].
+
+#+NAME:   fig:intertino_skill
+#+ATTR_HTML: :align center :height 300pt
+[[../../f/f_twin/intertino_skill.png]]
+
+
+*** technical sources
+
+We need now more detailed information about the actual skills and proficiency. For some source files we can't provide access but we let a language model to summarize the skills and competences for that work.
+We analyze: 
+
+#+begin_two_columns
+#+begin_col_left
+#+NAME: knowledge-base-tab
+| source   | quantity       | link    | website | summary |
+|----------+----------------+---------+---------+---------|
+| code     | 3k3 sources    | [[~/lav/src][src]]     | [[https://intertino.it/spiega/][blog]]    | [[~/lav/src/spiega/graph/code_desc_qwen25coder3b.csv][summary]] |
+| tech     | 120 blog posts | [[~/lav/siti/spiega/markdown][spiega]]  | [[https://intertino.it/spiega/][blog]]    | [[~/lav/src/spiega/graph/blog_desc_qwen25coder3b.csv][summary]] |
+| thoughts | 30 posts       | [[~/lav/siti/scritti/markdown/][scritti]] | [[https://intertino.it/scritti/][blog]]    | [[~/lav/src/spiega/graph/scritti_desc_qwen25coder3b.csv][summary]] |
+| pictures | 2k images      | [[~/lav/siti/f/][f/]]      | [[https://intertino.it/spiega/][blog]]    | [[~/lav/src/spiega/graph/pict_desc_qwen25coder3b.csv][summary]] |
+| science  | 30 works       | [[~/lav/kotoba/Fiziko][PhD]]     | [[https://intertino.it/kotoba/Fiziko.php][physics]] | [[~/lav/src/spiega/graph/pict_desc_qwen25coder3b.csv][summary]] |
+| videos   | 180 videos     | [[~/VideoProd/][videos]]  | [[https://www.youtube.com/@viudi_music][viudi]]   | [[~/lav/src/spiega/graph/video_desc_llama32.csv][summary]] |
+#+end_col_left
+#+begin_col_right
+#+NAME:   fig:spiega_tech
+#+ATTR_HTML: :align center :height 300pt
+[[../../f/f_twin/spiega_tech.png]]
+
+#+end_col_right
+#+end_two_columns
+
+*** summaries
+
+Now we launch local LLMs to parse the source files we selected. 
+Given the sensitivity of information we run everything *locally*
+- IPs :: *LLMs summarize* the content and don't expose the sources
+- impartial :: let *LLMs judge* the quality of your work
+- concise :: pre-parse your knowledge base to build your *digital twin*
+
+
+#+begin_two_columns
+#+begin_col_left
+
+#+name: flow_diagram
+#+BEGIN_SRC mermaid :file ../../f/f_twin/knowledge_parsing.svg :export results :output replace
+---
+title: knowledge parsing
+fontSize: 10
+darkMode: True
+theme: neo-dark
+---
+flowchart LR
+KN["
+source code
+knowledge
+personal
+`"]
+DOC@{ shape: docs, label: "Knowledge"}
+LLM@{ shape: procs, label: "LLMs"}
+PY@{ shape: lin-cyl, label: "python" > KN
+#+END_SRC
+#+end_col_left
+#+begin_col_right
+
+#+CAPTION: diagram of the implementation
+#+NAME:   fig:flow_diagram
+#+ATTR_HTML: :align center :height 400pt
+#+RESULTS: flow_diagram
+[[file:../../f/f_twin/knowledge_parsing.svg]]
+#+end_col_right
+#+end_two_columns
+
+
+* graphs
+
+We have two main graphs:
+
+- namual: [[https://orgroam.com/manual.html][org-roam]] :: all your knowledge gets linked together
+- automated: [[id:knwoledge_graph-intro][knowledge graph]] :: where LLMs need to parse your knowledge base
+
+The technical description of the project is written here [[./knowledge_graph.org][knowledge_graph]].
+
+*** graph creation approaches
+
+manual vs automated
+
+- naming :: LLMs find well descriptive names
+- relevance :: users have better context to judge 
+- depth :: LLMs are great help to summarize any type of document 
+
+# C-c " g
+#+PLOT: file:"../../f/f_twin/graph_radar.svg" title:"advantages" transpose:yes type:radar min:0 max:5
+| conf          |workload      | control |relevance|usefulness | integration  | depth    | versatility |
+|---------------+--------------+---------+---------+-----------+--------------+----------+-------------|
+| manual        |          5.0 |      5.0|     4,7 |        5.0|           4.7|       3.0|          3.8|
+| automated     |          2.0 |      3.0|     3.4 |        3.7|           3.8|       5.0|          3.6|
+
+#+CAPTION: Manual vs automated knowledge creation
+#+NAME:   fig:graph_radar
+#+ATTR_HTML: :max-width 300px :align center :background #aaa
+[[../../f/f_twin/graph_radar.svg]]
+
+
+*** graph creation
+
+- first approach :: we create directly the graph
+- issues :: inconsistencies between links and nodes
+
+#+name: ollama_graph
+#+BEGIN_SRC python :export code
+from ollama import chat
+messages = [{"role":"user","content":identify_relationship},{"role":"user","content":d["description"]}]
+response = chat(messages=messages,model=model_id,format=GraphD3.model_json_schema(),)
+#+end_src
+
+The results of the summaries is processed by [[~/lav/src/kotoba/kotoba/graph_rag.py][this script]]
+
+#+NAME:   fig:3d-graph
+#+ATTR_HTML: :height 350px :max-height 350px :align center
+[[../../f/f_twin/org_mode_06.gif]]
+
+
+*** links creation
+
+Then:
+- links :: created first with description of the nodes
+- node :: definition enrichment asking a second model
+- graph :: the combination of the two
+
+#+name: ollama_links
+#+BEGIN_SRC python :export code
+messages = [{"role":"user","content":identify_links},{"role":"user","content":d["description"]}]
+response = chat(messages=messages,model=model_id,format=GraphD3L.model_json_schema(),)
+enD, relD = g_r.relation2graph(blogD)
+enD = g_r.categorize_node(enD,model_id)
+#+end_src
+
+
+#+NAME:   fig:present_material
+#+ATTR_HTML: :height 350px :max-height 350px :align center
+[[../../f/f_twin/org_mode_09.gif]]
+
+
+*** links structure
+
+The sketch of the process is as following
+
+#+begin_two_columns
+#+begin_col_left
+
+#+name: graph_entity
+#+BEGIN_SRC mermaid :file ../../f/f_twin/graph_entity.svg :export results :output replace
+---
+title: graph entity
+height: 300
+width: 300
+---
+erDiagram
+    DOCS ||--o{ LINKS : "parsed into"
+    LINKS ||--o{ NODES : "generates"
+    GRAPH ||--|{ NODES : "contains"
+    GRAPH ||--|{ LINKS : "contains"
+    DOCS {
+        string file_name
+        string summary
+        string tags
+        string description
+    }
+    LINKS {
+        string source
+        string target
+        string relationship_type
+        string relationship_desc
+    }
+    NODES {
+        string id PK
+        string name
+        string description
+    }
+    GRAPH {
+        list NODES
+        list LINKS
+    }
+#+END_SRC
+
+#+end_col_left
+#+begin_col_right
+
+#+CAPTION: diagram of the implementation
+#+NAME:   fig:flow_diagram
+#+ATTR_HTML: :height 550px :max-height 550px :align center
+#+RESULTS: graph_entity
+[[file:../../f/f_twin/graph_entity.svg]]
+
+#+end_col_right
+#+end_two_columns
+
+
+*** building communities
+
+We come with many different sources and we need to identify the subgraphs and build communities.
+To create communities within the graph we use another clustering technique using graspologic, gensim and hierarchical Leiden.
+We load the nodes and relationships created before and load them into a networkx graph.
+
+#+name: py_communities
+#+begin_src python
+import pandas as pd
+baseDir = os.environ['HOME'] + '/lav/src/spiega/'
+model_id = "qwen2.5-coder:3b"
+modelN = re.sub(r'[^\w\s]', '', model_id)
+enD = pd.read_csv(baseDir + "graph/blog_node_" + modelN + ".csv")
+relD = pd.read_csv(baseDir + "graph/blog_edge_" + modelN + ".csv")
+import kotoba.graph_partition as g_p
+import kotoba.model_local as c_t
+import pandas as pd
+model_id = "qwen2.5-coder:3b"
+llm = c_t.get_llm_mcp(model_id=model_id)
+G = g_p.create_nx_graph(enD,relD)
+commDf = g_p.build_communities(G,llm)
+commDf.to_csv(baseDir + '/community_description.csv',index=False)
+#+end_src 
+
+#+NAME:   fig:2d_graph
+#+ATTR_HTML: :height 350px :max-height 350px :align center
+[[../../f/f_twin/org_mode_08.gif]]
+
+
+* graph database
+
+We then import the graph into [[http://localhost:7474/browser/][neo4j dashboard]] and type the query to select all nodes and links with a [[https://neo4j.com/docs/cypher-manual/current/introduction/][cypher neo4j]] query:
+
+#+name: neo4j-query
+#+begin_src sql :results output replace
+MATCH (n)-[r]->(m)
+RETURN *; 
+#+end_src
+
+#+NAME:   fig:2d_graph
+#+ATTR_HTML: :height 350px :max-height 350px :align center
+[[../../f/f_twin/org_mode_07.gif]]
+
+*** graph viz
+
+For a more advanced visualization we use [[https://github.com/yWorks/yfiles-jupyter-graphs-for-neo4j][yFiles]] by running a jupyter and opening a [[http://localhost:8891/notebooks/example/neo4j_data_explorer.ipynb][notebook]].
+
+#+name: jupyter-notebook
+#+begin_src bash :results output replace
+jupyter notebook --notebook-dir $HOME/lav/src/kotoba/ &
+#+end_src
+
+#+NAME:   fig:blender_animate-01
+#+ATTR_HTML: :height 350px :max-height 350px :align center
+[[../../f/f_twin/org_mode_11.gif]]
+
+*** parent graph
+
+Information is too atomistic and we need to create a parent graph.
+The difficult part is to create a parent graph where the high level information is smartly parsed. We need to highlight the meaning of each experience and create meaningful executive summaries pointing out hard and soft skills.
+
+- embed :: the text
+- cluster :: the nodes around the embedding
+- summarize :: the text for all the clustered nodes
+- link :: all the entities together
+- nodes :: categorized from the links
+- connections :: preserved between clusters and nodes
+
+#+name: ollama_links
+#+BEGIN_SRC python :export code
+llm = c_t.get_llm_mcp(model_id=model_id)
+relD, grpD = k_h.level_up_link(enD,llm,embed_model,clusterN=clusterN)
+grpD = g_r.gen_relationship_grp(llm,grpD,model_id=model_id)
+enD1, relD1 = g_r.relation2graph(grpD,dtype="group")
+enD1 = g_r.categorize_node(enD1,model_id)
+#+end_src
+
+#+NAME:   fig:2d_graph
+#+ATTR_HTML: :height 550px :max-height 550px :align center
+[[../../f/f_twin/parent_graph.png]]
+
+
+* org-roam
+
+- org-roam :: is a extraordinary tool fed by ordinary typing.
+- org files :: more than text files the look like operating systems
+
+Org-roam is a package which creates nodes out of files and sections and populates a database with all the knowledge information and create advanced representations with ~org-roam-ui~ and searchable information with [[elisp:org-roam-db-explore]] and run queries with 
+
+#+begin_src elisp :output results replace
+(org-roam-db-query [:select * :from nodes])
+#+end_src
+
+We can visualize and navigate the information
+
+#+NAME:   fig:2d_graph
+#+ATTR_HTML: :height 550px :max-height 550px :align center
+[[../../f/f_twin/org_mode_07.gif]]
+
+*** org files
+
+org files are a mixture of any possible application for daily use:
+- agenda :: to schedule a task or to set an alert 
+- tags :: to specify meta information
+- logbook :: the time spent on tasks
+- status :: whether an action is done or pending 
+- trees :: explain hierarchical structures 
+- nodes :: tag every element to create interconnections
+- code :: define code to execute 
+- plots :: plot data with gnuplot
+- link :: link to anything: files, websites, buffers, images...
+- webpage content :: show the text of a web page
+- [[shell:ls *org][local org files]] :: open new buffers from shell
+- [[https://www.orgroam.com/][roam]] :: organizes the org node information into graphs
+- [[id:org_files-spreadsheet][spreadsheet]] :: formulas on tables
+
+And pipe all together as you like. 
+
+*** done emacs                                                      :present:
+:PROPERTIES:
+:ID:       agent_interview-emacs
+:ROAM_ALIASES: agent interview emacs
+:END:
+
+The tool where org show their best expression is emacs (text editor).
+- emacs with org files :: there is no other program you need to use.
+- preview :: emacs show org files as any other text editor
+
+#+NAME:   fig:org-files
+#+ATTR_HTML: :max-width 350px :align center
+[[../../f/f_twin/org_files.png]]
+
+*** org and LLMs
+
+Emacs has nice integration with many agentic tools
+
+- [[https://github.com/s-kostyaev/ellama][ellama]] :: quick support in any buffer
+- [[https://github.com/karthink/gptel][gptel]] :: for the integration with mcp
+  - [[https://github.com/karthink/gptel?tab=readme-ov-file#model-context-protocol-mcp-integration][gptel base]] :: base package
+  - [[https://github.com/lizqwerscott/mcp.el][mcp.el]] :: start the hub
+  - [[../../deploy/emacs/.emacs.d][custom gptel tools]] :: user defined tools
+  - [[https://github.com/lizqwerscott/gptel-mcp.el/blob/master/gptel-mcp.el][gptel-mcp]] :: integration between the packages
+- [[https://github.com/lizqwerscott/mcp.el][mcp]] :: for adding my own tools and external mcp
+- [[https://github.com/MatthewZMD/aidermacs][aideremacs]] :: connect aider with emacs 
+- [[https://github.com/dnouri/pi-coding-agent][pi agent]] :: connect pi-agent with emacs
+- [[https://github.com/colobas/opencode.el][opencode]] :: open-code support
+
+*** MCP server
+:PROPERTIES:
+:ID:       0611f7a8-0947-4f4e-bbc0-d6fb54fa92fa
+:END:
+
+We set up a MCP server where we can check the status of the tools that the LLMs can use [[http://bottino/mcp/control/][control panel]].
+
+#+NAME:   fig:mcp-server
+#+ATTR_HTML: :max-width 350px :align center
+[[../../f/f_twin/mcp_server.png]]
+
+*** MCP hub
+
+Emacs has its internal tool to check the status of the interactions between LLMs and MCP server. 
+
+#+NAME: fig:mcp-hub
+#+ATTR_HTML: :max-width 350px :align center
+[[../../f/f_twin/mcp_hub.png]]
+
+
+*** emacs flow
+
+Here is an example of a flow with emacs and LLMs
+
+#+property: class mermaid
+#+name: sequence_diagram
+#+begin_src mermaid :file ../../f/f_twin/sequence_diagram.svg :class mermaid :exports none
+sequenceDiagram
+ emacs-->ellama: prompt
+ emacs-->gptel: tools
+ emacs-->pi_agent : instruction
+ pi_agent-->ollama: prompt
+ gptel-->mcp_server: prompt
+ mcp_server-->llama.cpp: instruction(use-package ox-reveal)
+
+ gptel-->emacs: code
+ pi_agent-->emacs: code
+#+end_src
+
+#+CAPTION: result of mermaid plot
+#+ATTR_HTML: :alt cat/spider image :title Action! :class img-wrapper
+#+NAME:   fig:org_plot
+#+ATTR_HTML: :align center
+#+RESULTS: sequence_diagram
+[[file:../../f/f_twin/sequence_diagram.svg]]
+
+*** org-roam
+
+While you edit your org files org-roam runs in the background, reads all your edits and:
+- database :: creates entry for all links, nodes
+- search :: allow to search any node in your knowledge base
+- [[http://localhost:35901/][org-roam-ui]] :: fully featured, nice looking and useful knowledge graph updating in real time while typing 
+
+Example of org-roam database query
+#+begin_src elisp
+(org-roam-db-query [:select * :from nodes])
+#+end_src
+
+*** customization
+
+We can customize any function.
+Here we customize a tool for the MCP hub
+#+name: gptel-tooling
+#+begin_src elisp :results output replace
+  ;; (insert (duckduckgo-search-text "intertino"))
+  (defun my/read-buffer-content (buffer-name)
+    (let ((buffer (get-buffer buffer-name)))
+      (if (bufferp buffer)
+  	(with-current-buffer buffer
+  	  (concat "[BUFFER CONTENT]: "(buffer_string)))
+        "[ERROR]: Buffer does not exist")))
+  (gptel-make-tool
+   :name "get-buffer-content-as-string"
+   :function 'my/read-buffer-content
+   :description "returns the string contents inside the emacs buffer"
+   :args '(list '(:name "buffer"
+  		      :type "string"
+  		      :description "buffer name to read"))
+   :category "emacs")
+#+end_src
+
+*** extensions
+:LOGBOOK:
+CLOCK: [2026-07-09 Thu 14:25]
+:END:
+
+We can use org functionalities to let LLMs operate on the system.
+Here we have the logbook of the <2026-07-08 Wed> 
+#+BEGIN: clocktable :scope subtree :maxlevel 2
+#+CAPTION: Clock summary at [2026-07-08]
+| Headline     | Time   |
+|--------------+--------|
+| *Total time* | *0:00* |
+#+END:
+
+Call internal endpoint to add a sphere in blender
+
+#+name: blender-mcp
+#+begin_src bash :results output replace
+  curl -s -X PORT http://localhost:9876/run -H 'Content-Type: applicationon/json -d {"text":"Add a cube at origin and rotate it by 90 degrees z"}'
+#+end_src
+
+*** plot results
+
+LLMs can use org internal functionalities to save time. Call the internal endpoint to list all available models
+
+#+name: llm_list
+#+begin_src bash :results replace
+curl localhost:11434/api/tags | jq | grep \"model\" | awk -F " " '{print $2}' 
+#+end_src
+
+#+name: llm_loaded
+#+RESULTS: llm_list
+| qwen3.6:latest         |   |
+| dolphin-mistral:latest |   |
+| gemma4:latest          |   |
+| deepseek-coder:6.7b    |   |
+| llama3.2:latest        |   |
+| qwen2.5-coder:3b       |   |
+| qwen3.5:9b             |   |
+| qwen2.5-coder:7b       |   |
+
+We then run a script to test the speed of each model and extract the ~token/s~.
+
+#+name: llm_bench
+#+begin_src bash :output results replace :rownames yes  :var model_list=llm_list
+#echo $model_list
+cd ~/lav/src/blender_twin/deploy/ollama/
+#bash benchmark_models.sh
+python3 benchmark_stats.py
+#+end_src
+
+*** plotting
+
+Given the following table write a gnuplot function to be integrated in emacs org
+
+#+TBLFM: $5=vmean($2..$3);%.1f
+#+TBLFM: $5=vmean($2..$3);%.1f
+#+TBLFM: $6='(orgtbl-ascii-draw $2 0.0 257.72 12)
+#+name: llm_benchmark
+#+PLOT: title:"token/s" ind:1 deps:(2) type:2d with:histograms file:"../../f/f_twin/llm_benchmark.svg"
+#+PLOT: set:"xtics rotate by 15 offset -1.1,-1.2" set:"tickslevel 0"
+#+PLOT: set:"boxwidth 0.9" set:"style solid border 10" set:"style data histograms cluster gap 2"
+#+RESULTS: llm_bench
+| qwen3.6:latest         | model                  | tokens_per_second | token_rate | time_rate |
+| dolphin-mistral:latest | qwen3.5:9b             |         20.711123 |  37.218987 | 18.767091 |
+| gemma4:latest          | qwen2.5-coder:3b       |         86.646493 |   6.607947 |  0.975372 |
+| deepseek-coder:6.7b    | qwen3.6:latest         |          9.434619 |  32.298511 | 37.218987 |
+| llama3.2:latest        | gemma4:latest          |         31.166858 |  18.467557 | 11.391252 |
+| qwen2.5-coder:3b       | qwen2.5-coder:7b       |         42.268118 |   9.068185 |  2.231556 |
+| qwen3.5:9b             | deepseek-coder:6.7b    |         15.847756 |    8.54775 |   5.17094 |
+| qwen2.5-coder:7b       | dolphin-mistral:latest |         54.457944 |  10.850281 |  2.096758 |
+
+#+CAPTION: gnuplot graph of model benchmark
+#+NAME:   fig:gnuplot
+#+ATTR_HTML: :align center
+[[../../f/f_twin/llm_benchmark.svg]]
+
+I can subset a part of that table and sort it:
+
+
+*** publish / present
+
+org have many options to export/convert the file for presentations:
+
+- blog post :: customize the export and the style
+- export :: export all the media for publishing
+- slides :: custom or reveal.js
+
+*** graphics
+
+org has many integration with many handy visualization tools:
+
+- mermaid :: for graphs
+- graphviz/dot :: graphs more text like
+- gnuplot :: many plotting options
+- lilypond :: for music
+
+
+#+begin_src lilypond :file ../../f/f_twin/lilypond.png
+\version "2.24.4"
+\relative c' {
+  g a b c
+  d e f g
+  g1
+}
+#+end_src
+
+#+CAPTION: lilypond sheet music 
+#+NAME:   fig:lilypond
+#+ATTR_HTML: :align center
+#+RESULTS:
+[[file:../../f/f_twin/lilypond.png]]
+
+
+*** animations
+
+To create video animations we can:
+
+- [[https://docs.manim.community/en/stable/examples.html][manim]] :: the 1Blue3Brown animation python library we use in [[~/lav/src/blender_twin/docs/knowledge_base/manim_animations.py][manim_animations.py]] documented in [[~/lav/src/blender_twin/docs/knowledge_base/manim_animations.org][manim_animations]]..
+- [[https://www.blender.org/download/][blender]] :: where we created [[~/lav/src/blender_twin/docs/scripts/blender_ops][scripts]] to load the svg created by the other software and animate them
+- [[https://d3js.org/][d3.js]] :: library for graphs visualization
+
+We need to first run the web server and then hit [[http://localhost:8000/network-viz.html][network-viz]] which can export to blender
+#+begin_src bash :exports none :results output replace
+cd ~/lav/src/blender_twin/physics/phys_opt/
+bash run.sh & 
+#+end_src
+
+#+RESULTS:
+
+#+begin_src bash :exports none :results output replace
+kill $(ps | grep uvicorn | awk '{print $1}')
+#+end_src
+
+#+RESULTS:
+
+#+NAME:   fig:manim-animations
+#+ATTR_HTML: :max-width 350px :align center
+[[../../f/f_twin/manim_animation.png]]
+
+* agentic interview
+
+Now that we have created all the knowledge base and made it accessible we can start running the agentic interview:
+In [[~/lav/src/kotoba/example/create_knowledge_base.py][create_knowledge_base.py]] we do as follow:
+
+- loading :: we load all the sources, summaries and relationships
+- questions :: we create a list of [[~/lav/siti/spiega/markdown/interview.csv][common questions]] for an interview
+
+#+name: interview_prompt
+#+begin_quote
+"You are a candidate for a job interview and you need to be precise and concise regarding the answers without many preambles. Don't provide lists but concentrate in convey the message and summarize the single points instead of listing them. Focus on the strategy more than the background and how you managed to overcome specific issues and stick to the question. Answer the question first and then provide some background information.
+#+end_quote
+
+#+NAME:   fig:manim-animations
+#+ATTR_HTML: :max-width 350px :align center
+[[../../f/f_twin/resume_interview.png]]
+
+
+*** skill cloud
+
+We scan the knowledge base and we create labels regarding the most common patterns in the documentation and create this word cloud representation [[~/lav/src/kotoba/example/create_knowledge_base.py][create_knowledge_base.py]] 
+
+#+NAME: fig:mcp-hub
+#+ATTR_HTML: :max-width 450px :align center
+[[../../f/f_twin/wordcloud.svg]]
+
+*** chatbot
+
+We use [[~/lav/src/kotoba/kotoba/streamlit_interface.py][streamlit_interface]] run by [[~/lav/src/kotoba/kotoba/run_streamlit.sh][run_streamlit]]
+
+#+name: chatbot_start
+#+begin_src bash :export none
+cd ~/lav/src/kotoba/kotoba
+bash run_streamlit.sh
+#+end_src
+
+in [[~/lav/src/kotoba/kotoba/app_utils.py][app_utils]] we load a local LLM and the information about the communities built on graph and we can start asking questions to the agent
+
+#+NAME: fig:streamlit_chatbot
+#+ATTR_HTML: :max-width 450px :align center
+[[../../f/f_twin/streamlit_chatbot.png]]
+
+*** export the content
+
+We use the raw information to create all the websites and documentation
+
+- resume :: [[https://intertino.it/CV/][resume]]
+- blog post :: [[https://intertino.it/spiega/index.html][spiega]]
+- bot interview :: [[https://intertino.it/CV/interview.html][interview]]
+- CV :: [[https://intertino.it/CV/CV_Marelli_en.pdf][CV]]
+- ongoing :: [[https://intertino.it/spiega/a/spiega.html][projects]]
+- graphs :: [[http://localhost:8888/notebooks/basic_example.ipynb][yFiles]] [[http://localhost:7474/browser/][neo4j]]
+- org-roam :: [[http://localhost:35901/][org-roam-ui]]
+    
+#+name: export_file
+#+begin_src elisp 
+(org-reveal-export-to-html)
+#+end_src
+
+#+RESULTS: export_file
+: agent_interview.html
+
+#+begin_src bash :var outF=export_file
+mv $outF ~/lav/siti/spiega/a/${outF/.html/_slide.html}
+#+end_src
+
+#+RESULTS:
+
+[cite:@spiega_tech]

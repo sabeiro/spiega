@@ -1,0 +1,43 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: org_creator
+:END:
+#+title: org for creators
+#+DATE: <2026-06-22>
+# Local IspellDict: en
+#+STARTUP: showall latexpreview
+#+OPTIONS: tex:t
+#+TODO: active done crit milestone todo review knwoledge task
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+property: header-args:bash :result output replace :export none
+#+INCLUDE: ~/lav/src/spiega/template/reveal_config.org
+#+INCLUDE: ~/lav/src/spiega/template/org_startup.org
+#+BIBLIOGRAPHY: bibliography.bib
+
+* org for creators
+
+As a creator to keep being productive and focused org-mode can help a lot to run many background activities and help validating your thoughts as you write.
+During the creative process many sentences require validation and search breaking our thought-flow and creating many branches which can create alternative story lines.
+It is really useful to visualize the complete overview of the knowledge we build to separate between references and main story line so we can link to the knowledge base without losing the main topic.
+The purpose of this article is how to create content while organizing all the background information without losing the focus on the main message.
+
+** knowledge base
+
+This process divides the story line from the linked knowledge. We will first of all define the topic and the scope of the project. Let's say we want to develop a topic like "why bronze age is relevant nowadays". 
+We need first to create a knowledge base relative to the topic and to collect information and media around to the subject and try to keep focused without getting lost into details. We need strong support from facts which we need to collect and organize first.
+We need first to collect background information
+
+- overall :: information and details about the subject
+- actors :: who where the most relevant actors in that space
+- highlights :: what are the most interesting facts to mention
+
+
+** topic
+
+A big challenge in creating content is to keep the focus despite adding details. It is important to collect the background information which doesn't mean it needs to be mentioned (eventually added as footnote).
+Having too many information can lead to unclear messages weakening the main topic in adding too many details but on the other side we need to make sure that our assertions are well grounded. 

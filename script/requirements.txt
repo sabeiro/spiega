@@ -1,0 +1,5 @@
+# Convert text to SVG paths
+# fonttools: https://github.com/fonttools/fonttools
+# freetype-python: https://github.com/fonttools/freetype
+# Or use system packages:
+apt-get install python3-fonttools python3-freetype

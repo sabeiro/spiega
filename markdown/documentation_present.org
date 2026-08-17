@@ -1,0 +1,253 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: documentation_present
+:END:
+# Local IspellDict: en
+#+title: present documentation
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+DATE: <2026-06-23>
+#+AUTHOR: sabeiro
+#+startup: showall
+#+KEYWORDS: emacs-reveal, howto, HTML, reveal.js, org, Org mode, presentation, slideshow, OER, open educational resource, licensing
+#+DESCRIPTION: digital twins on blender with FEM
+#+INCLUDE: "./template/reveal_config.org"
+#+INCLUDE: "./template/org_startup.org"
+#+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard  https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/plugin.js https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chalkboard/style.css
+
+* present this documentation
+
+The documentation is made with mardown and .org files.
+We need to convert those files into a public documentation.
+
+.org files are really versatile and can export to many other formats.
+
+- pdf :: using LaTeX or postscript
+- html :: with different exporting options
+- html reveal :: mainly using [[https://revealjs.com/][reveal.js]] with [[~/lav/siti/spiega/reveal/css/reveal_custom.css][reveal_custom.css]]
+- html slides :: my custom scripts [[~/lav/src/spiega/js/slide.js][slide.js]] and [[~/lav/src/spiega/css/slide.css][slide.css]]
+
+This file will be outputted as [[../a/documentation_present.html][blog post]] or [[../a/documentation_present_slide.html][slides]].
+
+*** slides
+
+Here we use two main libraries
+
+- [[https://revealjs.com/][reveal]] :: reveal.js [[https://gitlab.com/oer/org-re-reveal/tree/main/test-cases][example org to reveal]]
+- custom ::
+
+*** reveal
+
+There are [[https://oer.gitlab.io/org-re-reveal/][multiple options]] to turn org files into reveal slides 
+
+
+* create animations
+
+Blender has its own ~scripting~ tab but it doesn't fit in my workflow where I use python REPL and LLMs to test the commands.
+Blender has an addon called [[https://github.com/ahujasid/blender-mcp][blender-mcp]] which allows to access blender methods from outside.
+So I need to run the mcp server with transport http:
+
+#+name: blender-bridge
+#+begin_src bash :exports code :results output replace
+cd ~/lav/src/blender_twin/deploy/mcp_client/
+#bash ./blender_local_client.sh &
+cd $HOME/lav/src/blender_twin/deploy/mcp_client/blender_mcp_example_code/mcp/blmcp/ 
+#python3 -m blmcp
+uv --directory $HOME/lav/src/blender_twin/deploy/mcp_client/blender_mcp_example_code/mcp run blender-mcp --transport http --port 9191 &
+#+end_src
+
+I then need a container as defined in [[~/lav/src/blender_twin/deploy/ollama/docker_compose.yml][docker_compose.yml]] to create a bridge between the host and the containers within docker network.
+
+#+begin_example
+  blender-mcp-bridge:
+    image: alpine/socat:latest
+    container_name: blender-mcp-bridge
+    network_mode: "host"
+    command: TCP-LISTEN:19191,fork,reuseaddr TCP:127.0.0.1:9191
+    restart: unless-stopped
+#+end_example
+
+I can then work on a script [[~/lav/src/kotoba/example/create_animation.py][create_animation.py]] or let an LLM test the blender code without exiting the container.
+
+Mermaid produces svg files which are loaded in blender apart from text which is not recognized.
+For that we created a script [[~/lav/src/spiega/script/text2svg.py][text2svg.py]] to load each text tag, load a font and create a path around that text. We apply as well some grouping logic so the import in blender is smoother.
+
+#+name: text2svg
+#+begin_src bash :exports code :results output replace
+cd ~/lav/src/spiega/script/
+python3 text2svg.py ~/lav/siti/f/f_twin/arch_diagram.svg
+mv output.svg ~/VideoProd/in_prog/graph/arch_dia.svg
+#+end_src
+
+#+RESULTS: text2svg
+: File processed: /home/sabeiro/lav/siti/f/f_twin/arch_diagram.svgresults in output.svg
+
+* voice over
+
+To speed up voice over we use some tools like 
+#+name: auto_remove_silence
+#+begin_src bash :exports code :results output replace
+cd ~/VideoProd/in_prog/graph/
+#pip install auto-editor
+auto-editor 
+mv output.svg ~/VideoProd/in_prog/graph/arch_dia.svg
+#+end_src
+
+* exporting
+
+We started with many tools and we tried to minimize the dependencies so over time I removed the dependencies from tools like `markdown` and `pandoc`.
+I rather use my own header and footer templates
+In [[/home/sabeiro/lav/src/spiega/emacs/emacs.el][emacs.el]] we define most of the configurations and load the libraries.
+In [[~/lav/siti/spiega/template/reveal_config.org][reveal_config.org]] we have the additional configurations for export.
+
+** conversion scripts
+
+Each website uses different scripts
+
+- [[~/lav/siti/spiega/script/][spiega]] :: technical blog
+- [[~/lav/siti/viudi/script/][viudi]] :: music website
+- [[~/lav/src/blender_twin/docs/script/][blender_twin]] :: project docs 
+- [[~/lav/siti/foto/script/][foto]] :: photography website
+- [[~/lav/siti/viaggi/script/][viaggi]] :: travel  website
+- [[~/lav/siti/scritti/script/][scritti]] :: personal blog
+ 
+Where I built custom [[/home/sabeiro/lav/siti/spiega/script/html-export-conf.el][lisp]] and [[/home/sabeiro/lav/src/blender_twin/docs/script/md2html.py][python]] files for tag manipulations.
+
+** .org publish
+
+.org files allow the publishing option as defined in [[/home/sabeiro/lav/src/spiega/emacs/emacs.el][emacs.el]] where I can set a project and the publishing directory.
+All the .org files in the `base-directory` will be converted into the `publishing-directory` and the pictures will be copied.
+#+begin_src elisp
+(setq org-publish-project-alist
+      '(("blender_twin"
+	 :base-directory "~/lav/src/blender_twin/docs/plan/"
+	 :publishing-directory "~/lav/siti/spiega/a/"
+	 :publishing-function roam-publication-wrapper
+	 :recursive t
+	 :html-head "<link rel=\"stylesheet\" href=\"static_html//css/org.css\" type=\"text/css\"/>\n"
+	 )
+        ("images"
+         :base-directory "~/lav/src/blender_twin/docs/f/"
+         :base-extension "jpg\\|gif\\|png\\|svg"
+         :recursive t
+	 :publishing-directory "~/lav/siti/f/"
+         :publishing-function org-publish-attachment)))
+#+end_src
+
+** emacs reveal slides
+
+Emacs has many packages to convert .org into html + reveal.js, the most common is [[https://github.com/yjwen/org-reveal/][org-reveal]] but I tested [[https://github.com/emacsmirror/org-re-reveal][org-re-reveal]], [[https://oer.gitlab.io/emacs-reveal-howto/howto.html][emacs-reveal,]] [[https://gitlab.com/oer/oer-reveal][oer-reveal]], [[https://github.com/hexmode/ox-reveal][ox-reveal]] and they all cause headaches.
+
+I had to pick manually select files from reveal.js and put them in the same order in the folder [[~/lav/siti/spiega/reveal/][reveal/]] with the same relative paths.
+
+I tend to prefer `org-reveal` which has least dependencies.
+
+*** TODO export file
+
+I need to figure out how to change filename (add _slide) and how to move it to another directory
+
+** script
+
+We use one command to export this file to reveal.js and move it to the final folder.
+
+# [C-c C-e R R]
+#+ATTR_REVEAL: :htmlize t
+#+begin_src elisp
+(org-reveal-export-to-html)
+;;(org-re-reveal-export-to-html)
+#+end_src
+#+RESULTS:
+: documentation_present.html
+
+#+begin_src bash
+mv documentation_present.html ~/lav/siti/spiega/a/documentation_present_slide.html
+#firefox http://localhost/spiega/a/documentation_present_slide.html
+#+end_src
+
+#+RESULTS:
+
+** TODO oer package
+
+Here we test the oer package
+
+#+ATTR_REVEAL: :htmlize t
+#+begin_src elisp
+(use-package oer-reveal-publish)
+(oer-reveal-setup-submodules t)
+(oer-reveal-generate-include-files t)
+(oer-reveal-publish-setq-defaults)
+(setq oer-reveal-publish-babel-languages '((dot . t) (emacs-lisp . t))
+      org-publish-project-alist
+      (list (list "img"
+                  :base-directory "~/lav/siti/blender_twin/"
+                  :base-extension "png"
+                  :publishing-function 'org-publish-attachment
+                  :publishing-directory "~/lav/siti/f/f_twin/")))
+#+end_src
+
+#+RESULTS:
+| img | :base-directory | ~/lav/siti/blender_twin/ | :base-extension | png | :publishing-function | org-publish-attachment | :publishing-directory | ~/lav/siti/f/f_twin/ |
+
+** wrap in tags
+
+#+name: wrap_region
+#+begin_src elisp :results drawer :export none
+(use-package wrap-region)
+(wrap-region-add-wrapper "<div class=\"r-stack\">" "</div>")
+#+end_src
+
+#+RESULTS: wrap_region
+:results:
+(lambda (arg) (interactive p) (wrap-region-trigger arg <div class="r-stack">))
+:end:
+
+** open graph
+
+We want to create open graph descriptions and 
+
+#+name: opengraph_header
+#+BEGIN_EXAMPLE
+	<!-- Open Graph -->
+      <meta property="og:title" content="technical blog">
+      <meta property="og:description" content="technical blog, a collection of articles/post written during 17y of career spanning over 3k3 source code files and 2k images">
+      <meta property="og:url" content="https://intertino.it/spiega/a/spiega.html">
+      <meta property="og:image" content="https://intertino.it/f/f_stage/module_library_small.png">
+#+END_EXAMPLE
+
+#+name: og_pic
+#+begin_src bash :exports code :results none
+cd ~/lav/siti/f/f_stage/
+for i in ~/lav/src/spiega/markdown/*.org;
+do
+    titN1=${i%.org}
+    titN=${titN1##*/}
+    cp module_library_small.png thumb_$titN.png
+done
+#+end_src
+
+** convert folder
+
+We mainly use following script to convert the documentation.
+
+# {{{revealgrid(42,"../../f/f_twin/computer.grid",60,4,3,"\"ga1 ga2 ga2 ga3\" \"ga1 ga4 ga5 ga6\" \"ga7 ga8 ga9 ga9\"")}}}
+
+
+#+name: publish-doc
+#+begin_src elisp :exports code :results output replace
+(org-publish-current-project)
+#+end_src
+
+
+#+name: generate-doc
+#+begin_src bash :exports code :results output replace
+#rm ~/lav/siti/spiega/a/*
+cd $HOME/lav/src/spiega
+bash ./script/convert.sh
+#+end_src
+
+#+RESULTS: generate-doc
+: ###        markdown/agent_interview.org
+

@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+/* @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700); */
 
 /* body { */
 /*   font-family: "Open Sans", Arial; */
@@ -47,7 +47,7 @@ label::before {
   height: 0px;
   overflow: hidden;
   transition: height 0.5s;
-  background: url(http://placekitten.com/g/600/300);
+  /* background: url(http://placekitten.com/g/600/300); */
   color: #FFF;
 }
 section {

@@ -1,0 +1,658 @@
+:PROPERTIES:
+:ID: manim_animations
+:ROAM_ALIASES: manim, animation-creation, presentation-video
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response 0 50000))
+:END:
+#+TITLE: 2d animations - manim
+#+DATE: 2026-06-19 13:45
+#+OPTIONS: toc:nil num:nil html:true
+#+DESCRIPTION: Comprehensive guide for creating animations with manim library for Blender Twin project
+
+#+STARTUP: showall
+
+* 2d animations
+:PROPERTIES:
+:ID: 2d_animation
+:END:
+
+We can create animations in software like blender and its dedicated workflow: [[id:blender_animation][blender animation]].
+
+Here we want to use a different approach by using the [[https://www.manim.community/][manim library]] which allows to create [[https://www.youtube.com/watch?v=5anTYHWuMSA][impressive animations]].
+
+We have a running script to run those simulations [[/home/sabeiro/lav/src/kotoba/example/viz_graph.py][viz_graph.py]]. 
+
+* Overview: manim - Mathematical Animation Engine
+
+** About manim
+#+NAME: manim-overview
+manim is **mathematical animation engineering** — a Python library for creating beautiful mathematical animations for presentations.
+
+** Key Features
+| Feature              | Purpose                        |      |
+|----------------------+--------------------------------+------|
+| **LaTeX Integration**  | Mathematical notation          | AMSP |
+| **Scene Architecture** | Modular scene organization     | AMSP |
+| **Vector Graphics**    | Crisp animations for all sizes | AMSP |
+| **Custom Shaders**     | Advanced visual effects        | AMSP |
+| **Interactive Mode**   | Live preview before rendering  | AMSP |
+| **Web Export**         | Share via URL                  | AMSP |
+| **Audio Sync**         | Music synchronization          | AMSP |
+
+** Use Cases for Blender Twin
+- Presenting IoT architecture
+- Visualizing sensor data flow
+- Explaining BLE mesh networks
+- Demonstrating MQTT pub/sub
+- Showing hardware connectivity
+
+
+* Quick Start: Installation
+
+** Install manim
+
+We install manim on ubuntu
+
+#+BEGIN_src bash :results output replace
+# Ubuntu/Debian (Jetson required)
+sudo apt-get update
+sudo apt-get install python3-pip build-essential ffmpeg libpng-dev libjpeg-dev
+python3 -m pip install manim
+python3 -m pip install manim-rl
+#+END_src
+
+Test the application
+.
+#+BEGIN_src bash :results output replace
+# Verify installation
+python3 -c "from manim import *; print('Manim installed!')"
+#+END_src
+
+#+RESULTS:
+: Manim installed!
+
+
+** Version Requirements
+#+BEGIN_SRC bash :results output replace
+# Check requirements
+python3 --version  # Python 3.8+
+manim --version    # Manim 0.17.0+
+# Recommended packages
+pip install numpy matplotlib pillow colorama
+pip install imageio[ffmpeg]
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Python 3.14.4
+Manim Community v0.20.1
+#+end_example
+
+* Basic Animation Structure
+
+Inside [[~/lav/src/blender_twin/docs/knowledge_base/manim_animations.py][manim_animations.py]] we have the different classes we want to animate.
+
+** Scene Class Definition
+We launch a simple splash screen
+
+** Render Commands
+#+BEGIN_SRC bash :results none
+cd ~/lav/src/spiega/script/
+manim -pql manim_animations.py IntroScene 
+# # Export to GIF
+#manim -pql manim_animations.py -o --write_to_movie=false
+#+END_SRC
+
+* Advanced Animation Examples
+
+** 1. IoT Sensor Network Visualizer
+#+BEGIN_SRC bash :results none
+cd ~/lav/src/spiega/script/
+manim -pql manim_animations.py SensorNetworkScene 
+#+END_SRC
+
+
+** 2. MQTT Pub/Sub Data Flow
+#+BEGIN_SRC bash :results none
+cd ~/lav/src/spiega/script/
+manim -pql manim_animations.py MQTTFlowScene
+#+END_SRC
+
+
+** 3. Hardware Bridge Architecture
+#+BEGIN_SRC bash :results none
+cd ~/lav/src/spiega/script/
+manim -pql manim_animations.py BridgeArchitecture
+#+END_SRC
+
+
+* Complete Example: Full Animation Script
+
+#+BEGIN_SRC bash :results none
+cd ~/lav/src/spiega/script/
+manim -pql manim_animations.py FullAnimation
+#+END_SRC
+
+
+* Animation Patterns and Techniques
+
+** 1. Object Animate
+#+BEGIN_SRC python
+from manim import Circle, ScaleInPlace, MoveAlongPath, FadeOut, BLUE
+object = Circle(color=BLUE)
+self.play(Create(object))
+self.play(ScaleInPlace(object, scale=2, run_time=1))
+self.play(MoveAlongPath(object, object.get_center()))
+self.play(FadeOut(object))
+#+END_SRC
+
+#+RESULTS:
+
+** 2. Write Effect
+#+BEGIN_SRC python
+# Text animation effects
+effects = [
+    Write,          # Basic write
+    FadeIn,         # Fade in
+    Create,         # Create (for Dashed/Arrow)
+    Transform,      # Transform between objects
+]
+
+for effect in effects:
+    self.play(effect(text_object))
+
+#+END_SRC
+
+** 3. Replacement Transform
+#+BEGIN_SRC python
+from manim import *
+
+# Create two objects
+old_text = Text("Old", font_size=36)
+new_text = Text("New", font_size=36)
+
+# Animation transform
+self.play(
+    ReplacementTransform(old_text, new_text),
+    run_time=2
+)
+#+END_SRC
+
+** 4. Lag Sequence
+#+BEGIN_SRC python
+# Create staggered animation
+objects = VGroup(*[
+    Text(str(i), font_size=24) 
+    for i in range(10)
+])
+
+objects.arrange(LEFT, buff=0.5)
+
+# Create with lag
+self.play(
+    *(Create(obj) 
+      for obj in objects),
+    lag_ratio=0.1
+)
+```
+
+#+END_SRC
+
+* Color and Style Examples
+
+** Color Schemes
+#+BEGIN_SRC python
+from manim import *
+import itertools
+
+# Create color schemes
+colors = {
+    'IoT': COLOR_PALETTE,
+    'Sensor': RED,
+    'Audio': GREEN,
+    'Network': BLUE,
+}
+
+# Generate theme
+theme = VPC(colors.values())
+
+# Use custom colors
+red = RED
+blue = BLUE
+green = GREEN
+yellow = YELLOW
+purple = PURPLE
+white = WHITE
+black = BLACK
+
+# Style text
+text = Text(
+    "Blender Twin",
+    color=THEME_COLORS,
+    font_size=48
+)
+```
+
+#+END_SRC
+
+** Style Parameters
+#+BEGIN_SRC python
+# Font settings
+text = Text(
+    "Title",
+    font="Arial",
+    font_size=48,
+    font_weight=300,  # Thin
+    shadow=False
+)
+
+# Gradient text
+gradient = Text(
+    "Gradient",
+    color_gradient=[RED, BLUE],
+    gradient_width=WIDTH
+)
+
+# Shadow text
+shadows = Text(
+    "Shadow",
+    shadow=False,
+    shadow_color=BLACK,
+    shadow_type=2
+)
+
+# Background effects
+background = Square(
+    color=WHITE
+).set_stroke(
+    color=BLACK,
+    width=0.1
+)
+
+background_with_gradient = Square(
+    color=WHITE
+).set_fill(
+    color=BLUE,
+    opacity=0.5
+)
+```
+
+#+END_SRC
+
+* Audio and Music Integration
+
+** Add Background Music
+#+BEGIN_SRC python
+from manim import *
+import os
+
+class MusicScene(Scene):
+    """Scene with background music."""
+    
+    def construct(self):
+        # Add background music
+        music = Sound.from_file(
+            "background.mp3",
+            fade_in=2,
+            fade_out=2
+        )
+        
+        # Create scene content
+        title = Text(
+            "Blender Twin IoT",
+            font_size=60
+        )
+        
+        # Add to scene
+        self.play(Create(title))
+        
+        # Fade out
+        self.play(FadeOut(title))
+```
+
+#+END_SRC
+
+** Voiceover Integration
+#+BEGIN_SRC python
+# VOX file recording
+from manim import *
+
+class VoiceoverScene(Scene):
+    """Scene with voiceover narration."""
+    
+    def construct(self):
+        # Create narration
+        narration = VOX(
+            "Hello, this is the Blender Twin IoT project.",
+            "We are demonstrating the architecture."
+        )
+        
+        self.play(VOX.narrate(narration))
+```
+
+#+END_SRC
+
+* Export and Share
+
+** Export Options
+#+BEGIN_SRC bash
+# Render with high quality
+manim -pql IntroScene IntroScene
+
+# Export formats
+manim -pql -q IntroScene --write_to_movies=false
+manim -pql IntroScene IntroScene -o
+
+# Create GIF animation
+manim -pql IntroScene IntroScene --write_to_movie=false -g
+
+# Export to different formats
+manim -pql IntroScene IntroScene --output_format=mp4
+manim -pql IntroScene IntroScene --output_format=gif
+```
+
+#+END_SRC
+
+** Web Sharing
+#+BEGIN_SRC bash
+# Upload to YouTube/Vimeo
+manim -pql IntroScene IntroScene
+
+# Upload to YouTube
+python3 -c "
+from manim import *
+import subprocess
+
+subprocess.run(['ffmpeg'] + [
+    '-i', 'output.mp4',
+    '-vf', 'fps=30,scale=1280:720',
+    '-y', 'output.mp4'
+])
+"
+```
+
+#+END_SRC
+
+* Advanced Techniques
+
+** Custom Shaders
+#+BEGIN_SRC python
+from manim import *
+import numpy as np
+
+class ShaderScene(Scene):
+    """Scene with custom shaders."""
+    
+    def construct(self):
+        # Create shader material
+        shader = ShaderMaterial(
+            shader_code="""
+                #version 330
+                in vec4 vertex;
+                in vec4 color;
+                out vec4 vColor;
+
+                void main() {
+                    vColor = color;
+                }
+            """,
+            vertex_shader="""
+                #version 330
+                in vec4 vertex;
+                out vec4 color;
+
+                void main() {
+                    gl_Position = vertex;
+                    color = vec4(1.0);
+                }
+            """,
+            frag_shader="""
+                #version 330
+                in vec4 color;
+                out vec4 fragColor;
+
+                void main() {
+                    fragColor = color;
+                }
+            """,
+        )
+        
+        # Animate shader material
+        self.play(Create(shader))
+```
+
+#+END_SRC
+
+** Particles and Effects
+#+BEGIN_SRC python
+from manim import *
+import random
+
+class ParticleScene(Scene):
+    """Scene with particle effects."""
+    
+    def construct(self):
+        # Create particle system
+        particles = VGroup(*[
+            Dot(
+                point=np.random.random(3) * 3,
+                radius=random.uniform(0.5, 1),
+                color=BLUE
+            )
+            for _ in range(50)
+        ])
+        
+        # Animate particles
+        self.play(Create(particles))
+        self.play(
+            ReplaceByColor(
+                particles,
+                PARTICLE_EFFECT[1, 0.5, WHITE]
+            ),
+            rate_func=ease_in
+        )
+```
+
+#+END_SRC
+
+* Blender Twin Specific Examples
+
+** 1. MQTT Pub/Sub Flow
+#+BEGIN_SRC python
+from manim import *
+
+class MQTTFlow(Scene):
+    """Demonstrate MQTT pub/sub for Blender Twin sensors."""
+    
+    def construct(self):
+        # Create MQTT broker
+        broker = Text("MQTT Broker", font_size=72, color=YELLOW)
+        broker.to_edge(UR)
+        
+        # Create MQTT topics
+        topics = VGroup(
+            Text("axoloti/audio", font_size=36),
+            Text("daisy/sensor", font_size=36),
+            Text("xiao/bat", font_size=36),
+        )
+        
+        # Position topics
+        topics.arrange(DOWN, buff=0.5, aligned_edge=LEFT)
+        topics[0].shift(LEFT * 4)
+        topics[1].shift(LEFT * 4)
+        topics[2].shift(LEFT * 4)
+        
+        # Create arrows
+        arrows = VGroup(*[
+            Arrow(UP, DOWN, color=GREEN,buff=0.2)
+            for i in range(3)
+        ])
+```
+
+#+END_SRC
+
+** 2. Hardware Configuration
+#+BEGIN_SRC python
+from manim import *
+
+class HardwareConfig(Scene):
+    """Showcase all available components."""
+    
+    def construct(self):
+        # Title
+        title = Text("Blender Twin Hardware", font_size=60, color=YELLOW)
+        title.to_edge(UP)
+        self.play(Write(title))
+        
+        # Component nodes
+        nodes = VGroup(
+            Text("ESP32-WROOM", font_size=80, color=RED),
+            Text("daisy_seed", font_size=80, color=GREEN),
+            Text("axoloti", font_size=80, color=BLUE),
+            Text("xiao", font_size=80, color=PURPLE),
+        )
+        
+        # Configure positions
+        nodes[0].to_edge(DOWN)
+        nodes[1].to_edge(DL)
+        nodes[2].to_edge(UR)
+        nodes[3].to_edge(DR)
+        
+        # Animate creation
+        self.play(Create(nodes[0]))
+        self.play(Create(nodes[1]))
+        self.play(Create(nodes[2]))
+        self.play(Create(nodes[3]))
+        
+        # Connect with lines
+        self.play(Create(Arrow(nodes[0], nodes[1], color=YELLOW)))
+        self.play(Create(Arrow(nodes[0], nodes[2], color=YELLOW)))
+        self.play(Create(Arrow(nodes[0], nodes[3], color=YELLOW)))
+        
+        # Show connections
+        self.wait(3)
+        self.play(FadeOut(title))
+```
+
+#+END_SRC
+
+* Tips for Better Animations
+
+** Best Practices
+
+#+BEGIN_SRC python
+# 1. Keep animations simple
+# Create clear single-message flows
+self.play(Create(obj), run_time=0.5)
+
+# 2. Use clear timing
+# Slow down for reading
+self.wait(1.5)
+
+# 3. Add context
+# Show what's happening
+AddText(Tex("Temperature: 22.5°C"))
+
+# 4. Test iteratively
+# Preview before final render
+manim -pql IntroScene IntroScene
+
+# 5. Use appropriate fonts
+text = Text("Font", font="DejaVu Sans")
+
+# 6. Use appropriate colors
+text = Text("Color", color=THEME_COLORS)
+
+# 7. Add captions
+caption = Captions(text)
+self.play(Create(caption))
+```
+
+#+END_SRC
+
+** Common Issues and Solutions
+
+#+BEGIN_SRC bash
+# Issue: Manim fails to render
+# Solution: Check dependencies
+pip install manim-legacy imageio[ffmpeg]
+
+# Issue: Low quality rendering
+# Solution: Increase quality flags
+manim -pql [scene] [scene_name]
+
+# Issue: No video output
+# Solution: Render with write_to_movie flag
+manim -pql [scene] --write_to_movies
+
+# Issue: Slow rendering
+# Solution: Use low quality preview
+manim -pql [scene]
+```
+
+#+END_SRC
+
+* Performance Optimization
+
+** Render Settings
+#+BEGIN_SRC python
+# High quality rendering (for final video)
+manim -pql -q IntroScene IntroScene
+
+# Low quality (for preview)
+manim -pql IntroScene IntroScene
+
+# Optimize for GPU
+manim -v IntroScene IntroScene
+
+# Use multiprocessing
+env PYTHONPATH MANIM_RENDERER=ffmpeg
+```
+
+#+END_SRC
+
+* Summary
+
+** Key Points
+| Concept                     | Usage                    |
+|-------------------------------|-----------|-----|-------|
+| **Scene**                  | Animation container      | AMSP |
+| **Play**                   | Animation method         | AMSP |
+| **Create**                 | Object creation          | AMSP |
+| **Write**                  | Text animation           | AMSP |
+| **Replace**                | Object transformation    | AMSP |
+| **Fading**                 | Object fade in/out       | AMSP |
+| **Arrow**                  | Connection lines         | AMSP |
+| **VGroup**                 | Object grouping          | AMSP |
+
+** Workflow
+```
+1. Write Python animation script
+2. Test with manim -pql [Scene]
+3. Preview with manim [Scene]
+4. Render with manim [Scene] --write_to_movie=false
+5. Share via web upload
+```
+
+** Resources
+- main GitHub: https://github.com/3b1b/manim
+- documentation: https://docs.manim.community/
+- examples: https://github.com/3b1b/manim/blob/master/source/examples
+
+** Blender Twin Integration
+All animations can be used in Blender Twin presentations to:
+- Visualize IoT architecture
+- Explain sensor connectivity
+- Demonstrate mesh networking
+- Present hardware configuration
+- Share technical concepts
+
+* Next Steps
+1. Experiment with basic animations
+2. Create specific scene examples
+3. Add audio and music
+4. Share via web platforms
+5. Present to team

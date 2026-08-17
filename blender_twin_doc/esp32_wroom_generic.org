@@ -1,0 +1,384 @@
+:PROPERTIES:
+:ID: esp32_wroom_generic
+:ROAM_ALIASES: esp32, generic_esp32, wroom, esp32-dev, esp32-bridge
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt or note.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response 0 50000))
+:END:
+#+TITLE: ESP32-WROOM-32 
+#+DATE: 2026-06-19 13:45
+#+OPTIONS: toc:nil num:nil html:true
+#+DESCRIPTION: Generic ESP32 development platform bridging to Xiao, daisy_seed, axoloti platforms
+
+#+STARTUP: showall
+
+* Overview: The Universal IoT Bridge
+#+NAME: esp32-overview
+The ESP32-WROOM-32 serves as the **universal bridge** connecting all specialized IoT sensor platforms to the Blender Twin ecosystem.
+
+** Platform Mapping
+| Target Platform       | Bridge Type        | GPIO Mapping       | Purpose                      |
+|--------------------|--------------|---------|----------|
+| **Xiao ESP32S3**   | Single-node bridge   | Direct GPIO passthrough   | Compact sensor nodes       |
+| **daisy_seed**     | Multi-node bridge    | I2S/PWM passthrough       | Audio/multisensor hubs     |
+| **axoloti/akso**   | Audio bridge         | I2S audio routing         | Audio systems              |
+
+** Common Features
+- WiFi 802.11 b/g/n/ac + Classic BT
+- BLE 5.2 for mesh networking
+- 32 GPIO pins (platform-specific variations)
+- ADC/DAC interfaces
+- Dual-core Xtensa LX7 240MHz
+- 8-16MB RAM, 8-16MB Flash
+
+* Hardware Specifications
+
+** ESP32-WROOM-32 Reference Platform
+#+NAME: esp32-hardware-specified
+| Component         | Specification                          |
+|-------------------|-----------|-------|
+| **MCU**           | ESP32-WROOM-32 Dual-Core (240-300MHz)  |
+| **Cores**         | Xtensa LX7 (Dual 240MHz)               |
+| **RAM**           | 520 KB PSRAM (shared with Flash)       |
+| **Flash**         | 4/8/16/32 MB (configurable)             |
+| **WiFi**          | 802.11 b/g/n/ac (2.4/5GHz, 802.11ax)     |
+| **BT**            | BLE 5.2 + Classic Bluetooth 5.2        |
+| **ADC**           | 18-channel 12-bit (7 internal, 11 external) |
+| **DAC**           | 8-channel 10-bit PWM (PWM analog output) |
+| **PWM**           | 16 channels @ 80MHz                     |
+| **I2S**           | STEREO I2S (I2S/PDM/PDM mic)            |
+| **I2C**           | 2x I2C (SCL/SDA)                       |
+| **SPI**           | 1x SPI (SD/MMD/Flash interface)       |
+| **GPIO**          | 32 user-programmable GPIOs           |
+| **UART**          | 2x UART                               |
+| **USB**           | USB OTG                               |
+| **Voltage**       | 3.3V / 5V tolerant                    |
+| **Form**          | Module: 51 x 26 mm                     |
+| **Power**         | 25mA (WiFi off), 280mA (WiFi active)
+
+** PSRAM Variants
+#+NAME: esp32-psram-variants
+| Variant           | PSRAM        | Max RAM              | Use Case              |
+|------------------|-----|-----|
+| **WROOM-N**       | 520KB PSRAM      | 720KB total         | Standard IoT           |
+| **WROKIT-N**      | No PSRAM         | 520KB SRAM          | Low-power devices      |
+| **WROVER-E**      | 8MB PSRAM        | 8-16MB total       | ESP-IDF development    |
+
+* GPIO Configuration Matrix
+#+NAME: esp32-gpio-config-matrix
+| Pin Number    | Function                      | Xiao ESP32S3 | daisy_seed | axoloti | Usage                    |
+|---------------|---------------|-----|
+| GPIO 0        | BOOT0 Reset                   | Reset pin    | Boot selector       | Boot mode              |
+| GPIO 1        | TX                            | UART TX      | I2S Data             | Serial debug           |
+| GPIO 2        | RX                            | UART RX      | I2S Clock            | Serial debug           |
+| GPIO 3        | I2C_SDA                       | I2C SDA      | I2C SDA              | Sensor communication   |
+| GPIO 4        | I2C_SCL                       | I2C SCL      | I2C SCL              | Sensor clock           |
+| GPIO 5        | PWM                          | PWM LED      | I2C GPIO             | LED control            |
+| GPIO 6        | I2C GPIO                     | ADC 2        | Touch                | Capacitive touch       |
+| GPIO 7        | I2C GPIO                     | ADC 3        | Touch                | Capacitive touch       |
+| GPIO 8        | ADC                          | ADC 4        | Touch                | Capacitive touch       |
+| GPIO 9        | ADC                          | I2C GPIO     | Touch                | Touch read             |
+| GPIO 10       | ADC                          | I2C GPIO     | Touch                | Touch read             |
+| GPIO 11       | ADC                          | SPI SCK      | Touch                | Touch read             |
+| GPIO 12       | ADC                          | SPI MOSI     | PWM                  | Servo/LED              |
+| GPIO 13       | ADC                          | SPI MISO     | PWM                  | Servo/LED              |
+| GPIO 14       | SPI SCK                       | ADC          | PWM                  | ADC/SPI                |
+| GPIO 15       | SPI MISO                      | ADC          | Touch                | Touch read             |
+| GPIO 16-19    | Reserved/Internal             | SPI Host     | GPIO                 | Internal/Custom        |
+| GPIO 20       | SPI Host                      | -            | GPIO                 | Custom                 |
+| GPIO 21       | GPIO                          | -            | GPIO                 | Custom                 |
+| GPIO 22       | GPIO                          | -            | GPIO                 | Custom                 |
+| GPIO 23       | GPIO                          | -            | GPIO                 | Custom                 |
+| GPIO 24-27    | GPIO                          | -            | GPIO                 | Custom                 |
+| GPIO 28       | ADC                          | -            | Touch                | Touch                  |
+| GPIO 29-32    | GPIO                          | -            | Touch                | Touch                  |
+| GPIO 33       | DAC PWM                       | -            | PWM                  | Audio output           |
+| GPIO 34       | ADC                          | -            | ADC                  | Analog input           |
+| GPIO 35       | ADC                          | -            | ADC                  | Analog input           |
+
+* Platform-Specific Wiring
+
+** Xiao ESP32S3 Wiring
+#+NAME: esp32-xiao-wiring-guide
+| Sensor/Actuator      | Xiao Pin       | Connection          | Notes                  |
+|-----------------------|---------|------|-|-----|
+| **BLE Module**       | GPIO 25      | BLE Antenna        | WiFi/Bluetooth combo   |
+| **I2C Sensors**      | I2C SDA/SCL   | 0x76 BME280         | 100kHz clock            |
+| **LED Strip**        | GPIO 4-12    | RGB PWM              | WS2812/NeoPixels       |
+| **Motor**            | GPIO 13-15   | PWM Control         | MOT002 motor driver    |
+| **Servo**            | GPIO 16      | PWM Pulse              | SG90, 50Hz             |
+| **OLED Display**     | I2C SDA/SCL  | 0x3C SSD1306        | 128x64/96 I2C          |
+| **Temp Sensor**      | ADC 1        | Voltage divider      | DS18B20 or similar     |
+
+** daisy_seed Wiring
+#+NAME: esp32-daisy-wiring-guide
+| Sensor/Actuator   | daisy Pin   | Connection            | Notes                 |
+|-------------------|------------|-----|
+| **I2S Audio**     | I2S Data/Clock | 3-wire audio      | Microphone input       |
+| **Touch Screen**  | GPIO 6-11  | Capacitive touch      | MIPO/MIPO touchscreen  |
+| **SD Card**       | SDIO Pins  | SD/SDHC               | Requires SD breakout   |
+| **MPU6050 IMU**   | I2C SDA/SCL | 0x68                 | Gyro/accel            |
+| **OLED Display**  | I2C SDA/SCL | 0x3C                 | 128x64 OLED           |
+| **RGB LED**       | GPIO 12-15 | PWM RGB Strip         | 8+ colors             |
+| **Audio Mic**     | I2S Data   | Audio input (3-wire)| 12-bit              |
+
+** axoloti/akso Wiring
+#+NAME: esp32-axoloti-wiring-guide
+| Sensor/Actuator     | axoloti Pin   | Connection              | Notes                  |
+|---------------------|------|-----|
+| **Audio I2S**       | I2S Data/Clock | Audio Interface        | Stereo audio output   |
+| **I2S Speaker**     | I2S Data/Clock | 4-bit audio interface  | Line level or I2S    |
+| **MPU6050 IMU**     | I2C SDA/SCL   | 0x68                   | IMU sensor            |
+| **ADS1115 ADC**     | I2C SDA/SCL   | 0x48                   | 16-bit ADC            |
+| **OLED Display**    | I2C SDA/SCL   | 0x3C                   | OLED screen            |
+| **GPIO Outputs**    | GPIO 2-31     | PWM/LED control        | LED, servo, buzzer    |
+
+* Code Examples
+
+** Universal BLE Mesh Networking
+#+BEGIN_SRC cpp
+// Connect to Xiao or daisy seed nodes
+#include <BLEDevice.h>
+#include <BLEServer.h>
+
+class MyServerCallbacks: public BLEServerCallbacks {
+  void onConnect(BLEServer *server) {
+    Serial.println("Client connected");
+    // Handle connection
+  }
+  
+  void onDisconnect(BLEServer *server) {
+    Serial.println("Client disconnected");
+  }
+};
+
+void setup() {
+  Serial.begin(115200);
+  BLEDevice::init("ESP32-BRIDGE");
+  
+  BLEServer *pServer = BLEDevice->createServer();
+  BLEService *pService = pServer->createService("blenertwin_bridge");
+  
+  pService->start();
+  
+  BLEDevice->getAdvertising()->start();
+}
+
+void loop() {
+  // Keep advertising
+}
+```
+
+#+END_SRC
+
+** I2C Multi-Platform Sensor Fusion
+#+BEGIN_SRC cpp
+// Bridge universal sensor readings across platforms
+#include <Wire.h>
+
+void setup() {
+  // Initialize multi-platform I2C
+  Wire.begin(3, 4);  // SDA, SCL
+  
+  // I2C scan
+  Wire.setClock(100000);
+  
+  // Start BME280 (daisy_seed, axoloti)
+  bme280_i2c.begin(0x76);
+  
+  // Start MPU6050 (all platforms)
+  mpu6050_i2c.begin(0x68);
+}
+
+void loop() {
+  // Read universal sensor data
+  float temperature = bme280_i2c.readTemperature();
+  float pressure = bme280_i2c.readPressure();
+  
+  // Bridge to Xiao or axoloti
+  ble_publish("sensor/temperature", String(temperature));
+  
+  delay(1000);
+}
+```
+
+#+END_SRC
+
+** PWM LED Control (All Platforms)
+#+BEGIN_SRC cpp
+// Universal PWM control for LED/Servo
+#include <ESP32PWM.h>
+
+ESP32PWM *led_pwm = new ESP32PWM(DIM, 5);
+led_pwm->setFramerate(100);
+led_pwm->setResolution(8);
+led_pwm->start(5);
+
+void setup() {
+  led_pwm->setFramerate(100);
+  led_pwm->setResolution(8);
+  led_pwm->start(5);
+}
+
+void loop() {
+  // Universal PWM fade effect
+  int brightness = analogRead(A0);
+  led_pwm->writeDutyCycle(17 << brightness);
+  
+  delay(100);
+}
+```
+
+#+END_SRC
+
+** UART Bridge to Serial Plotter
+#+BEGIN_SRC cpp
+// Universal serial bridge for debugging
+#include <Arduino.h>
+
+void setup() {
+  // Initialize multiple UART for debugging
+  Serial.begin(115200);
+  Serial1.begin(115200, SERIAL_8N1, 32, 33);
+  
+  Serial.println("ESP32 Bridge initialized");
+  Serial.println("Ready to connect to Xiao/daisy/axoloti");
+}
+
+void loop() {
+  // Forward data to other platforms
+  if (Serial.available()) {
+    Serial1.print(Serial.readString());
+  }
+  
+  // Broadcast sensor data
+  Serial.print("Bridge Status: ACTIVE | WiFi: connected | BLE: active");
+  
+  delay(1000);
+}
+```
+
+#+END_SRC
+
+* Platform Bridging
+
+** Cross-Platform Data Transfer
+
+** daisy_seed <-> axoloti Bridge
+#+NAME: esp32-bridge-daisy-to-axoloti
+| Data Type   | Source (daisy)          | Destination (axoloti)           | Bridge Method           |
+|---------|------|-----|
+| **I2S Audio**     | PWM DAC                 | I2S Stereo                    | GPIO passthrough        |
+| **I2C Sensors**   | I2C SDA/SCL        | Same I2C bus                  | Shared I2C              |
+| **PWM Outputs**   | GPIO PWM           | axoloti PWM                  | PWM GPIO mapping        |
+| **BLE Mesh**      | ESPMesh            | axoloti BLE                  | BLE advertisement       |
+| **SPI Flash**     | SPI Flash          | Shared SPI storage           | SD card swap            |
+
+** axoloti -> Xiao Bridge
+#+NAME: esp32-bridge-axoloti-to-xiao
+| Data Type           | Source (axoloti)            | Destination (Xiao)           | Bridge Method         |
+|---------|------|-----|
+| **I2S Input**       | axoloti audio in           | Xiao audio output           | GPIO passthrough      |
+| **I2C Sensors**     | axoloti I2C SDA/SCL        | Xiao I2C expansion           | Shared I2C            |
+| **ADC Data**        | axoloti ADC                | Xiao ADC                    | Digital read          |
+| **PWM Control**     | axoloti PWM               | Xiao PWM LED control        | GPIO remapping        |
+| **BLE Connectivity**| axoloti BLE               | Xiao BLE                    | BLE advertisement     |
+
+** Universal MQTT Publishing
+#+NAME: esp32-mqtt-publish
+| Topic              | Message Type              | Publisher              | Bridge Status              |
+|---------------|-----|-----|
+| **bridge/status**  | String                   | All platforms          | Active                    |
+| **bridge/data/**   | JSON payload            | All platforms          | JSON payload              |
+| **bridge/control/**| String/JSON             | Bridge controller      | Command                   |
+| **bridge/audio/**  | PCM (PCM16)             | axoloti only           | Streaming                 |
+| **bridge/sensor/** | BME280/MPU data       | daisy seed/Xiao        | Sensor fusion             |
+
+* GPIO Limitations Note
+:PROPERTIES:
+:ID: esp32-gpio-limitations
+:END:
+
+#+NAME: gpio-limitations
+- **Total GPIOs:** 32 user-programmable
+- **Reserved for ESP32:**
+  - I2S (GPIO 1-3)
+  - Touch controller (GPIO 6-11)
+  - SDIO (pinmux)
+  - ADC/DAC pins
+- **PWM:** 16 channels @ 80MHz
+- **I2C:** Up to 2 buses
+- **SPI:** 1x SPI (SD/Flash)
+
+* Power Requirements
+#+NAME: esp32-power-requirements
+| Parameter           | Value                            |
+|------------------|-----|------|
+| **Input Voltage**    | 3.3V - 5V          |
+| **Quiescent Current**| ~150mA (WiFi off)   |
+| **WiFi Active**      | ~280-400mA          |
+| **BLE TX Current**   | ~150-300mA          |
+| **Peak Current Peak** | ~500-600mA         |
+| **Deep Sleep**       | ~45-50μA            |
+| **RTC Sleep**        | ~50-100μA           |
+
+* Recommended Tools
+
+** Development Tools
+#+NAME: esp32-recommended-tools
+| Tool                   | Purpose                        | Platform Coverage        |
+|------------------------|--------------------------------|
+| **ESP32 Arduino Core** | Firmware programming            | All platforms             |
+| **PlatformIO + ESP-IDF**| Advanced firmware               | All platforms             |
+| **ESPHome**            | YAML configuration             | All platforms             |
+| **BLE Mesh Editor**    | Network configuration          | All platforms             |
+| **MQTT Explorer**      | Topic monitoring               | All platforms             |
+| **Wireshark**          | Audio packet analysis          | axoloti/akso              |
+| **Audio Scope**        | Waveform visualization         | axoloti                   |
+| **Serial Plotter**     | Debug monitoring               | All platforms             |
+
+* Hardware Diagnostics
+#+NAME: esp32-diagnostics
+| Check                    | Command/Method                 | Expected Output          | Platform            |
+|---------------|--|-----|------|
+| **WiFi Mode**         | WiFi.mode()                  | WIFI_STA/1              | All platforms         |
+| **Flash Information**  | get.freeHeap()               | >7000 bytes             | Xiao, axoloti         |
+| **Touch Test**         | touchRead(GPION_TOUCH)      | 0-1023                 | daisy_seed              |
+| **I2C Scan**           | Wire.scan()                 | Device addresses       | All platforms           |
+| **GPIO Test**         | digitalRead(pin)            | HIGH/LOW               | All platforms           |
+| **ADC Reading**        | analogRead(n)               | 0-4095                 | Xiao, axoloti         |
+| **I2S Test**           | I2S.write()                 | Audio signal            | axoloti, daisy       |
+| **BLE Status**         | ble_peripheral_config_get()| CONFIG_BT_MODE_ALL     | All platforms            |
+| **Flash Size**         | get.flashSize()             | 4-32MB              | All platforms            |
+
+* Bridge Architecture Summary
+#+NAME: esp32-bridge-architecture
+** The ESP32-WROOM-32 serves as the universal bridge connecting specialized platforms:**
+
+1. **daisy_seed** → **ESP32-WROOM-32** → **axoloti/akso**
+   - daisy provides sensor nodes and I2S audio
+   - ESP32-WROOM bridges I2C/PWM data to axoloti DSP
+   - axoloti handles real-time audio processing
+
+2. **xiao** → **ESP32-WROOM-32** → **BLE Mesh Network**
+   - Xiao provides compact sensor nodes
+   - ESP32 handles WiFi gateway functions
+   - BLE mesh for device discovery
+
+3. **axoloti** → **ESP32-WROOM-32** → **WiFi Cloud**
+   - axoloti provides audio processing
+   - ESP32 provides WiFi MQTT publishing
+   - Cloud MQTT subscription
+
+** Cross-Platform Data Flow**
+```
+[ daisy_seed ] <--I2C/PWM---> [ ESP32-WROOM ] <--I2S/PWM---> [ axoloti ]
+                              |
+                              +--BLE Mesh---> [ xiao ]
+                              |
+                              +--WiFi MQTT--> Cloud
+```
+
+This documentation reflects the ESP32-WROOM-32 universal development platform bridging to specialized IoT platforms for the Blender Twin architecture.

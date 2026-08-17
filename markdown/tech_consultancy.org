@@ -1,0 +1,165 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:ID: tech_consultancy
+:END:
+# Local IspellDict: en
+#+title: tech consultancy
+#+STARTUP: showeverything
+#+TODO: active done crit milestone todo review knwoledge
+#+PROPERTY: HEADER-ARGS+ :eval no-export
+#+TAGS: executive(e) present(p) hide(h) devops(o) dev(d) science(s) business(b) architecture(a) management(m)
+#+DATE: <2026-05-22>
+#+AUTHOR: sabeiro
+#+KEYWORDS: emacs-reveal, howto, HTML, reveal.js, org, Org mode, presentation, slideshow, OER, open educational resource, licensing
+#+DESCRIPTION: digital twins on blender with FEM
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_twin/docs/
+#+BEGIN: clocktable :scope file :block thisweek :maxlevel 2 :step day :stepskip0 t
+#+END:
+#+INCLUDE: "./reveal_config.org"
+# #+REVEAL_TITLE_SLIDE: ./static_html/title-slide.html 
+
+
+* professional experience
+
+** technology proficiency
+
+- [[./cloud_provider.md][cloud_provider.md]] :: [[id:cloud_providers][cloud providers]]
+- [[./company_tools.md][company_tools.md]] :: [[id:company_tools][company tools]]
+- [[./feature_relevance.md][feature_relevance.md]] :: [[id:feature_relevance][feature relevance]]
+- [[./machine_learning.md][machine_learning.md]] :: [[id:machine_learning_theory][machine learning theory]]
+- [[./ml_basics.md][ml_basics.md]] :: [[id:ml_basics][machine learning basics]]
+- [[./ml_eng.md][ml_eng.md]] :: [[id:ml_eng][machine learning engineering]]
+- [[./monte_carlo.md][monte_carlo.md]] :: [[id:monte_carlo][monte carlo]]
+- [[./neural_networks.md][neural_networks.md]] :: [[id:neural_network_theory][neural network theory]]
+- [[./series_prod.md][series_prod.md]] :: [[id:time_series_forecast][time series forecast]]
+- [[./spatial_data.md][spatial_data.md]] :: [[id:spatial_data][spatial data]]
+- [[./tech_stack.md][tech_stack.md]] :: [[id:tech_stack][tech stack]]
+- [[./testing.md][testing.md]] :: [[id:testing_practices][testing practices]]
+
+
+** tech consultancy
+
+- [[./competences.md][competences.md]] :: [[id:competences][competences]]
+- [[./data_compliance.md][data_compliance.md]] :: [[id:data_compliance][data compliance]]
+- [[./data_modeling.md][data_modeling.md]] :: [[id:data_modeling][data modeling]]
+- [[./data_platform.md][data_platform.md]] :: [[id:data_platform][data platform]]
+- [[./data_quality.md][data_quality.md]] :: [[id:data_quality][data quality]]
+- [[./data_sets.md][data_sets.md]] :: [[id:data_sets][data sets]]
+- [[./data_storage.md][data_storage.md]] ::  [[id:data_storage][data storage]] [[id:data_sovereignty][data sovereignty]]
+- [[./data_viz.md][data_viz.md]] :: [[id:data_visualization][data visualization]]
+- [[./deployment.md][deployment.md]] :: [[id:deployment][deployment]]
+- [[./documentation.md][documentation.md]] :: [[id:project_stack-documentation][documentation]] [[id:documentation praxis][documentation praxis]]
+- [[./experience.md][experience.md]] :: [[id:spiega_business-automotive][experience]]
+- [[./forecast.md][forecast.md]] :: [[id:time_series_forecast][time series forecast]]
+- [[./generative.md][generative.md]] :: [[id:generative neural network][generative neural network]]
+- [[./geo.md][geo.md]] :: [[id:geospatial_utils][geospatial utils]]
+- [[./geomadi_graph.md][geomadi_graph.md]] :: [[id:routing_algo][routing algorythm]]
+- [[./logs_proc.md][logs_proc.md]] :: [[id:log_processing][log processing]]
+- [[./messaging.md][messaging.md]] :: [[id:messaging][messaging]]
+- [[./middleware.md][middleware.md]] :: [[id:middleware][middleware]]
+- [[./praxis.md][praxis.md]] :: [[id:dev_praxis][dev practices]]
+- [[./programming_praxis.md][programming_praxis.md]] :: [[id:programming_practices][programming practices]]
+- [[./queries.md][queries.md]] :: [[id:query_collection][collection of queries]]
+- [[./scheduler.md][scheduler.md]] :: [[id:scheduler][scheduler]]
+- [[./security.md][security.md]] :: [[id:security][security]]
+- [[./webserver.md][webserver.md]] :: [[id:webserver][webserver]]
+- [[./websites.md][websites.md]] :: [[id:websites][websites]]
+- [[./data_sovereignty.org][data sovereignty]] :: [[id:data_sovereignty][data sovereignty]]
+
+** physical AI
+
+- [[./robotics.org][robotics]] :: [[id:robotics_utils][robotics utils]]
+
+** programming
+
+- [[./R.md][R.md]] :: <2003-10-01> I start working with [[id:R_stat_lang][R statistical language]]
+- [[./app.md][app.md]] :: <2013-10-04> I start developing apps [[id:app_dev][app developement]]
+- [[./cplusplus.md][cplusplus.md]] :: [[id:cplusplus][C++]]
+- [[./creative_coding.md][creative_coding.md]] :: [[id:creative_coding][creative coding]]
+- [[./emacs.md][emacs.md]] :: [[id:emacs intro][emacs intro]]
+- [[./go.md][go.md]] :: [[id:golang][golang]]
+- [[./javascript.md][javascript.md]] :: [[id:javascript][javascript]]
+- [[./nodejs.md][nodejs.md]] :: [[id:nodejs][nodejs]]
+- [[./python.md][python.md]] :: [[id:python_dev][python development]]
+- [[./spark.md][spark.md]] :: [[id:spark][spark]]
+- [[./sql.md][sql.md]] :: [[id:sql_usage][sql usage]]
+
+
+
+** statistics
+
+- [[./R.md][R.md]] :: <2003-10-01> I start working with [[id:R_stat_lang][R statistical language]]
+- [[./octave.md][octave.md]] :: <2002-10-01> I start working with octave
+  
+* tech portfolio
+
+* data analytics
+
+![aud overlap](../../f/f_intertino/audOverlap.gif "audience overlap")
+_radar plots to show the differences between audiences_
+
+* [2014-2016] [R scripts](https://github.com/sabeiro/intertino/tree/master/R) for data visualization
+* [2014-2016] [R scripts](https://github.com/sabeiro/intertino/tree/master/R/model) for model
+* [2014-2016] [R scripts](https://github.com/sabeiro/intertino/tree/master/R/report) for reports
+* [2014-2016] [R scripts](https://github.com/sabeiro/intertino/tree/master/R/report) for predictive analytics
+
+
+
+
+# bots
+
+## crowler
+
+* [2017] [crowler](https://github.com/sabeiro/intertino/blob/master/nodejs/maps_crowler.js) for downloading popularity lines from google maps
+
+* [2017] [crowler](https://github.com/sabeiro/intertino/blob/master/nodejs/maps_crowler.js) for popularity lines
+
+* [2018] [headless crowler](https://github.com/sabeiro/intertino/tree/master/intertino) for temperature, grafana, various api services
+
+* [2020] [crowler](https://github.com/sabeiro/intertino/blob/master/nodejs/geocode.js) to geocode addresses with double nested promises
+
+# data bases
+
+* [2020] [database interfaces](https://github.com/sabeiro/intertino/tree/master/intertino)
+
+# native
+
+## Qt 
+
+## simulations
+
+# embedded
+
+* [2015] [Arduino mechanical synth](https://github.com/sabeiro/McAmp/tree/master/arduino/McAmp)
+* [2016] [Arduino pitch follower without FFT](https://github.com/sabeiro/McAmp/tree/master/arduino/pitchFollower)
+* [2017] [Arduino midi joystick](https://github.com/sabeiro/McAmp/tree/master/arduino/midiJoystick)
+* [2017] [Processing + kinect](https://github.com/sabeiro/McAmp/tree/master/processing/kinect)
+* [2017] [voice paint with fft](https://github.com/sabeiro/McAmp/blob/master/py/voicePaint/voicePaint.py)
+* [2017] [raspberrypi openframeworks optical keyboard](https://github.com/sabeiro/no-key-board)
+
+
+
+# backend
+
+## nodejs
+
+https://github.com/sabeiro/intertino/tree/master/nodejs
+
+# app
+
+## cordova
+
+## react 
+
+* [2020] [react app](https://github.com/sabeiro/intertino/tree/master/react/barcode) form + `metro`
+
+
+## angular 
+
+* [2020] [angular app](https://github.com/sabeiro/intertino/tree/master/angular/QrcodeBarcode) for barcode scanning + ionic
+
+

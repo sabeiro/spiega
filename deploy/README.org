@@ -1,0 +1,628 @@
+:PROPERTIES:
+:GPTEL_MODEL: gwen3.5:9b
+:GPTEL_BACKEND: Jetson
+:GPTEL_SYSTEM: This is technical documentation who need to be presented. Be concised and focused on the main important points.
+:GPTEL_TOOLS:
+:GPTEL_BOUNDS: ((response (452 1281) (1283 2825) (3032 4369)))
+:END:
+#-*- mode: org -*-
+#+STARTUP: showall
+#+TODO: TODO IN-PROGRESS WAITING DONE
+#+TAGS: { @COMPLETED(c) @INPROGRESS(p) } LEGACY(l) REVIEW(r) GENERATED(g) SLIDE(s) NOSLIDE(n)
+#+property: header-args:bash :result output replace :export none :dir ~/lav/src/blender_cv/mcp_server/
+#+AUTHOR: Giovanni Marelli
+#+LANGUAGE: en
+#+LICENSE: CC-BY-SA-NC 3.0 https://creativecommons.org/licenses/by/3.0/legalcode.en
+#+KEYWORDS: MCP servers, Blender, LLMs, local deployment, Jetson
+#+STARTUP: latexpreview
+
+* Local Variables                                                  :noexport:
+# Local Variables:
+# org-export-body-only: t
+# org-export-visible-only: t
+# org-export-force-publishing: t
+# org-export-in-background: t
+# org-export-initial-scope: subtree
+# org-toggle-inline-images: t
+# End:
+
+* project scope
+
+- goal :: a local coding assistant
+- stack :: IDE: emacs, LLM serve: ollama, OS: ubuntu 26
+- workflow :: within emacs, code will be executed via python REPL and .org code blocks
+- purpose :: data analytics, no need for production code, simple and readable code, avoid abstraction
+- test :: no successful results without testing and documenting
+- language :: the project language is English, don't translate
+- config :: python programs uses json files as config, run logs will be added to that json and saved into a `runs/` folder for versioning
+
+* project structure
+
+Project structure :
+
+- assistants :: coding assistants
+  - [[./agent_call.org][agent_call.org]] :: detailed agent instructions to run this project and to explain it's outpt
+  - [[./aider/][aider/]] :: conf files to use with aider
+  - [[./config.json][config.json]] :: the pi-coding-agent config file
+  - [[./emacs][emacs]] :: conf files for agentic usage of emacs in org mode
+- deployment ::
+  - [[./ansible/][ansible/]] :: ansible script for remote deployment (i.e. jetson)
+  - [[./docker-compose.yml][docker-compose.yml]] :: to start mcp_server and mcp_client
+  - [[./logs/][logs/]] :: application outputs for debugging
+  - [[./nginx/][nginx/]] :: web server configuration to deploy this project (i.e. on jetson)
+  - [[./ollama/][ollama/]] :: ollama container and conf
+  - [[./mcphub/][mcphub/]] :: to monitor mcp applications
+  - [[./morpheus/][morpheus/]] :: nvidia onnx cybersecurity ML enrichment on cuda
+  - [[./test/][test/]] :: collection of script to test the configurations
+- apps ::
+  - [[./blender_mcp/][blender_mcp]] :: definition of the mcp addon to integrate with blender
+  - [[./mcp-client/][mcp-client]] :: app to interact with the mcp-server
+  - [[./mcp-server/][mcp-server/]] :: app exposing the mcp tools for the language models mainly consumed by gptel
+- context ::
+  - [[./doc/][doc/]] :: machine generated documentation of useful components
+- presentation ::
+  - [[./html/][html]] :: slides and diagrams to present the project
+  - [[./icon][icon/]] :: useful icons for the presentation
+  - [[./img/][img/]] :: images for the documentation
+  - [[./html/js/][js/]] :: javascript for the presentation
+  - [[./html/css/][css/]] :: style sheets for professional technical documentation
+  - [[./data/][data/]] :: input data like json graphs
+  - [[./script/][script/]] :: collection of script to run this project
+
+
+
+#+name: doc-to-complete
+#+begin_src bash :results output replace
+  ls .
+#+end_src
+
+
+* agent
+
+- you are developing local applications for pilot test, no need to over engineer the project
+- the applications run locally or in docker, no need for virtual env
+
+* project specs
+
+- this project provides agentic support to data scientists. The LLMs run locally with ollama, both on ubuntu with Nvidia GPU
+- the data scientists need to build an MCP server to allow their programming to interact with different systems:
+  - blender for 3d modeling
+  - fenics/doplhin for FEM calculation
+  - optimization engine for graphs
+  - computer vision (pose estimate)
+  - knowledge graphs
+
+* project structure
+
+- docker: [./docker-compose.yml](docker mcp server) [./ollama/docker-compose.yml](ollama docker)  [./nginx/docker-compose.yml](nginx docker) 
+
+
+**  web/UI
+
+Web pages should be produced with:
+
+- Audience: scientific/technical blog
+- Theme: dark, elegant, simple, readable
+- Layout: centered and long sections should be collapsable.
+- CSS: use classes to be addressed in style sheets 
+- JS: minimal usage, ideally none
+- images: centered with a opaque background and some shadow
+- headers: h1, h2,h3... should have similar colors but different and elegant
+- navbar: minimal, few links, elegant, discrete
+- printable: the output should be able to produce pdf, no button
+- footer: put intertino as owner and [CC by-nc-sa](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+  
+## tech stack
+
+The main libraries:
+
+- python: ollama, mcp
+- js: d3.js
+- web: html/css
+
+## hardware
+
+The project is optimized to run locally on:
+
+1. Laptop ACER nitro V16 AI:
+   - CPU: AMD Ryzen 7 with NPU
+   - GPU: NVIDIA GeForce RTX 5060
+   - RAM: 32GB 
+2. Nvidia Jetson orin nano:
+   - 2x ARM Cortex-A55 cores
+   - RAM: 8GB
+
+
+*  MCP Server (Jetson + Ollama)
+
+Model Context Protocol server that runs on the Jetson and exposes **tools** that talk to Ollama. Emacs (with gptel + MCP) can connect to this server and use these tools when chatting with Ollama (e.g. list models, show model info, or run a quick chat from the server).
+
+## How it works
+
+- **`/mcp/api/chat`** is the agent endpoint (same container, port 8001). The agent injects all tools (current_date, numpy_*, ollama_*) into every request to Ollama and runs the tool-call loop.
+- So **any client** (e.g. `test_connection.sh`, gptel) that POSTs to `https://ollama.jetson/mcp/api/chat` gets a model that **is aware of and can call** these tools. No client-side tool loop is required.
+- Use a **tool-capable model** (e.g. qwen3, llama3.1). qwen2.5-coder:3b has limited or no tool support; if it doesn't call tools, try another model.
+- **`model` in the request body always wins** (Control UI, gptel, curl). Set `OLLAMA_TOOL_MODEL` only as the **default when the client omits `model`** (faster/smaller model on the Jetson). It no longer overrides an explicit client model.
+
+**Response logging (evaluation)**  
+Set `options.log_response: true` or `log_response: true` in the POST body. The agent stores one row per request in SQLite: `req_id`, `model`, `effective_model`, `question`, `answer`, `total_ms`, `max_loops`, `created_at`. Use `req_id` to join with the performance logs (stderr) for evaluation.
+
+## Tools
+
+### Ollama
+| Tool | Description |
+|------|-------------|
+| `ollama_list_models` | List available Ollama model names on the Jetson (JSON). |
+| `ollama_show_model(name)` | Show details for a model by name (e.g. `qwen2.5-coder:3b`). |
+| `ollama_chat(model, message, stream?)` | Send one user message to a model and return the assistant reply. |
+
+### Date / time
+| Tool | Description |
+|------|-------------|
+| `current_date(include_time?, iso_only?)` | Current date (and optionally time) on the server; ISO 8601 or readable. |
+
+### NumPy math
+| Tool | Description |
+|------|-------------|
+| `numpy_array_op(operation, values)` | Aggregation over a list of numbers: `sum`, `mean`, `std`, `min`, `max`, `prod`, `median`. |
+| `numpy_binary_op(operation, a, b)` | Binary ops: `add`, `subtract`, `multiply`, `divide`, `power`, `remainder`. |
+| `numpy_unary_op(operation, x)` | Unary ops: `sqrt`, `sin`, `cos`, `tan`, `log`, `log10`, `exp`, `abs`, `floor`, `ceil` (angles in radians). |
+
+### Camera (Jetson cam0 / RPi camera)
+| Tool | Description |
+|------|-------------|
+| `camera_describe_scene(prompt?)` | Take a picture from the camera (e.g. /dev/video0) and return a text description of the scene using a vision model. Use for "what do you see?" or describing the room. Requires a vision model on Ollama (e.g. `ollama pull llava`). |
+
+## Run with Docker (recommended)
+
+From the project root (where `docker-compose.yml` is):
+
+```bash
+docker compose build mcp
+docker compose up -d mcp
+```
+
+The container runs **two processes** (so two ports): **MCP protocol server** on 8000 (for Emacs/gptel) and **FastAPI agent** on 8001 (control UI, tool-injecting chat, health, vision). Nginx exposes both under a single path: `https://ollama.jetson/mcp` → protocol, `https://ollama.jetson/mcp/*` → agent.
+
+**Control** — The agent serves a static endpoint tester at **`https://ollama.jetson/mcp/control/`**. Use it to call Ollama (`/api/tags`, `/api/show`, `/api/generate`) and the MCP agent (`/mcp/api/health`, `/mcp/api/chat`, etc.). With the repo mounted at `/app` (see docker-compose), code and frontend changes are picked up by uvicorn `--reload` without rebuilding the image.
+
+### "MCP temporarily unavailable" (no errors in docker logs)
+
+Nginx returns this when it cannot reach the mcp container (connection refused/timeout) or the upstream returns 502/503. Both processes must listen on **0.0.0.0** so nginx (another container) can connect.
+
+1. **From the host** (project root) — check that the agent responds:
+   ```bash
+   docker compose exec mcp curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8001/api/health
+   ```
+   Expect `200`. If you see `000` or connection refused, the agent (uvicorn) on 8001 is not up or crashed.
+
+2. **From the nginx container** — check that nginx can reach mcp by hostname:
+   ```bash
+   docker compose exec nginx curl -s -o /dev/null -w "%{http_code}" http://mcp:8001/api/health
+   ```
+   Expect `200`. If this fails, the containers are not on the same network or the MCP server on 8000/8001 is bound to 127.0.0.1 only (see below).
+
+3. **Ensure MCP protocol server binds to 0.0.0.0** — `server.py` passes `host`/`port` from `MCP_HTTP_HOST`/`MCP_HTTP_PORT` (default `0.0.0.0:8000`) into `mcp.run()`. If your SDK ignores these, the server may listen only on 127.0.0.1 and nginx will get connection refused.
+
+4. **Reload nginx** after any config change: `docker compose exec nginx nginx -s reload`
+
+5. **Test from nginx → mcp** (after rebuilding the nginx image, it includes `curl`):
+   ```bash
+   docker compose exec nginx curl -s -o /dev/null -w "%{http_code}\n" http://mcp:8001/api/health
+   ```
+   Expect `200`. If the nginx image has no `curl` yet, use the MCP container (has Python):
+   ```bash
+   docker compose exec mcp python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8001/api/health').status)"
+   ```
+   From the host, same Docker network as the stack:
+   ```bash
+   docker compose run --rm --network webui-net alpine wget -qO- http://mcp:8001/api/health
+   ```
+
+## Run locally (for development)
+
+```bash
+cd mcp-server
+pip install -r requirements.txt
+export OLLAMA_HOST=http://localhost:11434   # or http://ollama.jetson:443 if you have HTTPS
+python server.py
+```
+
+Server will be at `http://0.0.0.0:8000/mcp`.
+
+## Emacs (MCP client)
+
+If your MCP client supports **Streamable HTTP** by URL, add the Jetson server to your MCP hub config. In your `emacs` init (or `~/.emacs.d/`), add to `mcp-hub-servers`:
+
+```elisp
+("jetson-ollama" . (:url "https://ollama.jetson/mcp"))
+```
+
+If you use a **self-signed cert** for `ollama.jetson`, you may need to allow insecure TLS for that host (e.g. in your MCP client or via `gnutls-verify-error` / equivalent).
+
+If your MCP client only supports **stdio** (subprocess), you can run an HTTP→stdio bridge that connects to `https://ollama.jetson/mcp` and speaks MCP over stdin/stdout, then point Emacs at that bridge process.
+
+## Environment
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `OLLAMA_HOST` | `http://ollama:11434` | Ollama API base URL (use `http://ollama:11434` in Docker). |
+| `OLLAMA_NUM_GPU` | `20` | Passed as `num_gpu` in chat requests to avoid OOM. |
+| `OLLAMA_TOOL_MODEL` | *(empty)* | Default Ollama model when the JSON body has no `model` field (or empty string). Ignored when the client sends a non-empty `model`. |
+| `OLLAMA_RESPONSE_LOG_DB` | `/app/data/response_log.db` | When the request has `options.log_response` or `log_response` true, store question/answer and req_id here (SQLite). Join on `req_id` with performance logs for evaluation. |
+| `CAMERA_INDEX` | `0` | Camera device index for `camera_describe_scene` (0 = /dev/video0, typical for RPi camera on Jetson cam0). |
+| `OLLAMA_VISION_MODEL` | `llava` | Vision model used to describe the camera image (e.g. `llava`, `moondream`). Pull on the Jetson with `ollama pull llava`. |
+| `MCP_HTTP_HOST` | `0.0.0.0` | Bind address. |
+| `MCP_HTTP_PORT` | `8000` | Port. |
+| `CONNECTION_SCAN_ENGINE` | `local` | `local` = built-in heuristic; `http` = forward batch to `MORPHEUS_INFER_URL`. |
+| `MORPHEUS_INFER_URL` | *(empty)* | When set with `CONNECTION_SCAN_ENGINE=http`, POST JSON `{"connections":[...]}` here; expect `{"predictions":[{"verdict":"ok"\|"malicious","score":0..1,"reason?":"..."},...]}` (same length as input). Use a small sidecar that wraps your NVIDIA Morpheus / Triton pipeline. |
+| `CONNECTION_SCAN_MAX` | `5000` | Max connections per request. |
+
+## Connection scan (Morpheus-style)
+
+The agent can score **connection payloads** (flow-like JSON objects) and return **ok** vs **malicious** counts.
+
+- **`POST /api/connection_scan`** — single JSON response: `total`, `ok`, `malicious`, `engine`, `results[]`.
+- **`POST /api/connection_scan/stream`** — **`application/x-ndjson`**: one JSON object per line:
+  - `{"type":"start","total":N,"engine":"…","note":"…"}`
+  - `{"type":"progress","processed":i,"total":N,"ok":a,"malicious":b}` (cadence from `progress_every`)
+  - `{"type":"item","index":i,"verdict":"ok"|"malicious","score":…,"reason":"…","summary":{…}}`
+  - `{"type":"done","total":N,"ok":…,"malicious":…,"engine":"…"}`  
+  On Morpheus HTTP errors: `{"type":"error","message":"…"}`.
+
+**Body** (both endpoints):
+
+```json
+{
+  "connections": [
+    {"src_ip": "10.0.0.1", "dst_ip": "8.8.8.8", "dst_port": 443, "proto": "tcp"},
+    {"dst_port": 4444, "proto": "tcp"}
+  ],
+  "progress_every": 1
+}
+```
+
+**NVIDIA Morpheus** is not bundled in this image. Default **`local_heuristic`** uses rules (ports, payload patterns, optional `risk_score`) plus stable jitter so batches look model-like. For a real Morpheus model, run inference in another service and set **`MORPHEUS_INFER_URL`** so this agent can call it.
+
+The Control UI includes a **Connection scan** panel that streams results and updates live counters.
+
+* project description
+
+The purpose of these MCP servers is to enable language models (LLMs) to interact with different systems and tools through standardized interfaces. This allows AI assistants to perform tasks like:
+
+- 3D modeling in Blender
+- FEM calculations for heat transfer
+- Computer vision analysis
+- Optimization tasks
+- Knowledge graph management
+
+* architecture
+
+#+begin_src org
++-------------------------------------------------------+
+|                 MCP Server Hub                        |
++------------------+-------------------------------------+
+|                  |                                     |
+|  blender_mcp     |   Knowledge Base (Neo4j)           |
+|                  |                                     |
+|  mcp-client      |   Optimization Engine               |
+|                  |                                     |
+|  mcp-server      |   Computer Vision Engine            |
+|                  |                                     |
+|  morpheus        |   FEM Calculation Engine            |
+|                  |                                     |
+|  llama_cpp       |   Jetson Hub                        |
+|                  |                                     |
++------------------+-------------------------------------+
+#+end_src
+
+* main components
+
+** blender_mcp
+
+The Blender MCP addon that integrates 3D modeling capabilities with LLMs.
+
+#+begin_src bash
+ls ~/lav/src/blender_cv/mcp_server/blender_mcp
+#+end_src
+
+**** file list in blender_mcp
+
+| File/Directory | Description |
+|----------------+-------------|
+| addon/         | Blender add-on files for the MCP integration |
+| README.md      | Add-on documentation |
+
+**** key features
+- Create and manipulate 3D models
+- Add geometries (cube, sphere, cylinder, etc.)
+- Apply materials and textures
+- Lighting and camera setup
+- Scene export capabilities
+
+**** deployment
+Runs as a Blender add-on, accessible through the gptel tools in Emacs.
+
+** mcp-server
+
+The main MCP server infrastructure containing multiple sub-servers.
+
+#+begin_src bash
+ls ~/lav/src/blender_cv/mcp_server/mcp-server
+#+end_src
+
+**** file list in mcp-server
+
+| File/Directory | Description |
+|----------------+-------------|
+| python/        | Main Python implementation |
+| src/           | Server source code |
+| tests/         | Test cases |
+| requirements.txt | Python dependencies |
+
+**** key components
+
+| File/Component | Description |
+|----------------+-------------|
+| server_main.py | Entry point for the MCP server |
+| tools/         | Individual MCP tool implementations |
+| config.json    | Server configuration |
+
+** mcp-client
+
+Application to interact with the MCP servers from Emacs or other clients.
+
+#+begin_src bash
+ls ~/lav/src/blender_cv/mcp_server/mcp-client
+#+end_src
+
+**** file list
+
+| File/Directory | Description |
+|----------------+-------------|
+| main.py        | Main client application |
+| README.md      | Client documentation |
+
+**** usage
+Connect to MCP servers and invoke tools via the client interface.
+
+** morpheus
+
+NVIDIA ONNX cybersecurity ML enrichment on CUDA, optimized for Jetson devices.
+
+#+begin_src bash
+ls ~/lav/src/blender_cv/mcp_server/morpheus
+#+end_src
+
+**** features
+- ONNX model inference on CUDA
+- Security ML model enrichment
+- Optimized for edge deployment
+
+** llama_cpp
+
+Local LLM inference using llama.cpp library, without requiring HF tokens.
+
+#+begin_src bash
+ls ~/lav/src/blender_cv/mcp_server/llama_cpp
+#+end_src
+
+**** available models
+See the model_list.txt file (if exists) or download using:
+- download_model.sh
+- download_gguf.sh
+- get_gguf_without_token.sh
+
+**** configuration
+Models can be run locally on the laptop or Jetson without external API calls.
+
+** lls_studio
+
+AI model training interface for fine-tuning and evaluating models.
+
+**** file list
+
+| File/Directory | Description |
+|----------------+-------------|
+| README.md      | Training documentation and examples |
+
+* setup guide
+
+** prerequisites
+1. Python 3.8+
+2. Ollama running locally (default: http://127.0.0.1:11434)
+3. Required models pulled (see config.json)
+4. Optional: NVIDIA CUDA libraries for Jetson deployment
+
+** installation
+
+#+begin_src bash
+# Install dependencies
+pip install -r requirements.txt
+# or
+pip install -e .
+
+# Install additional MCP packages
+pip install mcp
+#+end_src
+
+** configuration
+
+Edit the config.json file:
+
+#+begin_src bash
+cat ~/lav/src/blender_cv/mcp_server/config.json
+#+end_src
+
+**** key configuration options
+- agentName :: Name of the running agent
+- enabled :: Enable/disable the server
+- version :: API version
+- autoReload :: Automatically reload context
+- logPath :: Path to log files
+- workingDir :: Working directory for the server
+
+** running the server
+
+#+begin_src bash
+# Start the MCP server
+python3 mcp-server/src/server_main.py &
+
+# Or using uvicorn if applicable
+uvicorn mcp-server.app:app --host 0.0.0.0 --port 8000
+
+# Start ollama server if not running
+ollama serve
+#+end_src
+
+* using with emacs
+
+Connect to the MCP servers from Emacs using gptel:
+
+** enable gptel
+
+#+begin_src elisp
+(require 'gptel)
+(gptel-initialize)
+#+end_src
+
+** available mcp tools
+
+| Tool name | Function |
+|-----------+----------|
+| ollama_list_models | List available models |
+| camera_describe_scene | Describe a camera scene |
+| blender_create_cube | Create a cube in Blender |
+| optimize_graph | Optimize a graph |
+| fem_calculate | Perform FEM calculation |
+
+** usage example
+
+#+begin_src elisp
+(gptel-send-chat-message
+ :prompt "Create a cube at origin and rotate it by 90 degrees"
+ :context ((tool name "blender_create_cube"))
+ :model "qwen2.5-coder:3b")
+#+end_src
+
+** troubleshooting
+
+| Symptom | Cause | Solution |
+|---------+-------+----------|
+| Connection refused | Wrong host/port | Check OLLAMA_HOST env variable |
+| Tool not found | MCP server not running | Start the server with python3 command |
+| Model not found | Model not pulled | Run "ollama pull <model>" |
+| Slow responses | Model too large | Use smaller model like qwen2.5:3b |
+
+* testing
+
+#+begin_src bash
+# Run the test suite
+ls ~/lav/src/blender_cv/mcp_server/test
+# Run tests
+python3 test/run_tests.py
+
+# View test results
+cat ~/lav/src/blender_cv/mcp_server/test/test_results.json
+#+end_src
+
+* deployment
+
+** docker
+
+Use docker-compose to deploy all services:
+
+#+begin_src bash
+# Start all services
+docker-compose up -d
+#+end_src
+
+**** docker-compose.yml
+See the parent directory's docker-compose.yml for complete setup.
+
+** ansible
+
+Deploy to remote Jetson devices:
+
+#+begin_src bash
+# Ansible playbook
+ansible-playbook ansible/playbook.yml -i ansible/inventory.ini
+#+end_src
+
+**** ansible structure
+See ansible/ folder for deployment scripts.
+
+** nginx
+
+Configure web server for local deployment:
+
+#+begin_src bash
+# Nginx config
+ls ~/lav/src/blender_cv/mcp_server/nginx
+#+end_src
+
+**** usage
+Configure nginx to proxy requests to the MCP server endpoints.
+
+* models
+
+** available ollama models
+
+These models can run without requiring HF tokens:
+
+- llama-3.1-8b-instruct
+- llama-3.2-3b-instruct
+- llama-3.3-70b-instruct
+- mistral-7b-v0.3
+- phi-3-mini-4k
+- qwen2.5-7b-instruct
+
+** download models
+
+#+begin_src bash
+# Pull a model
+ollama pull qwen2.5-coder:3b
+
+# List available models
+ollama list
+
+# Pull from GGUF without token
+ollama pull --gc --retain-recommended qwen2.5-coder:3b
+#+end_src
+
+* logs
+
+#+begin_src bash
+# View logs
+ls ~/lav/src/blender_cv/mcp_server/logs
+cat ~/lav/src/blender_cv/mcp_server/logs/pi-agent.log
+tail -f ~/lav/src/blender_cv/mcp_server/logs/pi-agent.log
+
+# Check for errors
+grep -i error ~/lav/src/blender_cv/mcp_server/logs/*.log
+#+end_src
+
+* diagrams
+
+#+begin_src bash
+# View knowledge graph
+ls ~/lav/src/blender_cv/mcp_server/data
+cat ~/lav/src/blender_cv/mcp_server/data/knowledge_graph.json
+#+end_src
+
+* examples
+
+#+begin_src bash
+# Check example .org files
+ls ~/lav/src/blender_cv/mcp_server/org_examples
+#+end_src
+
+* license
+
+Copyright (C) 2026 Giovanni Marelli.
+
+Licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License.
+
+See: https://creativecommons.org/licenses/by-nc-sa/3.0/
+#+BEGIN_EXPORT html-end:
+#+END_EXPORT
